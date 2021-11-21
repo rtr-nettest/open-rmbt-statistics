@@ -1,0 +1,9 @@
+package com.example.statisticserver;
+
+public interface TestConstants {
+    String DEFAULT_GIT_BRANCH = "DEFAULT_GIT_BRANCH";
+    String DEFAULT_GIT_COMMIT_ID_DESCRIBE = "DEFAULT_GIT_COMMIT_ID_DESCRIBE";
+    String DEFAULT_CONTROL_SERVER_VERSION = String.format("%s_%s", DEFAULT_GIT_BRANCH, DEFAULT_GIT_COMMIT_ID_DESCRIBE);
+    String DEFAULT_SYSTEM_UUID_VALUE = "d916af3d-acb9-46e0-b84e-3f8bac20ef5d";
+    String DEFAULT_APPLICATION_HOST = "DEFAULT_APPLICATION_HOST";
+}

@@ -1,0 +1,58 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /RMBTStatisticServer
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  application:
+    name: statistic-backend
+  datasource:
+    poolSize: 20
+    minIdle: 1
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://127.0.0.1:5431/rtr
+    username: rtr
+    password: password
+    tomcat:
+      test-while-idle: true
+      test-on-borrow: true
+      validation-query: SELECT 1
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    database-platform: org.hibernate.spatial.dialect.postgis.PostgisDialect
+  flyway:
+    enabled: true
+  jackson:
+    default-property-inclusion: non_null
+RMBT_SECRETKEY: RMBT_SECRETKEY
+
+auth0:
+  issuer: https://specure.eu.auth0.com/
+  apiAudience: https://nettest.org
+
+application-version:
+  host: rtr-api-dev
+
+
+---
+spring:
+  profiles: dev
+  datasource:
+    poolSize: 20
+    minIdle: 1
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://${DB_URI}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    tomcat:
+      test-while-idle: true
+      test-on-borrow: true
+      validation-query: SELECT 1
+
+
+application-version:
+  host: rtr-api-dev
