@@ -1,0 +1,29 @@
+name: Java CI
+on: [workflow_dispatch, push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: maven:3.6-jdk-13-alpine
+    steps:
+      - uses: actions/checkout@v2
+      - name: Test
+        run: >-
+          mvn
+          org.jacoco:jacoco-maven-plugin:0.8.5:prepare-agent
+          test -B
+          org.jacoco:jacoco-maven-plugin:0.8.5:report
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    container: maven:3.6-jdk-13-alpine
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build without test
+        run: mvn -D'maven.test.skip=true' clean install -B
+      - name: Copy artifact
+        run: mkdir result && cp target/*.jar result
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Package
+          path: result
