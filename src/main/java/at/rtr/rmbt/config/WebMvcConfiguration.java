@@ -1,7 +1,7 @@
-package com.example.statisticserver.config;
+package at.rtr.rmbt.config;
 
+import at.rtr.rmbt.constant.URIConstants;
 import com.auth0.spring.security.api.JwtWebSecurityConfigurer;
-import com.example.statisticserver.constant.URIConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,12 +1,12 @@
-package com.example.statisticserver.service.impl;
+package at.rtr.rmbt.service.impl;
 
 
-import com.example.statisticserver.constant.AdminSettingConfig;
-import com.example.statisticserver.constant.Constants;
-import com.example.statisticserver.model.Settings;
-import com.example.statisticserver.repository.SettingsRepository;
-import com.example.statisticserver.response.ApplicationVersionResponse;
-import com.example.statisticserver.service.ApplicationVersionService;
+import at.rtr.rmbt.constant.AdminSettingConfig;
+import at.rtr.rmbt.constant.Constants;
+import at.rtr.rmbt.model.Settings;
+import at.rtr.rmbt.repository.SettingsRepository;
+import at.rtr.rmbt.response.ApplicationVersionResponse;
+import at.rtr.rmbt.service.ApplicationVersionService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;

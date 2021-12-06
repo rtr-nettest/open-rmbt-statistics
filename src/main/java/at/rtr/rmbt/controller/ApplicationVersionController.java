@@ -1,9 +1,9 @@
-package com.example.statisticserver.controller;
+package at.rtr.rmbt.controller;
 
 
-import com.example.statisticserver.constant.URIConstants;
-import com.example.statisticserver.response.ApplicationVersionResponse;
-import com.example.statisticserver.service.ApplicationVersionService;
+import at.rtr.rmbt.response.ApplicationVersionResponse;
+import at.rtr.rmbt.service.ApplicationVersionService;
+import at.rtr.rmbt.constant.URIConstants;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

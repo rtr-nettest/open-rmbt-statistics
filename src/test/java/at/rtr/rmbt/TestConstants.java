@@ -1,4 +1,4 @@
-package com.example.statisticserver;
+package at.rtr.rmbt;
 
 public interface TestConstants {
     String DEFAULT_GIT_BRANCH = "DEFAULT_GIT_BRANCH";

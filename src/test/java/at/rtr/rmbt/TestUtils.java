@@ -1,4 +1,4 @@
-package com.example.statisticserver;
+package at.rtr.rmbt;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;

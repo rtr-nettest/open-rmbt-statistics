@@ -1,10 +1,10 @@
-package com.example.statisticserver.service;
+package at.rtr.rmbt.service;
 
-import com.example.statisticserver.TestConstants;
-import com.example.statisticserver.constant.AdminSettingConfig;
-import com.example.statisticserver.model.Settings;
-import com.example.statisticserver.repository.SettingsRepository;
-import com.example.statisticserver.service.impl.ApplicationVersionServiceImpl;
+import at.rtr.rmbt.model.Settings;
+import at.rtr.rmbt.service.impl.ApplicationVersionServiceImpl;
+import at.rtr.rmbt.TestConstants;
+import at.rtr.rmbt.constant.AdminSettingConfig;
+import at.rtr.rmbt.repository.SettingsRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

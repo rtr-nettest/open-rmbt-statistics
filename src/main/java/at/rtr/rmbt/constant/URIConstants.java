@@ -1,4 +1,4 @@
-package com.example.statisticserver.constant;
+package at.rtr.rmbt.constant;
 
 public interface URIConstants {
     String VERSION = "/version";

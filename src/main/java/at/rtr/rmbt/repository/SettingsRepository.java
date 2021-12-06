@@ -1,7 +1,7 @@
-package com.example.statisticserver.repository;
+package at.rtr.rmbt.repository;
 
 
-import com.example.statisticserver.model.Settings;
+import at.rtr.rmbt.model.Settings;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

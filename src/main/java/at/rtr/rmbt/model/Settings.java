@@ -1,4 +1,4 @@
-package com.example.statisticserver.model;
+package at.rtr.rmbt.model;
 
 import lombok.*;
 

@@ -1,12 +1,11 @@
-package com.example.statisticserver.controller;
+package at.rtr.rmbt.controller;
 
 
-import com.example.statisticserver.TestConstants;
-import com.example.statisticserver.TestUtils;
-import com.example.statisticserver.constant.URIConstants;
-import com.example.statisticserver.response.ApplicationVersionResponse;
-import com.example.statisticserver.service.ApplicationVersionService;
-import org.junit.jupiter.api.BeforeAll;
+import at.rtr.rmbt.service.ApplicationVersionService;
+import at.rtr.rmbt.TestConstants;
+import at.rtr.rmbt.TestUtils;
+import at.rtr.rmbt.constant.URIConstants;
+import at.rtr.rmbt.response.ApplicationVersionResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

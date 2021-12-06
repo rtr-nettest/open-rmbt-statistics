@@ -8,7 +8,7 @@
         <version>2.6.0</version>
         <relativePath/>
     </parent>
-    <groupId>com.example</groupId>
+    <groupId>at.rtr.rmbt</groupId>
     <artifactId>statistic-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>statistic-server</name>

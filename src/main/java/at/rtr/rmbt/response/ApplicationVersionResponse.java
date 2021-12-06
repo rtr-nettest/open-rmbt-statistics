@@ -1,4 +1,4 @@
-package com.example.statisticserver.response;
+package at.rtr.rmbt.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
