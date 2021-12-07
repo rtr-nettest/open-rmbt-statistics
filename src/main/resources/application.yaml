@@ -38,6 +38,9 @@ auth0:
 application-version:
   host: rtr-api-dev
 
+loghost: ${LOG_HOST}
+logport: ${LOG_PORT}
+
 
 ---
 spring:
