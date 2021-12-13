@@ -15,6 +15,7 @@ public class StatisticRequest {
 
     @NotNull(message = "capabilitiesRequest must be not null")
     @Valid
+    @JsonProperty(value = "capabilities")
     private final CapabilitiesRequest capabilitiesRequest;
 
     @JsonProperty(value = "language")
