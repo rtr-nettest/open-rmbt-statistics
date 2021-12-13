@@ -1,3 +1,6 @@
+logback:
+  port: ${LOG_PORT}
+  host: ${LOG_HOST}
 app:
   defaultLanguage: en
 server:

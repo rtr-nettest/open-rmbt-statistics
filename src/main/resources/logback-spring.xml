@@ -4,10 +4,12 @@
 <configuration scan="true">
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
+    <springProperty scope="context" name="logHost" source="logback.host"/>
+    <springProperty scope="context" name="logPort" source="logback.port"/>
     <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <param name="Encoding" value="UTF-8"/>
-        <remoteHost>${LOG_HOST}</remoteHost>
-        <port>${LOG_PORT}</port>
+        <remoteHost>${logHost}</remoteHost>
+        <port>${logPort}</port>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
             <customFields>{"app_name":"statistic-service"}</customFields>
         </encoder>
