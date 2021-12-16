@@ -31,6 +31,8 @@ spring:
     enabled: true
   jackson:
     default-property-inclusion: non_null
+    deserialization:
+      fail-on-unknown-properties: true
 RMBT_SECRETKEY: RMBT_SECRETKEY
 
 auth0:

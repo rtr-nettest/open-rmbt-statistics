@@ -50,6 +50,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                     .authorizeRequests()
                     .antMatchers(URIConstants.VERSION).permitAll()
                     .antMatchers(URIConstants.STATISTICS).permitAll()
+                    .antMatchers(URIConstants.OPEN_TEST_SEARCH).permitAll()
                     .anyRequest().authenticated();
         }
 
