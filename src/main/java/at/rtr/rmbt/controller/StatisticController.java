@@ -18,7 +18,7 @@ public class StatisticController {
 
     private final StatisticService statisticService;
 
-    @PostMapping(URIConstants.STATISTICS)
+    @PostMapping(value = URIConstants.STATISTICS, produces = "application/json; charset=utf-8")
     public String getStatistics(@Valid @RequestBody StatisticRequest statisticRequest) {
         return statisticService.getStatistics(statisticRequest);
     }

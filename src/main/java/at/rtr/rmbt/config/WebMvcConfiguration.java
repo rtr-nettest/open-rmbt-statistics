@@ -51,6 +51,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                     .antMatchers(URIConstants.VERSION).permitAll()
                     .antMatchers(URIConstants.STATISTICS).permitAll()
                     .antMatchers(URIConstants.OPEN_TEST_SEARCH).permitAll()
+                    .antMatchers(URIConstants.EXPORT_PNG).permitAll()
                     .anyRequest().authenticated();
         }
 

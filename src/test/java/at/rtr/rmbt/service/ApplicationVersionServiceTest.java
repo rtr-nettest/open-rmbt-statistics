@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.awt.*;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,5 +48,15 @@ class ApplicationVersionServiceTest {
         assertEquals(TestConstants.DEFAULT_APPLICATION_HOST, response.getHost());
         assertEquals(TestConstants.DEFAULT_CONTROL_SERVER_VERSION, response.getVersion());
         assertEquals(TestConstants.DEFAULT_SYSTEM_UUID_VALUE, response.getSystemUUID());
+    }
+
+    @Test
+    public void sdffd() {
+        String fonts[] =
+                GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+
+        for (int i = 0; i < fonts.length; i++) {
+            System.out.println(fonts[i]);
+        }
     }
 }
