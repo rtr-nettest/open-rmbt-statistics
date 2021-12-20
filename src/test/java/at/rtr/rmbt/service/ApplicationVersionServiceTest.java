@@ -1,10 +1,10 @@
 package at.rtr.rmbt.service;
 
-import at.rtr.rmbt.model.Settings;
-import at.rtr.rmbt.service.impl.ApplicationVersionServiceImpl;
 import at.rtr.rmbt.TestConstants;
 import at.rtr.rmbt.constant.AdminSettingConfig;
+import at.rtr.rmbt.model.Settings;
 import at.rtr.rmbt.repository.SettingsRepository;
+import at.rtr.rmbt.service.impl.ApplicationVersionServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.awt.*;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

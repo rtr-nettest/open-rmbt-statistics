@@ -5,4 +5,5 @@ public interface URIConstants {
     String STATISTICS = "/statistics";
     String OPEN_TEST_SEARCH = "/opentests/search";
     String EXPORT_PNG = "/{lang}/{open_test_uuid}/{size}.png";
+    String OPEN_TEST_BY_UUID = "/opentests/O{open_test_uuid}";
 }

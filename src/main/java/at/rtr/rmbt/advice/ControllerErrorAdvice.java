@@ -1,6 +1,7 @@
 package at.rtr.rmbt.advice;
 
 import at.rtr.rmbt.exception.InvalidFieldsException;
+import at.rtr.rmbt.exception.InvalidImageTypeException;
 import at.rtr.rmbt.response.ErrorResponse;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import lombok.extern.slf4j.Slf4j;
@@ -41,5 +42,12 @@ public class ControllerErrorAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleInvalidFieldsException(InvalidFieldsException ex) {
         return new ErrorResponse(ex.getMessage());
+    }
+
+    @ExceptionHandler(value = {InvalidFieldsException.class,
+            InvalidImageTypeException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleInvalidLanguageException(RuntimeException e) {
+        return e.getMessage();
     }
 }
