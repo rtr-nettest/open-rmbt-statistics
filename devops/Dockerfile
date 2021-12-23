@@ -38,4 +38,7 @@ ENV PORT ${OPENPORT}
 
 EXPOSE ${OPENPORT}
 
+RUN apt-get install libxml2-dev libxslt-dev libffi-dev libcairo2-dev libpango1.0-dev python-dev python3-pip
+RUN pip3 install WeasyPrint
+
 ENTRYPOINT [ "docker-entrypoint.sh" ]
