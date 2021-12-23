@@ -10,6 +10,10 @@ RUN echo 'debconf debconf/frontend select teletype' | debconf-set-selections
 
 RUN apt-get update && apt-get -y upgrade
 RUN apt-get install -y dnsutils
+
+RUN apt-get install libxml2-dev libxslt-dev libffi-dev libcairo2-dev libpango1.0-dev python-dev python3-pip
+RUN pip3 install WeasyPrint
+
 RUN apt-get clean
 RUN rm -rf                        \
     /var/lib/apt/lists/*          \
@@ -35,10 +39,6 @@ ENV TOMCAT_JAR ${TOMCAT_JAR}
 ENV APPLICATION_HOME ${APPLICATION_HOME}
 ENV PORT ${OPENPORT}
 
-
 EXPOSE ${OPENPORT}
-
-RUN apt-get install libxml2-dev libxslt-dev libffi-dev libcairo2-dev libpango1.0-dev python-dev python3-pip
-RUN pip3 install WeasyPrint
 
 ENTRYPOINT [ "docker-entrypoint.sh" ]
