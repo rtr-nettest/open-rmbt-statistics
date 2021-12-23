@@ -11,7 +11,7 @@ RUN echo 'debconf debconf/frontend select teletype' | debconf-set-selections
 RUN apt-get update && apt-get -y upgrade
 RUN apt-get install -y dnsutils
 
-RUN apt-get install libxml2-dev libxslt-dev libffi-dev libcairo2-dev libpango1.0-dev python-dev python3-pip
+RUN apt-get install -y libxml2-dev libxslt-dev libffi-dev libcairo2-dev libpango1.0-dev python-dev python3-pip
 RUN pip3 install WeasyPrint
 
 RUN apt-get clean
