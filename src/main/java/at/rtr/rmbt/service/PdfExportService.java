@@ -1,11 +1,9 @@
 package at.rtr.rmbt.service;
 
 import org.springframework.http.ResponseEntity;
-
-import java.util.List;
-import java.util.Map;
+import org.springframework.util.MultiValueMap;
 
 public interface PdfExportService {
 
-    ResponseEntity<Object> exportPdf(String acceptHeader, Map<String, List<String>> parameters);
+    ResponseEntity<Object> exportPdf(String acceptHeader, MultiValueMap<String, String> parameters);
 }

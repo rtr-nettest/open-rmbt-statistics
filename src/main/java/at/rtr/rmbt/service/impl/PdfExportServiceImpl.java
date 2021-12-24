@@ -28,6 +28,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -55,7 +56,7 @@ public class PdfExportServiceImpl implements PdfExportService {
     private Resource resource;
 
     @Override
-    public ResponseEntity<Object> exportPdf(String acceptHeader, Map<String, List<String>> parameters) {
+    public ResponseEntity<Object> exportPdf(String acceptHeader, MultiValueMap<String, String> parameters) {
         Locale currentLocale = Locale.ENGLISH;
 
         //load locale, if possible
@@ -63,15 +64,15 @@ public class PdfExportServiceImpl implements PdfExportService {
         ResourceBundle labels = ResourceBundle.getBundle("SystemMessages", currentLocale);
 
         if (parameters.containsKey("lang")) {
-            if (Constants.RMBT_SUPPORTED_LANGUAGES.contains(parameters.get("lang"))) {
-                labels = ResourceBundle.getBundle("SystemMessages", new Locale(parameters.get("lang").get(0)));
+            if (Constants.RMBT_SUPPORTED_LANGUAGES.contains(parameters.getFirst("lang"))) {
+                labels = ResourceBundle.getBundle("SystemMessages", new Locale(parameters.getFirst("lang")));
             }
         }
 
         String tempPath = Constants.PDF_TEMP_PATH;
         //allow only fetching files
         if (parameters.containsKey("filename")) {
-            String fileName = parameters.get("filename").get(0);
+            String fileName = parameters.getFirst("filename");
 
             char discriminatorLetter = fileName.charAt(0);
             fileName = fileName.substring(1);
@@ -174,7 +175,8 @@ public class PdfExportServiceImpl implements PdfExportService {
 
         //if no measurements - don't generate the application
         if (searchResult.getResults() == null || searchResult.getResults().isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound()
+                    .build();
         }
 
         //get details for single results - set more detailled info
