@@ -1,7 +1,15 @@
 package at.rtr.rmbt.constant;
 
+import java.util.List;
+
 public interface Constants {
     String VERSION_TEMPLATE = "%s_%s";
     Double RMBT_GEO_ACCURACY_DETAIL_LIMIT = 10000D;
     Double RMBT_GEO_DISTANCE_DETAIL_LIMIT = 3000D;
+    String RMBT_DEFAULT_LANGUAGE = "en";
+    List<String> RMBT_SUPPORTED_LANGUAGES = List.of("de", "en", "hr", "sv", "pl", "es", "is", "fr", "nb", "cs");
+    String PDF_TEMP_PATH = "/tmp/pdf/";
+    String WEASYPRINT_PATH = "/usr/local/bin/weasyprint";
+    String PRINCE_PATH = "/usr/bin/prince";
+    String PDF_CONVERTER = "weasyprint";
 }

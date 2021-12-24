@@ -3,6 +3,7 @@ package at.rtr.rmbt.advice;
 import at.rtr.rmbt.exception.InvalidFieldsException;
 import at.rtr.rmbt.exception.InvalidImageTypeException;
 import at.rtr.rmbt.exception.InvalidLanguageException;
+import at.rtr.rmbt.exception.InvalidRequestParameterException;
 import at.rtr.rmbt.response.ErrorResponse;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +47,8 @@ public class ControllerErrorAdvice {
     }
 
     @ExceptionHandler(value = {InvalidLanguageException.class,
-            InvalidImageTypeException.class})
+            InvalidImageTypeException.class,
+            InvalidRequestParameterException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleInvalidLanguageException(RuntimeException e) {
         return e.getMessage();

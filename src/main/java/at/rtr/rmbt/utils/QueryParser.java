@@ -16,7 +16,6 @@
  ******************************************************************************/
 package at.rtr.rmbt.utils;
 
-import at.rtr.rmbt.request.opentest.OpenTestSearchRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import org.json.JSONObject;
@@ -176,9 +175,7 @@ public class QueryParser {
         allowedFields.put("format", FieldType.OUTPUT_FORMAT);
     }
 
-    public List<String> parseQuery(OpenTestSearchRequest request) {
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, String> getParameters = mapper.convertValue(request, Map.class);
+    public List<String> parseQuery(Map<String, List<String>> multiValueParameters) {
         //Values for the database
         searchValues.clear();
 
@@ -189,7 +186,7 @@ public class QueryParser {
 
         String sortBy = "";
         String sortOrder = "";
-        for (String attr : getParameters.keySet().stream().filter(x -> Objects.nonNull(getParameters.get(x))).collect(Collectors.toSet())) {
+        for (String attr : getValidAttributes(multiValueParameters)) {
             //check if attribute is allowed
             if (!allowedFields.containsKey(attr)) {
                 invalidElements.add(attr);
@@ -198,7 +195,7 @@ public class QueryParser {
 
             //check if value for the attribute is correct
             //first, check if the attribute is an array
-            String[] values = getValues(getParameters.get(attr)).toArray(new String[0]);
+            String[] values = multiValueParameters.get(attr).toArray(new String[0]);
             for (String value : values) {
                 boolean negate = false;
                 if (value.startsWith("!") && value.length() > 0) {
@@ -301,8 +298,9 @@ public class QueryParser {
                         //only "ASC", "DESC" are allowed
                         //and the attribute is only allowed, if sort_by is also given
                         if (value.isEmpty() ||
-                                (!value.toUpperCase().equals("ASC") && !value.toUpperCase().equals("DESC")) ||
-                                !Objects.nonNull(request.getSortBy())) {
+                                (!value.toUpperCase().equals("ASC") && !value.toUpperCase().equals("DESC"))
+//                                !Objects.nonNull(request.getSortBy())
+                        ) {
                             invalidElements.add(attr);
                             continue;
                         }
@@ -339,6 +337,12 @@ public class QueryParser {
 
         orderClause = formatOrderClause(sortBy, sortOrder);
         return invalidElements;
+    }
+
+    private Set<String> getValidAttributes(Map<String, List<String>> getParameters) {
+        return getParameters.keySet().stream()
+                .filter(x -> Objects.nonNull(getParameters.get(x)))
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -795,13 +799,5 @@ public class QueryParser {
             }
         }
         return completeQuery.toString().hashCode();
-    }
-
-    private List<String> getValues(Object value) {
-        if (value instanceof List) {
-            return Lists.newArrayList((List<String>) value);
-        } else {
-            return Lists.newArrayList((String) value);
-        }
     }
 }
