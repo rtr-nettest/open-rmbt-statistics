@@ -121,7 +121,7 @@ public class PdfExportServiceImpl implements PdfExportService {
         String pdfFilename = labels.getString("RESULT_PDF_FILENAME");
         try {
             String html;
-            if (parameters.size() > 1 && !Strings.isNullOrEmpty(parameters.get("first").get(0))) {
+            if (parameters.size() > 1 && !Strings.isNullOrEmpty(parameters.getFirst("first"))) {
                 //use different template for certified measurement protocol
                 html = com.google.common.io.Resources.toString(getClass().getClassLoader().getResource("export/export_zert.hbs.html"), Charsets.UTF_8);
                 pdfFilename = labels.getString("RESULT_PDF_FILENAME_CERTIFIED");
