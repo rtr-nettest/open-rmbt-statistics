@@ -246,12 +246,12 @@ public class PdfExportServiceImpl implements PdfExportService {
 
             pdfConverter.convertHtml(htmlFile, pdfTarget);
             log.info("PDF generated: " + pdfTarget);
-
-            //delete html file, as not longer needed
-            boolean deleted = htmlFile.toFile().delete();
-            if (!deleted) {
-                log.warn("HTML file could not be deleted");
-            }
+//
+//            //delete html file, as not longer needed
+//            boolean deleted = htmlFile.toFile().delete();
+//            if (!deleted) {
+//                log.warn("HTML file could not be deleted");
+//            }
 
 
             //depending on Accepts-Header, return file or json with link to file
