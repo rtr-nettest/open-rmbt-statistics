@@ -372,6 +372,8 @@ public class PdfExportServiceImpl implements PdfExportService {
 
         @Override
         public void convertHtml(Path htmlSource, Path pdfTarget) throws IOException {
+            log.info("HTML source " + htmlSource.toAbsolutePath().toString());
+            log.info("PDF target " + pdfTarget.toAbsolutePath().toString());
             String weasyPath = path;
             ProcessBuilder weasyProcessBuilder = new ProcessBuilder(weasyPath,
                     htmlSource.toAbsolutePath().toString(),
