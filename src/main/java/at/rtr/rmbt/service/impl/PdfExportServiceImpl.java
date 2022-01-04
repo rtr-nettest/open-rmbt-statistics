@@ -266,7 +266,7 @@ public class PdfExportServiceImpl implements PdfExportService {
                 return ResponseEntity.ok()
                         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + pdfFilename + "-" + filenameDatePart + ".pdf")
                         .contentType(MediaType.APPLICATION_PDF)
-                        .body(pdfTarget.toFile());
+                        .body(Files.readAllBytes(pdfTarget));
             }
         } catch (IOException e) {
             log.error("Error", e);
