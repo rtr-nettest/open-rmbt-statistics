@@ -1,9 +1,6 @@
 package at.rtr.rmbt.advice;
 
-import at.rtr.rmbt.exception.InvalidFieldsException;
-import at.rtr.rmbt.exception.InvalidImageTypeException;
-import at.rtr.rmbt.exception.InvalidLanguageException;
-import at.rtr.rmbt.exception.InvalidRequestParameterException;
+import at.rtr.rmbt.exception.*;
 import at.rtr.rmbt.response.ErrorResponse;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +48,12 @@ public class ControllerErrorAdvice {
             InvalidRequestParameterException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleInvalidLanguageException(RuntimeException e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(value = {InvalidUuidException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleInvalidNotFoundException(RuntimeException e) {
         return e.getMessage();
     }
 }
