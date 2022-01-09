@@ -22,37 +22,49 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PingRepositoryImpl implements PingRepository {
 
+    private static final String SQL = "SELECT (value_server/1e6)::float ping_ms, time_ns/1e6 time_elapsed FROM  ping WHERE open_test_uuid = ?";
+
     private final JdbcTemplate jdbcTemplate;
 
     @Override
     public List<PingGraphItemDTO> getPingGraph(UUID openTestUuid) {
-        final String sql = "SELECT (value_server/1e6)::float ping_ms, time_ns/1e6 time_elapsed FROM  ping WHERE open_test_uuid = ?";
-        return jdbcTemplate.query(
-                new PreparedStatementCreator() {
-                    @Override
-                    public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                        return con.prepareStatement(sql);
-                    }
-                },
-                new PreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement ps) throws SQLException {
-                        ps.setObject(1, openTestUuid);
-                    }
-                },
-                new ResultSetExtractor<List<PingGraphItemDTO>>() {
-                    @Override
-                    public List<PingGraphItemDTO> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                        List<PingGraphItemDTO> list = new ArrayList<PingGraphItemDTO>();
-                        while (rs.next()) {
-                            PingGraphItemDTO pingGraphItemDTO = new PingGraphItemDTO();
-                            pingGraphItemDTO.setPingMs(rs.getDouble("ping_ms"));
-                            pingGraphItemDTO.setTimeElapsed(rs.getLong("time_elapsed"));
-                            list.add(pingGraphItemDTO);
-                        }
-                        return list;
-                    }
+        PreparedStatementCreator preparedStatementCreator = getPreparedStatementCreator(SQL);
+        PreparedStatementSetter preparedStatementSetter = getPreparedStatementSetter(openTestUuid);
+        ResultSetExtractor<List<PingGraphItemDTO>> resultSetExtractor = getResultSetExtractor();
+        return jdbcTemplate.query(preparedStatementCreator, preparedStatementSetter, resultSetExtractor);
+    }
+
+    private ResultSetExtractor<List<PingGraphItemDTO>> getResultSetExtractor() {
+        return new ResultSetExtractor<List<PingGraphItemDTO>>() {
+            @Override
+            public List<PingGraphItemDTO> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                List<PingGraphItemDTO> list = new ArrayList<PingGraphItemDTO>();
+                while (rs.next()) {
+                    PingGraphItemDTO pingGraphItemDTO = new PingGraphItemDTO(
+                            rs.getDouble("ping_ms"),
+                            rs.getLong("time_elapsed"));
+                    list.add(pingGraphItemDTO);
                 }
-        );
+                return list;
+            }
+        };
+    }
+
+    private PreparedStatementSetter getPreparedStatementSetter(UUID openTestUuid) {
+        return new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps) throws SQLException {
+                ps.setObject(1, openTestUuid);
+            }
+        };
+    }
+
+    private PreparedStatementCreator getPreparedStatementCreator(String sql) {
+        return new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                return con.prepareStatement(sql);
+            }
+        };
     }
 }

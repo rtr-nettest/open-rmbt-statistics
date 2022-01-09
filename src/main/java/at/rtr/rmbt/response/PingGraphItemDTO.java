@@ -1,18 +1,20 @@
 package at.rtr.rmbt.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
-@NoArgsConstructor
-@Setter
+@RequiredArgsConstructor
 @Getter
+@EqualsAndHashCode
+@ToString
 public class PingGraphItemDTO {
 
     @JsonProperty("ping_ms")
-    private double pingMs;
+    private final double pingMs;
 
     @JsonProperty("time_elapsed")
-    private long timeElapsed;
+    private final long timeElapsed;
 }

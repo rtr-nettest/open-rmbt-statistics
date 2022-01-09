@@ -1,8 +1,12 @@
 package at.rtr.rmbt.dto;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@EqualsAndHashCode
+@ToString
 public class TestDistance {
 
     private double totalDistance;

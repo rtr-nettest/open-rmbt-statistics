@@ -41,9 +41,7 @@ public class SpeedItems {
 
         @Override
         public String toString() {
-            StringBuilder builder = new StringBuilder();
-            builder.append("SpeedItem [time=").append(time).append(", bytes=").append(bytes).append("]");
-            return builder.toString();
+            return "SpeedItem [time=" + time + ", bytes=" + bytes + "]";
         }
     }
 

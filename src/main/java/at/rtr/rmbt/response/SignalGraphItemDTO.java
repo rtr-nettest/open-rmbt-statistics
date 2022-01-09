@@ -4,12 +4,16 @@ import at.rtr.rmbt.utils.BandCalculationUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.ALWAYS)
+@EqualsAndHashCode
+@ToString
 public class SignalGraphItemDTO {
 
     @JsonProperty("time_elapsed")
@@ -47,11 +51,6 @@ public class SignalGraphItemDTO {
                               Integer locationId, Integer areaCode, Integer primaryScramblingCode, Integer channelNumber, Integer timingAdvance) {
         this.timeElapsed = timeElapsed;
         this.networkType = networkType;
-        locationId = (locationId == 0) ? null : locationId;
-        areaCode = (areaCode == 0) ? null : areaCode;
-        channelNumber = (channelNumber == 0) ? null : channelNumber;
-        primaryScramblingCode = (primaryScramblingCode == 0) ? null : primaryScramblingCode;
-
         this.signalStrength = signalStrength;
         this.lteRsrp = lteRsrp;
         this.lteRsrq = lteRsrq;
@@ -76,9 +75,6 @@ public class SignalGraphItemDTO {
     public SignalGraphItemDTO(long timeElapsed, String networkType, Integer signalStrength, Integer lteRsrp, Integer lteRsrq, String catTechnology) {
         this.timeElapsed = timeElapsed;
         this.networkType = networkType;
-        signalStrength = (signalStrength == 0) ? null : signalStrength;
-        lteRsrp = (lteRsrp == 0) ? null : lteRsrp;
-        lteRsrq = (lteRsrq == 0) ? null : lteRsrq;
         this.signalStrength = signalStrength;
         this.lteRsrp = lteRsrp;
         this.lteRsrq = lteRsrq;
@@ -110,6 +106,8 @@ public class SignalGraphItemDTO {
 
     @Setter
     @Getter
+    @EqualsAndHashCode
+    @ToString
     public static class CellInfo2G extends CellInfo {
         @JsonProperty("lac")
         private Integer lac;
@@ -140,6 +138,8 @@ public class SignalGraphItemDTO {
 
     @Setter
     @Getter
+    @EqualsAndHashCode
+    @ToString
     public static class CellInfo3G extends CellInfo {
         @JsonProperty("lac")
         private Integer lac;
@@ -170,6 +170,8 @@ public class SignalGraphItemDTO {
 
     @Getter
     @Setter
+    @EqualsAndHashCode
+    @ToString
     public static class CellInfo4G extends CellInfo {
         @JsonProperty("tac")
         private Integer tac;

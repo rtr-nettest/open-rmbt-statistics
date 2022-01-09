@@ -2,11 +2,10 @@ package at.rtr.rmbt.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Getter
@@ -18,34 +17,37 @@ public class LocationGraphDTO {
     private List<LocationGraphItem> locations = new ArrayList<>();
 
     @Getter
-    @Setter
+    @RequiredArgsConstructor
+    @EqualsAndHashCode
+    @ToString
     public static class LocationGraphItem {
         @JsonProperty("long")
-        private Double longitude;
+        private final Double longitude;
 
         @JsonProperty("lat")
-        private Double latitude;
+        private final Double latitude;
 
         @JsonProperty("loc_accuracy")
-        private Double locAccuracy;
+        private final Double locAccuracy;
 
+        @Setter
         @JsonProperty("time_elapsed")
         private long timeElapsed;
 
         @JsonIgnore
-        private Date time;
+        private final Date time;
 
         @JsonProperty(value = "bearing")
-        private Double bearing;
+        private final Double bearing;
 
         @JsonProperty(value = "speed")
-        private Double speed;
+        private final Double speed;
 
         @JsonProperty(value = "altitude")
-        private Double altitude;
+        private final Double altitude;
 
         @JsonProperty("loc_src")
-        private String provider;
+        private final String provider;
 
         public Double getBearing() {
             if (getProvider().equals("gps")) {

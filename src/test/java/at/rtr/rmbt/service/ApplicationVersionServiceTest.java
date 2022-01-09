@@ -38,7 +38,7 @@ class ApplicationVersionServiceTest {
     }
 
     @Test
-    public void getApplicationVersion_whenCommonData_expectApplicationVersionResponse() {
+    void getApplicationVersion_whenCommonData_expectApplicationVersionResponse() {
         when(settingsRepository.findFirstByKeyAndLangIsNullOrKeyAndLangOrderByLang(AdminSettingConfig.SYSTEM_UUID_KEY, AdminSettingConfig.SYSTEM_UUID_KEY, StringUtils.EMPTY)).thenReturn(Optional.of(settings));
         when(settings.getValue()).thenReturn(TestConstants.DEFAULT_SYSTEM_UUID_VALUE);
 

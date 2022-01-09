@@ -1,4 +1,4 @@
-package at.rtr.rmbt.service.image.generator;
+package at.rtr.rmbt.utils.image.generator;
 
 import at.rtr.rmbt.dto.ImageGenerateDto;
 import lombok.RequiredArgsConstructor;

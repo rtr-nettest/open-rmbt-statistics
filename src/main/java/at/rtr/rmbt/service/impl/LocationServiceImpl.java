@@ -20,7 +20,6 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public LocationGraphDTO getLocationGraph(Long testUid, long time) {
         List<LocationGraphDTO.LocationGraphItem> allResultList = locationRepository.getLocation(testUid, time);
-
         LocationGraphDTO.LocationGraphItem firstItem = null;
 
         Double lastLat = null;

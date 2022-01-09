@@ -29,119 +29,7 @@ public class StatisticRepositoryImpl implements StatisticRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public String generateStatistics(StatisticParameters params, String cacheKey, boolean ultraGreen) {
-        String result;
-        final String lang = params.getLang();
-        final float quantile = params.getQuantile();
-        final int durationDays = params.getDuration();
-        final int maxDevices = params.getMaxDevices();
-        final String type = params.getType();
-        final String networkTypeGroup = params.getNetworkTypeGroup();
-        final double accuracy = params.getAccuracy();
-        final String country = params.getCountry();
-        final java.sql.Timestamp endDate = params.getEndDate();
-        final int province = params.getProvince();
-
-        final boolean userServerSelection = params.isUserServerSelection();
-
-        boolean useMobileProvider = false;
-
-        final boolean signalMobile;
-        final String where;
-        String signalColumn = null;
-        if (type.equals("mobile")) {
-            signalMobile = true;
-            useMobileProvider = true;
-
-            if (networkTypeGroup == null)
-                where = "nt.type = 'MOBILE'";
-            else {
-                if ("2G".equalsIgnoreCase(networkTypeGroup)) {
-                    where = "nt.group_name = '2G'";
-                    signalColumn = "signal_strength";
-                } else if ("3G".equalsIgnoreCase(networkTypeGroup)) {
-                    where = "nt.group_name = '3G'";
-                    signalColumn = "signal_strength";
-                } else if ("4G".equalsIgnoreCase(networkTypeGroup)) {
-                    where = "nt.group_name = '4G'";
-                    signalColumn = "lte_rsrp";
-                } else if ("5G".equalsIgnoreCase(networkTypeGroup)) {
-                    where = "nt.group_name = '5G'";
-                    signalColumn = "lte_rsrp";
-                } else if ("mixed".equalsIgnoreCase(networkTypeGroup))
-                    where = "nt.group_name IN ('2G/3G','2G/4G','3G/4G','2G/3G/4G'," +
-                            "'2G/5G', '3G/5G', '4G/5G', '2G/3G/5G', '2G/4G/5G', '3G/4G/5G')";
-                else
-                    where = "1=0";
-            }
-        } else if (type.equals("wifi")) {
-            where = "nt.type='WLAN'";
-            signalMobile = false;
-            signalColumn = "signal_strength";
-        } else if (type.equals("browser")) {
-            where = "nt.type = 'LAN'";
-            signalMobile = false;
-        } else {   // invalid request
-            where = "1=0";
-            signalMobile = false;
-        }
-
-        final JSONObject answer = new JSONObject();
-
-        try {
-            final JSONArray providers = new JSONArray();
-            answer.put("providers", providers);
-            final JSONArray devices = new JSONArray();
-            answer.put("devices", devices);
-            answer.put("quantile", quantile);
-            answer.put("duration", durationDays);
-            answer.put("type", type);
-
-            {
-                providers.putAll(selectProviders(lang, true, quantile, durationDays, accuracy, country,
-                        useMobileProvider, where, signalMobile, userServerSelection, endDate, province, signalColumn, ultraGreen));
-            }
-            {
-
-                final JSONArray providersSumsArray = selectProviders(lang, false, quantile, durationDays, accuracy, country,
-                        useMobileProvider, where, signalMobile, userServerSelection, endDate, province, signalColumn, ultraGreen);
-                if (providersSumsArray.length() == 1)
-                    answer.put("providers_sums", providersSumsArray.get(0));
-            }
-
-            {
-                devices.putAll(selectDevices(lang, true, quantile, durationDays, accuracy, country,
-                        useMobileProvider, where, maxDevices, userServerSelection, endDate, province));
-            }
-
-            {
-
-                final JSONArray devicesSumsArray = selectDevices(lang, false, quantile, durationDays, accuracy, country,
-                        useMobileProvider, where, maxDevices, userServerSelection, endDate, province);
-                if (devicesSumsArray.length() == 1)
-                    answer.put("devices_sums", devicesSumsArray.get(0));
-            }
-
-            final JSONArray countries = new JSONArray(getCountries());
-            answer.put("countries", countries);
-
-            result = answer.toString();
-            return result;
-
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-
-        final JSONArray countries = new JSONArray(getCountries());
-        answer.put("countries", countries);
-
-        result = answer.toString();
-        return result;
-    }
-
-    private Set<String> getCountries() {
+    public Set<String> getCountries() {
         String sql = "WITH RECURSIVE t(n) AS ( "
                 + "SELECT MIN(mobile_network_id) FROM test"
                 + " UNION"
@@ -172,12 +60,63 @@ public class StatisticRepositoryImpl implements StatisticRepository {
         return sql;
     }
 
-    private JSONArray selectProviders(final String lang, final boolean group, final float quantile, final int durationDays,
-                                      final double accuracy,
-                                      final String country, final boolean useMobileProvider, final String where, final boolean signalMobile,
-                                      final boolean userServerSelection,
-                                      final java.sql.Timestamp endDate, final int province, final String signalColumn, final boolean ultraGreen) throws
+    @Override
+    public JSONArray selectProviders(final String lang, final boolean group, final float quantile, final int durationDays,
+                                     final double accuracy,
+                                     final String country, final String type, final String networkTypeGroup,
+                                     final boolean userServerSelection,
+                                     final java.sql.Timestamp endDate, final int province, final boolean ultraGreen) throws
             SQLException {
+        final boolean useMobileProvider;
+        final boolean signalMobile;
+        final String where;
+        final String signalColumn;
+        if (type.equals("mobile")) {
+            signalMobile = true;
+            useMobileProvider = true;
+
+            if (networkTypeGroup == null) {
+                where = "nt.type = 'MOBILE'";
+                signalColumn = null;
+            } else {
+                if ("2G".equalsIgnoreCase(networkTypeGroup)) {
+                    where = "nt.group_name = '2G'";
+                    signalColumn = "signal_strength";
+                } else if ("3G".equalsIgnoreCase(networkTypeGroup)) {
+                    where = "nt.group_name = '3G'";
+                    signalColumn = "signal_strength";
+                } else if ("4G".equalsIgnoreCase(networkTypeGroup)) {
+                    where = "nt.group_name = '4G'";
+                    signalColumn = "lte_rsrp";
+                } else if ("5G".equalsIgnoreCase(networkTypeGroup)) {
+                    where = "nt.group_name = '5G'";
+                    signalColumn = "lte_rsrp";
+                } else if ("mixed".equalsIgnoreCase(networkTypeGroup)) {
+                    where = "nt.group_name IN ('2G/3G','2G/4G','3G/4G','2G/3G/4G'," +
+                            "'2G/5G', '3G/5G', '4G/5G', '2G/3G/5G', '2G/4G/5G', '3G/4G/5G')";
+                    signalColumn = null;
+                } else {
+                    where = "1=0";
+                    signalColumn = null;
+                }
+
+            }
+        } else if (type.equals("wifi")) {
+            where = "nt.type='WLAN'";
+            signalMobile = false;
+            signalColumn = "signal_strength";
+            useMobileProvider = false;
+        } else if (type.equals("browser")) {
+            where = "nt.type = 'LAN'";
+            signalMobile = false;
+            signalColumn = null;
+            useMobileProvider = false;
+        } else {   // invalid request
+            where = "1=0";
+            signalMobile = false;
+            signalColumn = null;
+            useMobileProvider = false;
+        }
         return jdbcTemplate.query(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
@@ -354,9 +293,42 @@ public class StatisticRepositoryImpl implements StatisticRepository {
     }
 
 
-    private JSONArray selectDevices(final String lang, final boolean group, final float quantile, final int durationDays, final double accuracy,
-                                    final String country, final boolean useMobileProvider, final String where, final int maxDevices, final boolean userServerSelection,
-                                    final java.sql.Timestamp endDate, final int province) throws SQLException {
+    @Override
+    public JSONArray selectDevices(final String lang, final boolean group, final float quantile, final int durationDays, final double accuracy,
+                                   final String country, String type, String networkTypeGroup, final int maxDevices, final boolean userServerSelection,
+                                   final java.sql.Timestamp endDate, final int province) throws SQLException {
+        final boolean useMobileProvider;
+        final String where;
+        if (type.equals("mobile")) {
+            useMobileProvider = true;
+
+            if (networkTypeGroup == null)
+                where = "nt.type = 'MOBILE'";
+            else {
+                if ("2G".equalsIgnoreCase(networkTypeGroup)) {
+                    where = "nt.group_name = '2G'";
+                } else if ("3G".equalsIgnoreCase(networkTypeGroup)) {
+                    where = "nt.group_name = '3G'";
+                } else if ("4G".equalsIgnoreCase(networkTypeGroup)) {
+                    where = "nt.group_name = '4G'";
+                } else if ("5G".equalsIgnoreCase(networkTypeGroup)) {
+                    where = "nt.group_name = '5G'";
+                } else if ("mixed".equalsIgnoreCase(networkTypeGroup))
+                    where = "nt.group_name IN ('2G/3G','2G/4G','3G/4G','2G/3G/4G'," +
+                            "'2G/5G', '3G/5G', '4G/5G', '2G/3G/5G', '2G/4G/5G', '3G/4G/5G')";
+                else
+                    where = "1=0";
+            }
+        } else if (type.equals("wifi")) {
+            where = "nt.type='WLAN'";
+            useMobileProvider = false;
+        } else if (type.equals("browser")) {
+            where = "nt.type = 'LAN'";
+            useMobileProvider = false;
+        } else {   // invalid request
+            where = "1=0";
+            useMobileProvider = false;
+        }
         return jdbcTemplate.query(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {

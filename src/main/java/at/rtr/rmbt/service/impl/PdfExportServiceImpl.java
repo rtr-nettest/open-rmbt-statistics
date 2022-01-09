@@ -7,6 +7,9 @@ import at.rtr.rmbt.response.OpenTestDetailsDTO;
 import at.rtr.rmbt.response.opentest.OpenTestDTO;
 import at.rtr.rmbt.response.opentest.OpenTestSearchResponse;
 import at.rtr.rmbt.service.PdfExportService;
+import at.rtr.rmbt.utils.export.PdfConverter;
+import at.rtr.rmbt.utils.export.PrincePdfConverter;
+import at.rtr.rmbt.utils.export.WeasyprintPdfConverter;
 import at.rtr.rmbt.utils.ConvertUtils;
 import at.rtr.rmbt.utils.ExtendedHandlebars;
 import at.rtr.rmbt.utils.QueryParser;
@@ -246,7 +249,7 @@ public class PdfExportServiceImpl implements PdfExportService {
 
             pdfConverter.convertHtml(htmlFile, pdfTarget);
             log.info("PDF generated: " + pdfTarget);
-//
+// TODO: uncomment after fix endpoint
 //            //delete html file, as not longer needed
 //            boolean deleted = htmlFile.toFile().delete();
 //            if (!deleted) {
@@ -325,66 +328,6 @@ public class PdfExportServiceImpl implements PdfExportService {
             //name is here the "translated" name - translate back to get if it matches
             String otherName = CaseFormat.LOWER_UNDERSCORE.converterTo(CaseFormat.LOWER_CAMEL).convert(name);
             return super.matches(method, otherName) || super.matches(method, name);
-        }
-    }
-
-    public interface PdfConverter {
-        /**
-         * Convert the given HTML source file to given target pdf
-         *
-         * @param htmlSource
-         * @param pdfTarget
-         * @throws IOException
-         */
-        void convertHtml(Path htmlSource, Path pdfTarget) throws IOException;
-    }
-
-    public class PrincePdfConverter implements PdfConverter {
-        private final String path;
-
-        public PrincePdfConverter(String path) {
-            this.path = path;
-        }
-
-        @Override
-        public void convertHtml(Path htmlSource, Path pdfTarget) throws IOException {
-            String princePath = path;
-            ProcessBuilder princeProcessBuilder = new ProcessBuilder(princePath,
-                    htmlSource.toAbsolutePath().toString(),
-                    "-o",
-                    pdfTarget.toAbsolutePath().toString());
-            Process princeProcess = princeProcessBuilder.start();
-            try {
-                princeProcess.waitFor();
-                log.info("PDF generation with Prince finished");
-            } catch (InterruptedException e) {
-                throw new IOException(e);
-            }
-        }
-    }
-
-    public class WeasyprintPdfConverter implements PdfConverter {
-        private final String path;
-
-        public WeasyprintPdfConverter(String path) {
-            this.path = path;
-        }
-
-        @Override
-        public void convertHtml(Path htmlSource, Path pdfTarget) throws IOException {
-            log.info("HTML source " + htmlSource.toAbsolutePath().toString());
-            log.info("PDF target " + pdfTarget.toAbsolutePath().toString());
-            String weasyPath = path;
-            ProcessBuilder weasyProcessBuilder = new ProcessBuilder(weasyPath,
-                    htmlSource.toAbsolutePath().toString(),
-                    pdfTarget.toAbsolutePath().toString());
-            Process weasyProcess = weasyProcessBuilder.start();
-            try {
-                weasyProcess.waitFor();
-                log.info("PDF generation with weasyprint finished");
-            } catch (InterruptedException e) {
-                throw new IOException(e);
-            }
         }
     }
 }

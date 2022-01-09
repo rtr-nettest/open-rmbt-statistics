@@ -23,21 +23,7 @@ public class RadioSignalServiceImpl implements RadioSignalService {
         if (signalList.isEmpty()) {
             signalList = radioSignalRepository.getSignalsLegacy(openTestUuid, time);
         }
-//        if (!rsSignal.isBeforeFirst()) {
-//            psSignal.close();
-//            additionalInformation = false;
-//
-//            psSignal = conn.prepareStatement("SELECT test_id, nt.name network_type, nt.group_name cat_technology, signal_strength, lte_rsrp, lte_rsrq, wifi_rssi, time "
-//                    + "FROM signal "
-//                    + "JOIN network_type nt "
-//                    + "ON nt.uid = network_type_id "
-//                    + "WHERE open_test_uuid = ? "
-//                    + "ORDER BY time;");
-//            psSignal.setObject(1, openTestUuid);
-//
-//            rsSignal = psSignal.executeQuery();
-//
-//        }
+
         return signalList;
     }
 }

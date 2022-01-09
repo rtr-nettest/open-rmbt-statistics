@@ -2,10 +2,10 @@ package at.rtr.rmbt.service.impl;
 
 import at.rtr.rmbt.dto.ImageGenerateDto;
 import at.rtr.rmbt.service.ImageExportService;
-import at.rtr.rmbt.service.image.generator.FacebookThumbnailGenerator;
-import at.rtr.rmbt.service.image.generator.ForumBannerGenerator;
-import at.rtr.rmbt.service.image.generator.ForumBannerSmallGenerator;
-import at.rtr.rmbt.service.image.generator.ShareImageGenerator;
+import at.rtr.rmbt.utils.image.generator.FacebookThumbnailGenerator;
+import at.rtr.rmbt.utils.image.generator.ForumBannerGenerator;
+import at.rtr.rmbt.utils.image.generator.ForumBannerSmallGenerator;
+import at.rtr.rmbt.utils.image.generator.ShareImageGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
