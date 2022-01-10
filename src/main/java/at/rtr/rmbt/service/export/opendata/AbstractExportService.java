@@ -27,8 +27,6 @@ public abstract class AbstractExportService {
 
     public ResponseEntity<Object> exportOpenData(Integer year, Integer month, Integer hour) {
         //Before doing anything => check if a cached file already exists and is new enough
-
-
         //allow filtering by month/year
         boolean hoursExport = false;
         boolean dateExport = false;
