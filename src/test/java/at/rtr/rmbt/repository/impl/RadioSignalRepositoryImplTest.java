@@ -32,7 +32,7 @@ class RadioSignalRepositoryImplTest {
             "nt.name network_type, technology cat_technology, signal_strength, lte_rsrp, lte_rsrq, signal_strength wifi_rssi, timing_advance, time " +
             "FROM radio_cell " +
             "JOIN radio_signal ON radio_signal.cell_uuid = radio_cell.uuid " +
-            "JOIN network_type nt ON nt.uid = nóetwork_type_id " +
+            "JOIN network_type nt ON nt.uid = network_type_id " +
             "WHERE radio_signal.open_test_uuid = ? " +
             "AND radio_cell.active = TRUE " +
             "  ORDER BY radio_signal.time;";
