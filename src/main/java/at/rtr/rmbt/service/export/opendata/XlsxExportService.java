@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.SequenceWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.github.sett4.dataformat.xlsx.XlsxMapper;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class XlsxExportService extends AbstractExportService {
     }
 
     protected MediaType getMediaType() {
-        return null;
+        return new MediaType("application", "vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     }
 
 
@@ -51,5 +52,11 @@ public class XlsxExportService extends AbstractExportService {
 
     protected String getFileNameCurrent() {
         return FILENAME_XLSX_CURRENT;
+    }
+
+    @Override
+    protected void setContentDisposition(ResponseEntity.BodyBuilder responseEntity, String filename) {
+        responseEntity
+                .header("Content-Disposition", "attachment; filename=" + filename);
     }
 }

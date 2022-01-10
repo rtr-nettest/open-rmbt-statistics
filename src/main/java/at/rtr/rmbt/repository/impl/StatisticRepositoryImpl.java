@@ -42,24 +42,6 @@ public class StatisticRepositoryImpl implements StatisticRepository {
         return new TreeSet<>(jdbcTemplate.query(sql, (resultSet, i) -> resultSet.getString(1)));
     }
 
-    private static String getClausesFor(String dbKey, String jsonKey, boolean ultraGreen, boolean inverse) {
-        String sql;
-        if (!ultraGreen) {
-            sql = String.format(" sum((%1$s >= ?)::int)::double precision / count(%1$s) %2$s_green," +
-                    " sum((%1$s < ? and %1$s >= ?)::int)::double precision / count(%1$s) %2$s_yellow," +
-                    " sum((%1$s < ?)::int)::double precision / count(%1$s) %2$s_red ", dbKey, jsonKey);
-        } else {
-            sql = String.format(" sum((%1$s >= ?)::int)::double precision / count(%1$s) %2$s_ultragreen," +
-                    " sum((%1$s < ? and %1$s >= ?)::int)::double precision / count(%1$s) %2$s_green," +
-                    " sum((%1$s < ? and %1$s >= ?)::int)::double precision / count(%1$s) %2$s_yellow," +
-                    " sum((%1$s < ?)::int)::double precision / count(%1$s) %2$s_red ", dbKey, jsonKey);
-        }
-        if (inverse) {
-            sql = sql.replace(">", "[inverse]").replace("<", ">").replace("[inverse]", "<");
-        }
-        return sql;
-    }
-
     @Override
     public JSONArray selectProviders(final String lang, final boolean group, final float quantile, final int durationDays,
                                      final double accuracy,
@@ -137,51 +119,34 @@ public class StatisticRepositoryImpl implements StatisticRepository {
         });
     }
 
+    private static String getClausesFor(String dbKey, String jsonKey, boolean ultraGreen, boolean inverse) {
+        String sql;
+        if (!ultraGreen) {
+            sql = String.format(" sum((%1$s >= ?)::int)::double precision / count(%1$s) %2$s_green," +
+                    " sum((%1$s < ? and %1$s >= ?)::int)::double precision / count(%1$s) %2$s_yellow," +
+                    " sum((%1$s < ?)::int)::double precision / count(%1$s) %2$s_red ", dbKey, jsonKey);
+        } else {
+            sql = String.format(" sum((%1$s >= ?)::int)::double precision / count(%1$s) %2$s_ultragreen," +
+                    " sum((%1$s < ? and %1$s >= ?)::int)::double precision / count(%1$s) %2$s_green," +
+                    " sum((%1$s < ? and %1$s >= ?)::int)::double precision / count(%1$s) %2$s_yellow," +
+                    " sum((%1$s < ?)::int)::double precision / count(%1$s) %2$s_red ", dbKey, jsonKey);
+        }
+        if (inverse) {
+            sql = sql.replace(">", "[inverse]").replace("<", ">").replace("[inverse]", "<");
+        }
+        return sql;
+    }
+
     private void setFieldSelectProvider(PreparedStatement ps, float quantile, int durationDays, double accuracy, String country, boolean useMobileProvider, boolean signalMobile, Timestamp endDate, int province, boolean ultraGreen) throws SQLException {
         int i = 1;
         for (int j = 0; j < 3; j++)
             ps.setFloat(i++, quantile);
         ps.setFloat(i++, 1 - quantile); // inverse for ping
 
-        final int[] td = Classification.THRESHOLD_DOWNLOAD;
-        if (ultraGreen) {
-            ps.setInt(i++, td[0]);
-            ps.setInt(i++, td[0]);
-        }
-        ps.setInt(i++, td[1]);
-        ps.setInt(i++, td[1]);
-        ps.setInt(i++, td[2]);
-        ps.setInt(i++, td[2]);
-
-        final int[] tu = Classification.THRESHOLD_UPLOAD;
-        if (ultraGreen) {
-            ps.setInt(i++, tu[0]);
-            ps.setInt(i++, tu[0]);
-        }
-        ps.setInt(i++, tu[1]);
-        ps.setInt(i++, tu[1]);
-        ps.setInt(i++, tu[2]);
-        ps.setInt(i++, tu[2]);
-
-        final int[] ts = signalMobile ? Classification.THRESHOLD_SIGNAL_MOBILE : Classification.THRESHOLD_SIGNAL_WIFI;
-        if (ultraGreen) {
-            ps.setInt(i++, ts[0]);
-            ps.setInt(i++, ts[0]);
-        }
-        ps.setInt(i++, ts[1]);
-        ps.setInt(i++, ts[1]);
-        ps.setInt(i++, ts[2]);
-        ps.setInt(i++, ts[2]);
-
-        final int[] tp = Classification.THRESHOLD_PING;
-        if (ultraGreen) {
-            ps.setInt(i++, tp[0]);
-            ps.setInt(i++, tp[0]);
-        }
-        ps.setInt(i++, tp[1]);
-        ps.setInt(i++, tp[1]);
-        ps.setInt(i++, tp[2]);
-        ps.setInt(i++, tp[2]);
+        i = setThresholds(ps, ultraGreen, i, Classification.THRESHOLD_DOWNLOAD);
+        i = setThresholds(ps, ultraGreen, i, Classification.THRESHOLD_UPLOAD);
+        i = setThresholds(ps, ultraGreen, i, signalMobile ? Classification.THRESHOLD_SIGNAL_MOBILE : Classification.THRESHOLD_SIGNAL_WIFI);
+        i = setThresholds(ps, ultraGreen, i, Classification.THRESHOLD_PING);
 
         if (country != null) {
             if (useMobileProvider) {
@@ -214,6 +179,19 @@ public class StatisticRepositoryImpl implements StatisticRepository {
         if (accuracy > 0) {
             ps.setDouble(i++, accuracy);
         }
+    }
+
+    private int setThresholds(PreparedStatement ps, boolean ultraGreen, int i, int[] thresholdDownload) throws SQLException {
+        final int[] td = thresholdDownload;
+        if (ultraGreen) {
+            ps.setInt(i++, td[0]);
+            ps.setInt(i++, td[0]);
+        }
+        ps.setInt(i++, td[1]);
+        ps.setInt(i++, td[1]);
+        ps.setInt(i++, td[2]);
+        ps.setInt(i++, td[2]);
+        return i;
     }
 
     private PreparedStatement getPreparedStatementSelectProviders(final Connection conn, boolean group, double accuracy, String country, boolean useMobileProvider, String where, Timestamp endDate, int province, String signalColumn, boolean ultraGreen) throws SQLException {

@@ -2,10 +2,15 @@ package at.rtr.rmbt.advice;
 
 import at.rtr.rmbt.exception.*;
 import at.rtr.rmbt.response.ErrorResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -55,5 +60,14 @@ public class ControllerErrorAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleInvalidNotFoundException(RuntimeException e) {
         return e.getMessage();
+    }
+
+
+    @ExceptionHandler(value = {NotFoundExceptionWithObject.class})
+    public ResponseEntity<Object> handleNotFoundExceptionWithObject(NotFoundExceptionWithObject e) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(objectMapper.writeValueAsString(e.getResponseObject()), headers, HttpStatus.NOT_FOUND);
     }
 }

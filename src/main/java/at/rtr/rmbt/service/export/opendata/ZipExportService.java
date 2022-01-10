@@ -6,6 +6,7 @@ import at.rtr.rmbt.response.OpenTestExportDto;
 import org.apache.poi.util.IOUtils;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -48,7 +49,7 @@ public class ZipExportService extends CsvExportService {
 
     @Override
     protected MediaType getMediaType() {
-        return new MediaType("text", "csv");
+        return new MediaType("application", "zip");
     }
 
     @Override
@@ -64,5 +65,11 @@ public class ZipExportService extends CsvExportService {
     @Override
     protected String getFileNameCurrent() {
         return FILENAME_ZIP_CURRENT;
+    }
+
+    @Override
+    protected void setContentDisposition(ResponseEntity.BodyBuilder responseEntity, String filename) {
+        responseEntity
+                .header("Content-Disposition", "attachment; filename=" + filename);
     }
 }

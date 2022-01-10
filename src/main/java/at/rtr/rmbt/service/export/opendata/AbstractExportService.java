@@ -63,6 +63,7 @@ public abstract class AbstractExportService {
 
         ResponseEntity.BodyBuilder responseEntity = ResponseEntity.ok()
                 .contentType(mediaType);
+        setContentDisposition(responseEntity, filename);
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -129,4 +130,8 @@ public abstract class AbstractExportService {
     protected abstract String getFileName();
 
     protected abstract String getFileNameCurrent();
+
+    protected void setContentDisposition(ResponseEntity.BodyBuilder responseEntity, String filename) {
+
+    }
 }

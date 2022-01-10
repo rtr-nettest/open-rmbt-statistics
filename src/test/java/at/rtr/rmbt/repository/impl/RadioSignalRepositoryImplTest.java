@@ -83,7 +83,7 @@ class RadioSignalRepositoryImplTest {
         when(resultSet.getObject("lte_rsrq", Integer.class)).thenReturn(TestConstants.DEFAULT_LTE_RSRQ);
         when(resultSet.getObject("signal_strength", Integer.class)).thenReturn(TestConstants.DEFAULT_SIGNAL_STRENGTH);
         when(resultSet.getString("cat_technology")).thenReturn(TestConstants.DEFAULT_CAT_TECHNOLOGY);
-        when(resultSet.getObject("location_id", Integer.class)).thenReturn(TestConstants.DEFAULT_LOCATION_ID);
+        when(resultSet.getObject("location_id", Long.class)).thenReturn(TestConstants.DEFAULT_LOCATION_ID);
         when(resultSet.getObject("area_code", Integer.class)).thenReturn(TestConstants.DEFAULT_AREA_CODE);
         when(resultSet.getObject("primary_scrambling_code", Integer.class)).thenReturn(TestConstants.DEFAULT_PRIMARY_SCRAMBLING_CODE);
         when(resultSet.getObject("channel_number", Integer.class)).thenReturn(TestConstants.DEFAULT_CHANNEL_NUMBER);
@@ -127,7 +127,7 @@ class RadioSignalRepositoryImplTest {
                 TestConstants.DEFAULT_LTE_RSRP,
                 TestConstants.DEFAULT_LTE_RSRQ,
                 TestConstants.DEFAULT_CAT_TECHNOLOGY,
-                TestConstants.DEFAULT_LOCATION_ID,
+                TestConstants.DEFAULT_LOCATION_ID.intValue(),
                 TestConstants.DEFAULT_AREA_CODE,
                 TestConstants.DEFAULT_PRIMARY_SCRAMBLING_CODE,
                 TestConstants.DEFAULT_CHANNEL_NUMBER,
