@@ -76,7 +76,7 @@ public class StatisticParameters implements Funnel<StatisticParameters> {
         if (__country != null && __country.length() == 2)
             _country = __country;
 
-        _userServerSelection = ObjectUtils.defaultIfNull(statisticRequest.getUserServerSelection(), false);
+        _userServerSelection = ObjectUtils.defaultIfNull(statisticRequest.isUserServerSelection(), false);
         // It returns false if there is no such key, or if the value is not Boolean.TRUE or the String "true".
 
         final String __endDateString = statisticRequest.getEndDate();

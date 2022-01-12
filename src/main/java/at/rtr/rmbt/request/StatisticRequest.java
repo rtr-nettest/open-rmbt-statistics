@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 @Builder
 @Getter
-@ToString//TODO: Нужно ли переопределять метод toString?
+@ToString
 public class StatisticRequest {
 
     @NotNull(message = "capabilitiesRequest must be not null")
@@ -45,8 +45,8 @@ public class StatisticRequest {
     @JsonProperty(value = "country")
     private final String country;
 
-    @JsonProperty(value = "user_server_selection")//TODO: validate logic according to source rmbt code
-    private final Boolean userServerSelection;
+    @JsonProperty(value = "user_server_selection")
+    private final boolean userServerSelection;
 
     @JsonProperty(value = "end_date")
     private final String endDate;

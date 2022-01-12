@@ -7,7 +7,6 @@ import at.rtr.rmbt.utils.image.generator.ForumBannerGenerator;
 import at.rtr.rmbt.utils.image.generator.ForumBannerSmallGenerator;
 import at.rtr.rmbt.utils.image.generator.ShareImageGenerator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -19,7 +18,9 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class ImageExportServiceImpl implements ImageExportService {
 
-    private final ResourceLoader resourceLoader;
+    private final FacebookThumbnailGenerator facebookThumbnailGenerator;
+    private final ForumBannerSmallGenerator forumBannerSmallGenerator;
+    private final ForumBannerGenerator forumBannerGenerator;
 
     @Override
     public byte[] generateImage(ImageGenerateDto imageGenerateDto) {
@@ -27,11 +28,11 @@ public class ImageExportServiceImpl implements ImageExportService {
         try {
             ShareImageGenerator generator;
             if (imageGenerateDto.getSize().equals("thumbnail")) {
-                generator = new FacebookThumbnailGenerator(resourceLoader);
+                generator = facebookThumbnailGenerator;
             } else if (imageGenerateDto.getSize().equals("forumsmall")) {
-                generator = new ForumBannerSmallGenerator(resourceLoader);
+                generator = forumBannerSmallGenerator;
             } else {
-                generator = new ForumBannerGenerator(resourceLoader);
+                generator = forumBannerGenerator;
             }
 
             BufferedImage img = generator.generateImage(imageGenerateDto);

@@ -16,7 +16,7 @@ public class PingServiceImpl implements PingService {
     private final PingRepository pingRepository;
 
     @Override
-    public List<PingGraphItemDTO> getPingGraph(UUID fromString) {
-        return pingRepository.getPingGraph(fromString);
+    public List<PingGraphItemDTO> getPingGraph(UUID uuid) {
+        return pingRepository.getPingGraph(uuid);
     }
 }

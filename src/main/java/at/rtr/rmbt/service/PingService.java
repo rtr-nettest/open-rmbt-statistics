@@ -7,5 +7,5 @@ import java.util.UUID;
 
 public interface PingService {
 
-    List<PingGraphItemDTO> getPingGraph(UUID fromString);
+    List<PingGraphItemDTO> getPingGraph(UUID uuid);
 }

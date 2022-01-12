@@ -16,7 +16,7 @@ public class RadioSignalServiceImpl implements RadioSignalService {
     private final RadioSignalRepository radioSignalRepository;
 
     @Override
-    public List<SignalGraphItemDTO> getRadioSignalGraph(Long testUid, UUID openTestUuid, long time) {
+    public List<SignalGraphItemDTO> getRadioSignalGraph(UUID openTestUuid, long time) {
 
         List<SignalGraphItemDTO> signalList = radioSignalRepository.getSignals(openTestUuid, time);
 

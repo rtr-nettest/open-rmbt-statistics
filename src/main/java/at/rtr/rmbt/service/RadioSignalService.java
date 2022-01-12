@@ -7,5 +7,5 @@ import java.util.UUID;
 
 public interface RadioSignalService {
 
-    List<SignalGraphItemDTO> getRadioSignalGraph(Long testUid, UUID openTestUuid, long time);
+    List<SignalGraphItemDTO> getRadioSignalGraph(UUID openTestUuid, long time);
 }

@@ -45,7 +45,7 @@ public class LocationRepositoryImpl implements LocationRepository {
                             rs.getDouble("longitude"),
                             rs.getDouble("latitude"),
                             rs.getDouble("loc_accuracy"),
-                            rs.getDate("time"),
+                            rs.getTimestamp("time"),
                             rs.getDouble("bearing"),
                             rs.getDouble("speed"),
                             rs.getDouble("altitude"),
@@ -71,7 +71,7 @@ public class LocationRepositoryImpl implements LocationRepository {
         return new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                return con.prepareStatement(SQL);
+                return con.prepareStatement(sql);
             }
         };
     }

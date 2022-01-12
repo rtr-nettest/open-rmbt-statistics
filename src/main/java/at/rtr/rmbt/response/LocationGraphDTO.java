@@ -4,12 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class LocationGraphDTO {
 
     private double totalDistance;
@@ -35,7 +38,7 @@ public class LocationGraphDTO {
         private long timeElapsed;
 
         @JsonIgnore
-        private final Date time;
+        private final Timestamp time;
 
         @JsonProperty(value = "bearing")
         private final Double bearing;

@@ -3,12 +3,14 @@ package at.rtr.rmbt.utils.image.generator;
 import at.rtr.rmbt.dto.ImageGenerateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+@Service
 @RequiredArgsConstructor
 public class ForumBannerSmallGenerator implements ShareImageGenerator {
 

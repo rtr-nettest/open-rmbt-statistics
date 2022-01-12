@@ -65,7 +65,7 @@ class LocationRepositoryImplTest {
         when(resultSet.getDouble("longitude")).thenReturn(TestConstants.DEFAULT_LONGITUDE);
         when(resultSet.getDouble("latitude")).thenReturn(TestConstants.DEFAULT_LATITUDE);
         when(resultSet.getDouble("loc_accuracy")).thenReturn(TestConstants.DEFAULT_LOC_ACCURACY);
-        when(resultSet.getDate("time")).thenReturn(TestConstants.DEFAULT_TIME);
+        when(resultSet.getTimestamp("time")).thenReturn(TestConstants.DEFAULT_TIMESTAMP);
         when(resultSet.getDouble("bearing")).thenReturn(TestConstants.DEFAULT_BEARING);
         when(resultSet.getDouble("speed")).thenReturn(TestConstants.DEFAULT_SPEED);
         when(resultSet.getDouble("altitude")).thenReturn(TestConstants.DEFAULT_ALTITUDE);
@@ -79,7 +79,7 @@ class LocationRepositoryImplTest {
                 TestConstants.DEFAULT_LONGITUDE,
                 TestConstants.DEFAULT_LATITUDE,
                 TestConstants.DEFAULT_LOC_ACCURACY,
-                TestConstants.DEFAULT_TIME,
+                TestConstants.DEFAULT_TIMESTAMP,
                 TestConstants.DEFAULT_BEARING,
                 TestConstants.DEFAULT_SPEED,
                 TestConstants.DEFAULT_ALTITUDE,
