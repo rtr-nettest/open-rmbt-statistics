@@ -4,6 +4,7 @@ import at.rtr.rmbt.TestConstants;
 import at.rtr.rmbt.TestUtils;
 import at.rtr.rmbt.dto.ImageGenerateDto;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -35,6 +36,7 @@ class ForumBannerSmallGeneratorTest {
     }
 
     @Test
+    @Disabled("Need library on gitlab")
     void generateImage_correctInvocation_BufferedImage() throws IOException {
         File expectedFile = new File("src/test/resources/export/banner/forum_banner_small.png");
         BufferedImage expectedResponse = ImageIO.read(expectedFile);
