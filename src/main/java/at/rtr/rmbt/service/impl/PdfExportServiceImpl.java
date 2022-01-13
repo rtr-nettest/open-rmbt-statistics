@@ -26,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -52,11 +53,7 @@ public class PdfExportServiceImpl implements PdfExportService {
 
     private final OpenTestRepository openTestRepository;
 
-    @Value("classpath:export/export_zert.hbs.html")
-    private Resource exportZertHbcHtml;
-
-    @Value("classpath:resource.txt")
-    private Resource resource;
+    private final ResourceLoader resourceLoader;
 
     @Override
     public ResponseEntity<Object> exportPdf(String acceptHeader, MultiValueMap<String, String> parameters) {
@@ -190,8 +187,13 @@ public class PdfExportServiceImpl implements PdfExportService {
             testIterator.set(singleTest);
         }
 
-        //add further parameters, i.e. logos
-        InputStream resourceAsStream = getClass().getResourceAsStream("logo.png");
+        //add further parameters, i.e. ,logos
+        InputStream resourceAsStream = null;
+        try {
+            resourceAsStream = resourceLoader.getResource("classpath:export/logo.png").getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (resourceAsStream != null) {
             try {
                 BufferedImage img2 = ImageIO.read(resourceAsStream);
