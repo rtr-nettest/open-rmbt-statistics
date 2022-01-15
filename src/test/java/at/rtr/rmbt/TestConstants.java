@@ -12,6 +12,7 @@ public interface TestConstants {
     String DEFAULT_APPLICATION_HOST = "DEFAULT_APPLICATION_HOST";
     String DEFAULT_FILE_NAME = "DEFAULT_FILE_NAME";
     String DEFAULT_OPEN_TEST_UUID_STRING = "fa39d023-6b54-4008-a67e-24f5bdb579bc";
+    String DEFAULT_OPEN_TEST_UUID_STRING_WITH_PREFIX = "Ofa39d023-6b54-4008-a67e-24f5bdb579bc";
     UUID DEFAULT_OPEN_TEST_UUID = UUID.fromString(DEFAULT_OPEN_TEST_UUID_STRING);
     Long DEFAULT_TEST_DISTANCE = 5L;
     Long DEFAULT_TEST_MAX_ACCURACY = 3L;
@@ -26,25 +27,25 @@ public interface TestConstants {
     Double DEFAULT_LATITUDE_THIRD = 73.3D;
     Double DEFAULT_LATITUDE_FOURTH = 26.3D;
     Double DEFAULT_LOC_ACCURACY = 13.7D;
-    Double DEFAULT_LOC_ACCURACY_SECOND  = 28.7D;
+    Double DEFAULT_LOC_ACCURACY_SECOND = 28.7D;
     Double DEFAULT_LOC_ACCURACY_THIRD = 64.7D;
     Double DEFAULT_LOC_ACCURACY_FOURTH = 35.7D;
     Date DEFAULT_TIME = new Date(1133231);
     Long DEFAULT_TIME_LONG = 164174123817L;
     Double DEFAULT_BEARING = 4.3D;
-    Double DEFAULT_BEARING_SECOND  = 7.3D;
+    Double DEFAULT_BEARING_SECOND = 7.3D;
     Double DEFAULT_BEARING_THIRD = 42.3D;
     Double DEFAULT_BEARING_FOURTH = 16.3D;
     Double DEFAULT_SPEED = 13.54D;
-    Double DEFAULT_SPEED_SECOND  = 14.74D;
+    Double DEFAULT_SPEED_SECOND = 14.74D;
     Double DEFAULT_SPEED_THIRD = 24.54D;
     Double DEFAULT_SPEED_FOURTH = 33.54D;
     Double DEFAULT_ALTITUDE = 17.3D;
-    Double DEFAULT_ALTITUDE_SECOND  = 27.3D;
+    Double DEFAULT_ALTITUDE_SECOND = 27.3D;
     Double DEFAULT_ALTITUDE_THIRD = 57.3D;
     Double DEFAULT_ALTITUDE_FOURTH = 77.3D;
     String DEFAULT_PROVIDER = "DEFAULT_PROVIDER";
-    String DEFAULT_PROVIDER_SECOND  = "DEFAULT_PROVIDER_SECOND";
+    String DEFAULT_PROVIDER_SECOND = "DEFAULT_PROVIDER_SECOND";
     String DEFAULT_PROVIDER_THIRD = "DEFAULT_PROVIDER_THIRD";
     String DEFAULT_PROVIDER_FOURTH = "DEFAULT_PROVIDER_FOURTH";
     Integer DEFAULT_HOUR = 4;
@@ -57,8 +58,8 @@ public interface TestConstants {
     Integer DEFAULT_GKZ = 17;
     String DEFAULT_ZIP_CODE = "DEFAULT_ZIP_CODE";
     String DEFAULT_COUNTRY_LOCATION = "DEFAULT_COUNTRY_LOCATION";
-    Integer DEFAULT_DOWNLOAD_KBIT = 13000;
-    Integer DEFAULT_UPLOAD_KBIT = 16000;
+    Integer DEFAULT_DOWNLOAD_KBIT = 900;
+    Integer DEFAULT_UPLOAD_KBIT = 36000;
     Double DEFAULT_PING_MS = 35.3;
     Integer DEFAULT_LTE_RSRP = -34;
     Integer DEFAULT_LTE_RSRQ = 223;
@@ -96,6 +97,7 @@ public interface TestConstants {
     long DEFAULT_TIME_ELAPSED = 1330300;
     Timestamp DEFAULT_TIMESTAMP = new Timestamp(DEFAULT_TIME_LONG);
     long DEFAULT_CLIENT_TIME_LONG = 164174122517L;
+    Timestamp DEFAULT_CLIENT_TIME_TIMESTAMP = new Timestamp(164174122517L);
     String DEFAULT_NETWORK_TYPE = "WLAN";
     Long DEFAULT_LOCATION_ID = 33L;
     Integer DEFAULT_AREA_CODE = 34;
@@ -107,4 +109,41 @@ public interface TestConstants {
     Double DEFAULT_DOWNLOAD = 21.76;
     double DEFAULT_TOTAL_DISTANCE = 9968456.801247576;
     Long DEFAULT_NEXT_CURSOR = 3L;
+    Integer DEFAULT_UPLOAD_CLASSIFICATION = 3;
+    String DEFAULT_FULL_TIME_STRING = "DEFAULT_FULL_TIME_STRING";
+    Integer DEFAULT_DOWNLOAD_CLASSIFICATION = 1;
+    Integer DEFAULT_PING_CLASSIFICATION = 2;
+    Integer DEFAULT_SIGNAL_CLASSIFICATION = 88;
+    String DEFAULT_EXPECTED_CSV_RESPONSE_ENTITY = "<200 OK OK,client_time,download_classification,download_kbit,full_time,lat,loc_accuracy,long,lte_rsrp,model,open_test_uuid,open_uuid,ping_classification,ping_ms,platform,provider_name,signal_classification,signal_strength,time,upload_classification,upload_kbit\n" +
+            "164174122517,1,900,DEFAULT_FULL_TIME_STRING,31.3,13.7,18.0,-34,DEFAULT_MODEL,fa39d023-6b54-4008-a67e-24f5bdb579bc,9a837fab-2d65-4256-8fbf-0fd373207d37,2,35.3,Android,DEFAULT_PROVIDER,88,-94,DEFAULT_TIME_STRING,3,36000\n" +
+            ",[Content-Disposition:\"attachment;filename=opentests.csv\", Content-Type:\"text/csv;charset=UTF-8\"]>";
+    String DEFAULT_EXPECTED_JSON_RESPONSE_ENTITY = "<200 OK OK," +
+            "{\"next_cursor\":3," +
+            "\"duration_ms\":2222," +
+            "\"results\":[" +
+            "{\"open_uuid\":\"9a837fab-2d65-4256-8fbf-0fd373207d37\"," +
+            "\"open_test_uuid\":\"fa39d023-6b54-4008-a67e-24f5bdb579bc\"," +
+            "\"time\":\"DEFAULT_TIME_STRING\"," +
+            "\"full_time\":\"DEFAULT_FULL_TIME_STRING\"," +
+            "\"client_time\":164174122517," +
+            "\"lat\":31.3," +
+            "\"long\":18.0," +
+            "\"loc_accuracy\":13.7," +
+            "\"download_kbit\":900," +
+            "\"upload_kbit\":36000," +
+            "\"ping_ms\":35.3," +
+            "\"signal_strength\":-94," +
+            "\"lte_rsrp\":-34," +
+            "\"platform\":\"Android\"," +
+            "\"model\":\"DEFAULT_MODEL\"," +
+            "\"provider_name\":\"DEFAULT_PROVIDER\"," +
+            "\"download_classification\":1," +
+            "\"upload_classification\":3," +
+            "\"ping_classification\":2," +
+            "\"signal_classification\":88}]" +
+            "},[Content-Type:\"application/json;charset=UTF-8\"]>";
+    String DEFAULT_PNG_SIZE = "forumlarge";
+    byte[] DEFAULT_BYTE_ARRAY = "DEFAULT_BYTE_ARRAY".getBytes();
+    String DEFAULT_VERBOSE = "1";
+    String DEFAULT_SPEED_ITEMS_EMPTY = "{\"upload\":{},\"download\":{}}";
 }

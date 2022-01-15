@@ -7,12 +7,12 @@ import at.rtr.rmbt.response.OpenTestDetailsDTO;
 import at.rtr.rmbt.response.opentest.OpenTestDTO;
 import at.rtr.rmbt.response.opentest.OpenTestSearchResponse;
 import at.rtr.rmbt.service.PdfExportService;
-import at.rtr.rmbt.utils.export.PdfConverter;
-import at.rtr.rmbt.utils.export.PrincePdfConverter;
-import at.rtr.rmbt.utils.export.WeasyprintPdfConverter;
 import at.rtr.rmbt.utils.ConvertUtils;
 import at.rtr.rmbt.utils.ExtendedHandlebars;
 import at.rtr.rmbt.utils.QueryParser;
+import at.rtr.rmbt.utils.export.PdfConverter;
+import at.rtr.rmbt.utils.export.PrincePdfConverter;
+import at.rtr.rmbt.utils.export.WeasyprintPdfConverter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Handlebars;
@@ -24,8 +24,6 @@ import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -183,7 +181,7 @@ public class PdfExportServiceImpl implements PdfExportService {
         ListIterator<OpenTestDTO> testIterator = testResults.listIterator();
         while (testIterator.hasNext()) {
             OpenTestDTO result = testIterator.next();
-            OpenTestDetailsDTO singleTest = openTestRepository.getOpenTestByUuid(ConvertUtils.formatOpenTestUuid(result.getOpenTestUuid()), 0);
+            OpenTestDetailsDTO singleTest = openTestRepository.getOpenTestByUuid(ConvertUtils.formatOpenTestUuid(result.getOpenTestUuid()));
             testIterator.set(singleTest);
         }
 
