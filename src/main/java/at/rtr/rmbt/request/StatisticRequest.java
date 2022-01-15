@@ -2,6 +2,7 @@ package at.rtr.rmbt.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @Getter
 @ToString
+@EqualsAndHashCode
 public class StatisticRequest {
 
     @NotNull(message = "capabilitiesRequest must be not null")

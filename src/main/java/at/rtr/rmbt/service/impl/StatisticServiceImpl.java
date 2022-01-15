@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -30,6 +31,7 @@ public class StatisticServiceImpl implements StatisticService {
     private final StatisticRepository statisticRepository;
 
     @Override
+    @Cacheable(value = "itemCache")
     public String getStatistics(StatisticRequest statisticRequest) {
         String entity = statisticRequest.toString();
         final boolean ultraGreen = statisticRequest.getCapabilitiesRequest().getClassification().getCount() == 4;
@@ -42,6 +44,7 @@ public class StatisticServiceImpl implements StatisticService {
 
         return generateStatistics(statisticRequest, ultraGreen);
     }
+
 
     private String generateStatistics(StatisticRequest statisticRequest, boolean ultraGreen) {
         final StatisticParameters params = new StatisticParameters(applicationProperties.getDefaultLanguage(), statisticRequest);
