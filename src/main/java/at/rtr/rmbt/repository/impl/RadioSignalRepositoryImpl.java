@@ -67,7 +67,6 @@ public class RadioSignalRepositoryImpl implements RadioSignalRepository {
         return new ResultSetExtractor<List<SignalGraphItemDTO>>() {
             @Override
             public List<SignalGraphItemDTO> extractData(ResultSet rsSignal) throws SQLException, DataAccessException {
-                log.info("Time = ");
                 boolean first = true;
                 SignalGraphItemDTO item = null;
                 List<SignalGraphItemDTO> signalList = new ArrayList<>();

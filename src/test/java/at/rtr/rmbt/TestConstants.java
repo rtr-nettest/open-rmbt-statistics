@@ -2,6 +2,7 @@ package at.rtr.rmbt;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.UUID;
 
 public interface TestConstants {
@@ -10,7 +11,6 @@ public interface TestConstants {
     String DEFAULT_CONTROL_SERVER_VERSION = String.format("%s_%s", DEFAULT_GIT_BRANCH, DEFAULT_GIT_COMMIT_ID_DESCRIBE);
     String DEFAULT_SYSTEM_UUID_VALUE = "d916af3d-acb9-46e0-b84e-3f8bac20ef5d";
     String DEFAULT_APPLICATION_HOST = "DEFAULT_APPLICATION_HOST";
-    String DEFAULT_FILE_NAME = "DEFAULT_FILE_NAME";
     String DEFAULT_OPEN_TEST_UUID_STRING = "fa39d023-6b54-4008-a67e-24f5bdb579bc";
     String DEFAULT_OPEN_TEST_UUID_STRING_WITH_PREFIX = "Ofa39d023-6b54-4008-a67e-24f5bdb579bc";
     UUID DEFAULT_OPEN_TEST_UUID = UUID.fromString(DEFAULT_OPEN_TEST_UUID_STRING);
@@ -32,6 +32,7 @@ public interface TestConstants {
     Double DEFAULT_LOC_ACCURACY_FOURTH = 35.7D;
     Date DEFAULT_TIME = new Date(1133231);
     Long DEFAULT_TIME_LONG = 164174123817L;
+    Long DEFAULT_INSTANT_MILLIS = 1642350991000L;
     Double DEFAULT_BEARING = 4.3D;
     Double DEFAULT_BEARING_SECOND = 7.3D;
     Double DEFAULT_BEARING_THIRD = 42.3D;
@@ -146,4 +147,9 @@ public interface TestConstants {
     byte[] DEFAULT_BYTE_ARRAY = "DEFAULT_BYTE_ARRAY".getBytes();
     String DEFAULT_VERBOSE = "1";
     String DEFAULT_SPEED_ITEMS_EMPTY = "{\"upload\":{},\"download\":{}}";
+    String DEFAULT_EXPECTED_PDF_JSON_RESPONSE = "<200 OK OK,{\"file\":\"L7f2dfa9a-0755-4def-97a0-213f443793d5-20220116173631.pdf\"},[Content-Type:\"application/json\"]>";
+    UUID DEFAULT_UUID = UUID.fromString("7f2dfa9a-0755-4def-97a0-213f443793d5");
+    Instant DEFAULT_INSTANT = Instant.ofEpochMilli(DEFAULT_INSTANT_MILLIS);
+    String DEFAULT_FILE_NAME = "L7f2dfa9a-0755-4def-97a0-213f443793d5-20220116173631";
+    String DEFAULT_PDF_RESPONSE_HEADERS = "[Content-Disposition:\"attachment; filename=Measurement_result-20220116173631.pdf\", Content-Type:\"application/pdf\"]";
 }

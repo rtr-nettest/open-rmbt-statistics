@@ -8,4 +8,7 @@ public interface URIConstants {
     String OPEN_TEST_BY_UUID = "/opentests/O{open_test_uuid}";
     String EXPORT_OPEN_DATA = "/export/netztest-opendata-{year}-{month}.{format}";
     String EXPORT_PDF = "/export/pdf";
+    String EXPORT_PDF_LANG = "/export/pdf/{lang}";
+    String EXPORT_PDF_FILENAME = "/export/pdf/{fileName}.pdf";
+    String EXPORT_PDF_LANG_FILENAME = "/export/pdf/{lang}/{fileName}.pdf";
 }

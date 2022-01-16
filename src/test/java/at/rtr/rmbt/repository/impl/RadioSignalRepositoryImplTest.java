@@ -88,7 +88,9 @@ class RadioSignalRepositoryImplTest {
         when(resultSet.getObject("primary_scrambling_code", Integer.class)).thenReturn(TestConstants.DEFAULT_PRIMARY_SCRAMBLING_CODE);
         when(resultSet.getObject("channel_number", Integer.class)).thenReturn(TestConstants.DEFAULT_CHANNEL_NUMBER);
         when(resultSet.getObject("timing_advance", Integer.class)).thenReturn(TestConstants.DEFAULT_TIMING_ADVANCE);
+
         var extractedResult = resultSetExtractor.getValue().extractData(resultSet);
+
         assertEquals(expectedSignalGraphItemDTOs(), extractedResult);
 
     }
@@ -113,9 +115,10 @@ class RadioSignalRepositoryImplTest {
         when(resultSet.getObject("lte_rsrq", Integer.class)).thenReturn(TestConstants.DEFAULT_LTE_RSRQ);
         when(resultSet.getObject("signal_strength", Integer.class)).thenReturn(TestConstants.DEFAULT_SIGNAL_STRENGTH);
         when(resultSet.getString("cat_technology")).thenReturn(TestConstants.DEFAULT_CAT_TECHNOLOGY);
-        var extractedResult = resultSetExtractor.getValue().extractData(resultSet);
-        assertEquals(expectedSignalGraphItemDTOsLegacy(), extractedResult);
 
+        var extractedResult = resultSetExtractor.getValue().extractData(resultSet);
+
+        assertEquals(expectedSignalGraphItemDTOsLegacy(), extractedResult);
     }
 
     private List<SignalGraphItemDTO> expectedSignalGraphItemDTOs() {

@@ -1,7 +1,7 @@
 package at.rtr.rmbt.controller;
 
 import at.rtr.rmbt.constant.URIConstants;
-import at.rtr.rmbt.service.PdfExportService;
+import at.rtr.rmbt.service.export.pdf.PdfExportService;
 import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,10 +26,14 @@ public class PdfExportController {
 
     private final PdfExportService pdfExportService;
 
-    @GetMapping(URIConstants.EXPORT_PDF)
-    public ResponseEntity<Object> exportPdf(@RequestHeader("accept") String acceptHeader,
-                                            @RequestParam MultiValueMap<String, String> parameters) {
-        return pdfExportService.exportPdf(acceptHeader, parameters);
+    @GetMapping(URIConstants.EXPORT_PDF_FILENAME)
+    public ResponseEntity<Object> getExportPdf(@PathVariable String fileName) {
+        return pdfExportService.loadPdf(fileName, null);
+    }
+
+    @GetMapping(URIConstants.EXPORT_PDF_LANG_FILENAME)
+    public ResponseEntity<Object> getExportPdfLang(@PathVariable String fileName, @PathVariable String lang) {
+        return pdfExportService.loadPdf(fileName, lang);
     }
 
     @PostMapping(URIConstants.EXPORT_PDF)
@@ -40,7 +44,19 @@ public class PdfExportController {
         if (ServletFileUpload.isMultipartContent(request)) {
             addParametersFromMultipartRequest(parameters, request);
         }
-        return pdfExportService.exportPdf(acceptHeader, parameters);
+        return pdfExportService.generatePdf(acceptHeader, parameters, null);
+    }
+
+    @PostMapping(URIConstants.EXPORT_PDF_LANG)
+    public ResponseEntity<Object> postExportPdfLang(@PathVariable String lang,
+                                                    @RequestHeader("accept") String acceptHeader,
+                                                    @RequestParam MultiValueMap<String, String> parameters,
+                                                    HttpServletRequest request) {
+        //handle multipart forms
+        if (ServletFileUpload.isMultipartContent(request)) {
+            addParametersFromMultipartRequest(parameters, request);
+        }
+        return pdfExportService.generatePdf(acceptHeader, parameters, lang);
     }
 
     private void addParametersFromMultipartRequest(@RequestParam MultiValueMap<String, String> parameters, HttpServletRequest request) {
