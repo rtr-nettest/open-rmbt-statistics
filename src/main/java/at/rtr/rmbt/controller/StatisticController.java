@@ -5,7 +5,6 @@ import at.rtr.rmbt.request.StatisticRequest;
 import at.rtr.rmbt.service.StatisticService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.CacheManager;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +17,6 @@ import javax.validation.Valid;
 public class StatisticController {
 
     private final StatisticService statisticService;
-    private final CacheManager cacheManager;
 
     @PostMapping(value = URIConstants.STATISTICS, produces = "application/json; charset=utf-8")
     public String getStatistics(@Valid @RequestBody StatisticRequest statisticRequest) {

@@ -9,6 +9,7 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
 
@@ -18,29 +19,28 @@ public class RedisConfig {
     @Bean
     public RedisCacheConfiguration cacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofSeconds(120))
+                .entryTtl(Duration.ofSeconds(5))
                 .disableCachingNullValues()
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
     }
 
     @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
+    public RedisTemplate<Object, Object> redisTemplate() {
+        RedisTemplate<Object, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(jedisConnectionFactory());
+        template.setStringSerializer(new StringRedisSerializer());
         return template;
     }
 
     @Bean
     JedisConnectionFactory jedisConnectionFactory() {
-        JedisConnectionFactory jedisConFactory
-                = new JedisConnectionFactory(new RedisStandaloneConfiguration("localhost", 6379));
-        return jedisConFactory;
+        return new JedisConnectionFactory(new RedisStandaloneConfiguration("localhost", 6379));
     }
 
     @Bean
     public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer() {
         return (builder) -> builder
-                .withCacheConfiguration("itemCache",
-                        RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(10)));
+                .withCacheConfiguration("statisticCache",
+                        RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(120)));
     }
 }
