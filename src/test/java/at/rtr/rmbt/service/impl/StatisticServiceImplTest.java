@@ -72,7 +72,7 @@ class StatisticServiceImplTest {
     }
 
     @Test
-    void getStatistics_classificationCountLess4IsStaleExpired_expectResponse() {
+    void getStatistics_classificationCountLess4IsStaleExpired_expectResponse() throws InterruptedException {
         Instant instantClockNow = Instant.ofEpochMilli(TestConstants.DEFAULT_TIME_LONG);
         Instant cachedInstant = Instant.ofEpochMilli(TestConstants.DEFAULT_TIME_LONG).minus(Constants.CACHE_STALE_HOURS, ChronoUnit.HOURS).minus(1, ChronoUnit.MINUTES);
         when(statisticRequest.getCapabilitiesRequest()).thenReturn(capabilitiesRequest);
@@ -87,6 +87,7 @@ class StatisticServiceImplTest {
         when(clock.instant()).thenReturn(instantClockNow);
 
         String result = statisticServiceImpl.getStatistics(statisticRequest);
+        Thread.sleep(100);
         Assertions.assertEquals(TestConstants.DEFAULT_TEXT, result);
         verify(statisticCache).evictIfPresent(getSimpleKey());
     }
