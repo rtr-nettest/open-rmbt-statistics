@@ -55,6 +55,9 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                     .antMatchers(URIConstants.OPEN_TEST_BY_UUID).permitAll()
                     .antMatchers(URIConstants.EXPORT_OPEN_DATA).permitAll()
                     .antMatchers(URIConstants.EXPORT_PDF).permitAll()
+                    .antMatchers(URIConstants.EXPORT_PDF_LANG).permitAll()
+                    .antMatchers(URIConstants.EXPORT_PDF_FILENAME).permitAll()
+                    .antMatchers(URIConstants.EXPORT_PDF_LANG_FILENAME).permitAll()
                     .anyRequest().authenticated();
         }
 
