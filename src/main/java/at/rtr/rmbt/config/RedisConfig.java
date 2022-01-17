@@ -1,5 +1,6 @@
 package at.rtr.rmbt.config;
 
+import at.rtr.rmbt.constant.Constants;
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,13 +35,15 @@ public class RedisConfig {
 
     @Bean
     JedisConnectionFactory jedisConnectionFactory() {
-        return new JedisConnectionFactory(new RedisStandaloneConfiguration("localhost", 6379));
+        return new JedisConnectionFactory(new RedisStandaloneConfiguration("redis", 6379));
     }
 
     @Bean
     public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer() {
         return (builder) -> builder
-                .withCacheConfiguration("statisticCache",
-                        RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(120)));
+                .withCacheConfiguration(Constants.STATISTIC_CACHE_NAME,
+                        RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(Constants.CACHE_EXPIRE_HOURS)))
+                .withCacheConfiguration(Constants.STATISTICS_STALE_CACHE_NAME,
+                        RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(Constants.CACHE_EXPIRE_HOURS * 2)));
     }
 }
