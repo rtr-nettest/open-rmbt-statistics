@@ -36,7 +36,9 @@ spring:
     deserialization:
       fail-on-unknown-properties: true
 RMBT_SECRETKEY: RMBT_SECRETKEY
-
+logging:
+  level:
+    org.zalando.logbook: TRACE
 auth0:
   issuer: https://specure.eu.auth0.com/
   apiAudience: https://nettest.org
@@ -47,6 +49,10 @@ application-version:
 logback:
   port: 5000
   host: http://127.0.0.1
+
+redis:
+  host: localhost
+  port: 6379
 ---
 spring:
   profiles: dev
@@ -62,13 +68,16 @@ spring:
 #      test-on-borrow: true
 #      validation-query: SELECT 1
 
-
 application-version:
   host: rtr-api-dev
 
 logback:
   port: ${LOG_PORT}
   host: ${LOG_HOST}
+
+redis:
+  host: redis
+  port: 6379
 ---
 spring:
   profiles: test
@@ -84,13 +93,16 @@ spring:
       test-on-borrow: true
       validation-query: SELECT 1
 
-
 application-version:
   host: rtr-api-test
 
 logback:
   port: ${LOG_PORT}
   host: ${LOG_HOST}
+
+redis:
+  host: ${REDIS_HOST}
+  port: ${REDIS_PORT}
 ---
 spring:
   profiles: staging
@@ -106,10 +118,13 @@ spring:
       test-on-borrow: true
       validation-query: SELECT 1
 
-
 application-version:
   host: rtr-api-staging
 
 logback:
   port: ${LOG_PORT}
   host: ${LOG_HOST}
+
+redis:
+  host: ${REDIS_HOST}
+  port: ${REDIS_PORT}

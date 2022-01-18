@@ -20,6 +20,7 @@
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <org.projectlombok.version>1.18.20</org.projectlombok.version>
         <auth0-spring-security-api.version>1.4.0</auth0-spring-security-api.version>
+        <logbook.version>2.14.0</logbook.version>
     </properties>
     <repositories>
         <repository>
@@ -28,6 +29,11 @@
         </repository>
     </repositories>
     <dependencies>
+        <dependency>
+            <groupId>org.zalando</groupId>
+            <artifactId>logbook-spring-boot-starter</artifactId>
+            <version>${logbook.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-redis</artifactId>

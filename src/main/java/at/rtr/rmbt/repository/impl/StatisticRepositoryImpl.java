@@ -364,8 +364,6 @@ public class StatisticRepositoryImpl implements StatisticRepository {
         if (accuracy > 0) {
             ps.setDouble(i++, accuracy);
         }
-
-        log.info(ps.toString());
         return ps;
     }
 

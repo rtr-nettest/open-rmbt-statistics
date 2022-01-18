@@ -1,6 +1,7 @@
 package at.rtr.rmbt.config;
 
 import at.rtr.rmbt.constant.Constants;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,12 @@ import java.time.Duration;
 @Configuration
 public class RedisConfig {
 
+    @Value("${redis.port}")
+    private Integer redisPort;
+
+    @Value("${redis.host}")
+    private String redisHost;
+
     @Bean
     public RedisCacheConfiguration cacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
@@ -26,16 +33,16 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<Object, Object> redisTemplate() {
+    public RedisTemplate<Object, Object> redisTemplate(JedisConnectionFactory jedisConnectionFactory) {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(jedisConnectionFactory());
+        template.setConnectionFactory(jedisConnectionFactory);
         template.setStringSerializer(new StringRedisSerializer());
         return template;
     }
 
     @Bean
     JedisConnectionFactory jedisConnectionFactory() {
-        return new JedisConnectionFactory(new RedisStandaloneConfiguration("redis", 6379));
+        return new JedisConnectionFactory(new RedisStandaloneConfiguration(redisHost, redisPort));
     }
 
     @Bean
@@ -44,6 +51,6 @@ public class RedisConfig {
                 .withCacheConfiguration(Constants.STATISTIC_CACHE_NAME,
                         RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(Constants.CACHE_EXPIRE_HOURS)))
                 .withCacheConfiguration(Constants.STATISTICS_STALE_CACHE_NAME,
-                        RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(Constants.CACHE_EXPIRE_HOURS * 2)));
+                        RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(Constants.CACHE_EXPIRE_HOURS)));
     }
 }
