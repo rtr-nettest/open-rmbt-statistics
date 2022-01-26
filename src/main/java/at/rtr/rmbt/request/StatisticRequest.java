@@ -1,5 +1,6 @@
 package at.rtr.rmbt.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @ToString
 @EqualsAndHashCode
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StatisticRequest {
 
     @NotNull(message = "capabilitiesRequest must be not null")
@@ -55,4 +57,7 @@ public class StatisticRequest {
 
     @JsonProperty(value = "province")
     private final Integer province;
+
+    @JsonProperty(value = "timezone")
+    private final String timezone;
 }

@@ -36,12 +36,6 @@ spring:
     deserialization:
       fail-on-unknown-properties: true
 RMBT_SECRETKEY: RMBT_SECRETKEY
-logging:
-  level:
-    org.zalando.logbook: TRACE
-auth0:
-  issuer: https://specure.eu.auth0.com/
-  apiAudience: https://nettest.org
 
 application-version:
   host: rtr-api-dev

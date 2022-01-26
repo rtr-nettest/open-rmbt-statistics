@@ -115,9 +115,7 @@ public interface TestConstants {
     Integer DEFAULT_DOWNLOAD_CLASSIFICATION = 1;
     Integer DEFAULT_PING_CLASSIFICATION = 2;
     Integer DEFAULT_SIGNAL_CLASSIFICATION = 88;
-    String DEFAULT_EXPECTED_CSV_RESPONSE_ENTITY = "<200 OK OK,client_time,download_classification,download_kbit,full_time,lat,loc_accuracy,long,lte_rsrp,model,open_test_uuid,open_uuid,ping_classification,ping_ms,platform,provider_name,signal_classification,signal_strength,time,upload_classification,upload_kbit\n" +
-            "164174122517,1,900,DEFAULT_FULL_TIME_STRING,31.3,13.7,18.0,-34,DEFAULT_MODEL,fa39d023-6b54-4008-a67e-24f5bdb579bc,9a837fab-2d65-4256-8fbf-0fd373207d37,2,35.3,Android,DEFAULT_PROVIDER,88,-94,DEFAULT_TIME_STRING,3,36000\n" +
-            ",[Content-Disposition:\"attachment;filename=opentests.csv\", Content-Type:\"text/csv;charset=UTF-8\"]>";
+    String DEFAULT_EXPECTED_CSV_RESPONSE_ENTITY = "<200 OK OK,open_uuid,open_test_uuid,time,lat,long,download_kbit,upload_kbit,ping_ms,signal_strength,lte_rsrp,platform,provider_name,model,loc_accuracy,download_classification,upload_classification,ping_classification,signal_classification9a837fab-2d65-4256-8fbf-0fd373207d37,fa39d023-6b54-4008-a67e-24f5bdb579bc,DEFAULT_TIME_STRING,31.3,18.0,900,36000,35.3,-94,-34,Android,DEFAULT_PROVIDER,DEFAULT_MODEL,13.7,1,3,2,88,[Content-Disposition:\"attachment;filename=opentests.csv\", Content-Type:\"text/csv;charset=UTF-8\"]>";
     String DEFAULT_EXPECTED_JSON_RESPONSE_ENTITY = "<200 OK OK," +
             "{\"next_cursor\":3," +
             "\"duration_ms\":2222," +
@@ -125,19 +123,17 @@ public interface TestConstants {
             "{\"open_uuid\":\"9a837fab-2d65-4256-8fbf-0fd373207d37\"," +
             "\"open_test_uuid\":\"fa39d023-6b54-4008-a67e-24f5bdb579bc\"," +
             "\"time\":\"DEFAULT_TIME_STRING\"," +
-            "\"full_time\":\"DEFAULT_FULL_TIME_STRING\"," +
-            "\"client_time\":164174122517," +
             "\"lat\":31.3," +
             "\"long\":18.0," +
-            "\"loc_accuracy\":13.7," +
             "\"download_kbit\":900," +
             "\"upload_kbit\":36000," +
             "\"ping_ms\":35.3," +
             "\"signal_strength\":-94," +
             "\"lte_rsrp\":-34," +
             "\"platform\":\"Android\"," +
-            "\"model\":\"DEFAULT_MODEL\"," +
             "\"provider_name\":\"DEFAULT_PROVIDER\"," +
+            "\"model\":\"DEFAULT_MODEL\"," +
+            "\"loc_accuracy\":13.7," +
             "\"download_classification\":1," +
             "\"upload_classification\":3," +
             "\"ping_classification\":2," +

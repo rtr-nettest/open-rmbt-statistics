@@ -1,9 +1,6 @@
 package at.rtr.rmbt.dto;
 
 import at.rtr.rmbt.request.StatisticRequest;
-import com.google.common.base.Strings;
-import com.google.common.hash.Funnel;
-import com.google.common.hash.PrimitiveSink;
 import lombok.Getter;
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -12,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
 @Getter
-public class StatisticParameters implements Funnel<StatisticParameters> {
+public class StatisticParameters {
 
     private final String lang;
     private final float quantile;
@@ -100,24 +97,6 @@ public class StatisticParameters implements Funnel<StatisticParameters> {
         userServerSelection = _userServerSelection;
         endDate = _endDate;
         province = _province;
-    }
-
-    @Override
-    public void funnel(StatisticParameters o, PrimitiveSink into) {
-        into
-                .putUnencodedChars(o.getClass().getCanonicalName())
-                .putChar(':')
-                .putUnencodedChars(Strings.nullToEmpty(o.lang))
-                .putFloat(o.quantile)
-                .putInt(o.duration)
-                .putUnencodedChars(Strings.nullToEmpty(o.type))
-                .putInt(o.maxDevices)
-                .putUnencodedChars(Strings.nullToEmpty(o.networkTypeGroup))
-                .putDouble(o.accuracy)
-                .putUnencodedChars(Strings.nullToEmpty(o.country))
-                .putBoolean(o.userServerSelection)
-                .putInt((endDate == null) ? 0 : (int) endDate.getTime())
-                .putInt(o.province);
     }
 
     @Override
