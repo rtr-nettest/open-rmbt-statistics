@@ -7,8 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 @Builder
 @Getter
@@ -17,8 +15,6 @@ import javax.validation.constraints.NotNull;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class StatisticRequest {
 
-    @NotNull(message = "capabilitiesRequest must be not null")
-    @Valid
     @JsonProperty(value = "capabilities")
     private final CapabilitiesRequest capabilitiesRequest;
 
