@@ -3,6 +3,8 @@ package at.rtr.rmbt.service.impl;
 import at.rtr.rmbt.config.ApplicationProperties;
 import at.rtr.rmbt.constant.Constants;
 import at.rtr.rmbt.dto.StatisticParameters;
+import at.rtr.rmbt.request.CapabilitiesRequest;
+import at.rtr.rmbt.request.ClassificationRequest;
 import at.rtr.rmbt.request.StatisticRequest;
 import at.rtr.rmbt.service.StatisticGeneratorService;
 import at.rtr.rmbt.service.StatisticService;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -28,7 +31,11 @@ public class StatisticServiceImpl implements StatisticService {
 
     @Override
     public String getStatistics(StatisticRequest statisticRequest) {
-        final boolean ultraGreen = statisticRequest.getCapabilitiesRequest().getClassification().getCount() == 4;
+        final boolean ultraGreen = Optional.ofNullable(statisticRequest.getCapabilitiesRequest())
+                .map(CapabilitiesRequest::getClassification)
+                .map(ClassificationRequest::getCount)
+                .filter(x -> x == 4)
+                .isPresent();
         final StatisticParameters params = new StatisticParameters(applicationProperties.getDefaultLanguage(), statisticRequest);
         SimpleKey key = new SimpleKey(params, ultraGreen);
 
