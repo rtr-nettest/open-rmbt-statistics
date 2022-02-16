@@ -2,6 +2,8 @@ package at.rtr.rmbt;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -11,10 +13,16 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 @SpringBootApplication
 @PropertySource({"classpath:git.properties"})
 @EnableCaching
-public class StatisticServerApplication {
+public class StatisticServerApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(StatisticServerApplication.class, args);
+    }
+
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(StatisticServerApplication.class);
     }
 
     @Bean
