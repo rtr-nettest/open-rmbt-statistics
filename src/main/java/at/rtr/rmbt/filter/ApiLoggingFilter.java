@@ -42,14 +42,17 @@ public class ApiLoggingFilter implements Filter {
             LOGGER.info(logRequest.toString());
             try {
                 chain.doFilter(bufferedRequest, bufferedResponse);
-            } finally {
+            } catch (Throwable a) {
+                LOGGER.error(a.getMessage(), a);
+            }
+            finally {
                 final StringBuilder logResponse = new StringBuilder("HTTP RESPONSE ")
                         .append(bufferedResponse.getContent());
                 LOGGER.info(logResponse.toString());
                 MDC.clear();
             }
         } catch (Throwable a) {
-            LOGGER.error(a.getMessage());
+            LOGGER.error(a.getMessage(), a);
         }
     }
 
