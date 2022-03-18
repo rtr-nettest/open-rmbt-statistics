@@ -113,7 +113,7 @@ spring:
       validation-query: SELECT 1
 
 application-version:
-  host: rtr-api-staging
+  host: ${HOST_ID}
 
 logback:
   port: ${LOG_PORT}
