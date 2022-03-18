@@ -17,9 +17,9 @@ spring:
     poolSize: 20
     minIdle: 1
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://${CONTROL_DB_HOST}:${CONTROL_DB_PORT}/${CONTROL_DB_NAME}
-    username: ${CONTROL_DB_USER}
-    password: ${CONTROL_DB_PASSWORD}
+    url: jdbc:postgresql://${STATISTIC_DB_HOST}:${STATISTIC_DB_PORT}/${STATISTIC_DB_NAME}
+    username: ${STATISTIC_DB_USER}
+    password: ${STATISTIC_DB_PASSWORD}
 
 #    tomcat:
 #      test-while-idle: true
@@ -99,14 +99,14 @@ redis:
   port: ${REDIS_PORT}
 ---
 spring:
-  profiles: staging
+  profiles: prod
   datasource:
     poolSize: 20
     minIdle: 1
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://${CONTROL_DB_HOST}:${CONTROL_DB_PORT}/${CONTROL_DB_NAME}
-    username: ${CONTROL_DB_USER}
-    password: ${CONTROL_DB_PASSWORD}
+    url: jdbc:postgresql://${STATISTIC_DB_HOST}:${STATISTIC_DB_PORT}/${STATISTIC_DB_NAME}
+    username: ${STATISTIC_DB_USER}
+    password: ${STATISTIC_DB_PASSWORD}
     tomcat:
       test-while-idle: true
       test-on-borrow: true
@@ -120,5 +120,5 @@ logback:
   host: ${LOG_HOST}
 
 redis:
-  host: ${REDIS_HOST}
-  port: ${REDIS_PORT}
+  host: ${STATISTIC_REDIS_HOST}
+  port: ${STATISTIC_REDIS_PORT}
