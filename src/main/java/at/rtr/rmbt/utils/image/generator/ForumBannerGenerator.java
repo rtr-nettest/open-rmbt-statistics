@@ -42,20 +42,20 @@ public class ForumBannerGenerator implements ShareImageGenerator {
         //de
         if (imageGenerateDto.getLang().equals("de")) {
             //left
-            g.drawString((imageGenerateDto.getTyp() == null) ? unknownString : imageGenerateDto.getTyp(), 110, 168);
-            g.drawString((imageGenerateDto.getIsp() == null) ? unknownString : imageGenerateDto.getIsp(), 110, 191);
+            g.drawString((imageGenerateDto.getTyp() == null) ? unknownString : imageGenerateDto.getTyp(), 115, 168);
+            g.drawString((imageGenerateDto.getIsp() == null) ? unknownString : imageGenerateDto.getIsp(), 105, 191);
 
             //right
-            g.drawString((imageGenerateDto.getSignal() == null) ? unknownString : imageGenerateDto.getSignal() + " dBm", 410, 168);
-            g.drawString((imageGenerateDto.getOs() == null) ? unknownString : imageGenerateDto.getOs(), 410, 191);
+            g.drawString((imageGenerateDto.getSignal() == null) ? unknownString : imageGenerateDto.getSignal() + " dBm", 412, 168);
+            g.drawString((imageGenerateDto.getOs() == null) ? unknownString : imageGenerateDto.getOs(), 405, 191);
         } else { //en
             //left
-            g.drawString((imageGenerateDto.getTyp() == null) ? unknownString : imageGenerateDto.getTyp(), 130, 168);
+            g.drawString((imageGenerateDto.getTyp() == null) ? unknownString : imageGenerateDto.getTyp(), 130, 170);
             g.drawString((imageGenerateDto.getIsp() == null) ? unknownString : imageGenerateDto.getIsp(), 90, 191);
 
             //right
-            g.drawString((imageGenerateDto.getSignal() == null) ? unknownString : imageGenerateDto.getSignal() + " dBm", 445, 168);
-            g.drawString((imageGenerateDto.getOs() == null) ? unknownString : imageGenerateDto.getOs(), 445, 191);
+            g.drawString((imageGenerateDto.getSignal() == null) ? unknownString : imageGenerateDto.getSignal() + " dBm", 445, 170);
+            g.drawString((imageGenerateDto.getOs() == null) ? unknownString : imageGenerateDto.getOs(), 385, 191);
         }
 
         return img;

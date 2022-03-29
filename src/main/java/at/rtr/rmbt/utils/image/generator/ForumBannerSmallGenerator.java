@@ -42,8 +42,8 @@ public class ForumBannerSmallGenerator implements ShareImageGenerator {
         //de
         if (imageGenerateDto.getLang().equals("de")) {
             //left
-            g.drawString((imageGenerateDto.getTyp() == null) ? unknownString : imageGenerateDto.getTyp(), 73, 109);
-            g.drawString((imageGenerateDto.getIsp() == null) ? unknownString : imageGenerateDto.getIsp(), 73, 124);
+            g.drawString((imageGenerateDto.getTyp() == null) ? unknownString : imageGenerateDto.getTyp(), 80, 109);
+            g.drawString((imageGenerateDto.getIsp() == null) ? unknownString : imageGenerateDto.getIsp(), 65, 124);
 
             //right
             g.drawString((imageGenerateDto.getSignal() == null) ? "" : imageGenerateDto.getSignal() + " dBm", 270, 109);
@@ -51,14 +51,14 @@ public class ForumBannerSmallGenerator implements ShareImageGenerator {
 
             //hide signal caption if signal is null
             if (imageGenerateDto.getSignal() == null) {
-                g.setColor(new Color(89, 178, 0));
-                g.fillRect(195, 98, 71, 13);
+                g.setColor(RTR_GREEN);
+                g.fillRect(195, 98, 71, 15);
 
             }
 
         } else { //en
             //left
-            g.drawString((imageGenerateDto.getTyp() == null) ? unknownString : imageGenerateDto.getTyp(), 83, 109);
+            g.drawString((imageGenerateDto.getTyp() == null) ? unknownString : imageGenerateDto.getTyp(), 86, 109);
             g.drawString((imageGenerateDto.getIsp() == null) ? unknownString : imageGenerateDto.getIsp(), 60, 124);
 
             //right
@@ -67,8 +67,8 @@ public class ForumBannerSmallGenerator implements ShareImageGenerator {
 
             //hide signal caption if signal is null
             if (imageGenerateDto.getSignal() == null) {
-                g.setColor(new Color(89, 178, 0));
-                g.fillRect(195, 98, 90, 13);
+                g.setColor(RTR_GREEN);
+                g.fillRect(195, 98, 90, 17);
 
             }
         }

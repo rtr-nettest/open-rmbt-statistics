@@ -12,6 +12,8 @@ import java.util.Locale;
 
 public interface ShareImageGenerator {
 
+    Color RTR_GREEN = new Color(47, 95, 0);
+
     default String formatNumber(double number, String lang) {
         final Locale locale = new Locale(lang);
         final Format format = new SignificantFormat(2, locale);
