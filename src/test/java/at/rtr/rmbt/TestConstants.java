@@ -1,5 +1,7 @@
 package at.rtr.rmbt;
 
+import org.springframework.http.MediaType;
+
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -148,4 +150,5 @@ public interface TestConstants {
     Instant DEFAULT_INSTANT = Instant.ofEpochMilli(DEFAULT_INSTANT_MILLIS);
     String DEFAULT_FILE_NAME = "L7f2dfa9a-0755-4def-97a0-213f443793d5-20220116173631";
     String DEFAULT_PDF_RESPONSE_HEADERS = "[Content-Disposition:\"attachment; filename=Measurement_result-20220116173631.pdf\", Content-Type:\"application/pdf\"]";
+    MediaType DEFAULT_MEDIA_TYPE = new MediaType("text", "csv");
 }

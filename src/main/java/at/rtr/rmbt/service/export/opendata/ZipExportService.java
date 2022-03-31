@@ -3,6 +3,7 @@ package at.rtr.rmbt.service.export.opendata;
 import at.rtr.rmbt.mapper.OpenTestMapper;
 import at.rtr.rmbt.repository.OpenTestExportRepository;
 import at.rtr.rmbt.response.OpenTestExportDto;
+import at.rtr.rmbt.service.FileService;
 import org.apache.poi.util.IOUtils;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
@@ -26,8 +27,11 @@ public class ZipExportService extends CsvExportService {
 
     public ZipExportService(ResourceLoader resourceLoader,
                             OpenTestExportRepository openTestExportRepository,
-                            OpenTestMapper openTestMapper) {
-        super(openTestExportRepository, openTestMapper);
+                            OpenTestMapper openTestMapper,
+                            FileService fileService) {
+        super(openTestExportRepository,
+                openTestMapper,
+                fileService);
         this.resourceLoader = resourceLoader;
     }
 

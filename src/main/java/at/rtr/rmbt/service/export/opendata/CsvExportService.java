@@ -3,12 +3,12 @@ package at.rtr.rmbt.service.export.opendata;
 import at.rtr.rmbt.mapper.OpenTestMapper;
 import at.rtr.rmbt.repository.OpenTestExportRepository;
 import at.rtr.rmbt.response.OpenTestExportDto;
+import at.rtr.rmbt.service.FileService;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.dataformat.csv.CsvGenerator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -21,8 +21,12 @@ public class CsvExportService extends AbstractExportService {
     private static final String FILENAME_CSV = "netztest-opendata-%YEAR%-%MONTH%.csv";
     private static final String FILENAME_CSV_CURRENT = "netztest-opendata.csv";
 
-    public CsvExportService(OpenTestExportRepository openTestExportRepository, OpenTestMapper openTestMapper) {
-        super(openTestExportRepository, openTestMapper);
+    public CsvExportService(OpenTestExportRepository openTestExportRepository,
+                            OpenTestMapper openTestMapper,
+                            FileService fileService) {
+        super(openTestExportRepository,
+                openTestMapper,
+                fileService);
     }
 
     @Override

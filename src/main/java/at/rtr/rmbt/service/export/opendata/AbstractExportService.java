@@ -5,6 +5,7 @@ import at.rtr.rmbt.dto.OpenTestExportResult;
 import at.rtr.rmbt.mapper.OpenTestMapper;
 import at.rtr.rmbt.repository.OpenTestExportRepository;
 import at.rtr.rmbt.response.OpenTestExportDto;
+import at.rtr.rmbt.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.util.IOUtils;
 import org.springframework.http.MediaType;
@@ -23,6 +24,7 @@ public abstract class AbstractExportService {
 
     private final OpenTestExportRepository openTestExportRepository;
     private final OpenTestMapper openTestMapper;
+    private final FileService fileService;
     private static long cacheThresholdMs;
 
     public ResponseEntity<Object> exportOpenData(Integer year, Integer month, Integer hour) {
@@ -43,20 +45,16 @@ public abstract class AbstractExportService {
 
         String property = System.getProperty("java.io.tmpdir");
         final String filename;
-        final List<OpenTestExportResult> exportResults;
 
         if (hoursExport) {
             filename = getFileNameHours().replace("%HOURS%", String.format("%03d", hour));
             cacheThresholdMs = 5 * 60 * 1000; //5 minutes
-            exportResults = openTestExportRepository.getOpenTestExportHour(hour);
         } else if (dateExport) {
             filename = getFileName().replace("%YEAR%", Integer.toString(year)).replace("%MONTH%", String.format("%02d", month));
             cacheThresholdMs = 23 * 60 * 60 * 1000; //23 hours
-            exportResults = openTestExportRepository.getOpenTestExportMonth(year, month);
         } else {
             filename = getFileNameCurrent();
             cacheThresholdMs = 3 * 60 * 60 * 1000; //3 hours
-            exportResults = openTestExportRepository.getOpenTestExportLast31Days();
         }
 
         MediaType mediaType = getMediaType();
@@ -68,15 +66,15 @@ public abstract class AbstractExportService {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         try {
-            final File cachedFile = new File(property + File.separator + filename);
-            final File generatingFile = new File(property + File.separator + filename + "_tmp");
+            final File cachedFile = fileService.openFile(property + File.separator + filename);
+            final File generatingFile = fileService.openFile(property + File.separator + filename + "_tmp");
             if (cachedFile.exists()) {
                 //check if file has been recently created OR a file is currently being created
                 if (((cachedFile.lastModified() + cacheThresholdMs) > (new Date()).getTime()) ||
                         (generatingFile.exists() && (generatingFile.lastModified() + cacheThresholdMs) > (new Date()).getTime())) {
 
                     //if so, return the cached file instead of a cost-intensive new one
-                    InputStream is = new FileInputStream(cachedFile);
+                    InputStream is = fileService.getFileInputStream(cachedFile);
                     IOUtils.copy(is, out);
 
                     return responseEntity
@@ -85,9 +83,7 @@ public abstract class AbstractExportService {
                 }
             }
 
-            final List<OpenTestExportDto> results = exportResults.stream()
-                    .map(openTestMapper::openTestExportResultToOpenTestExportDto)
-                    .collect(Collectors.toList());
+            final List<OpenTestExportDto> results = getOpenTestExportDtos(year, month, hour, hoursExport, dateExport);
             writeNewFile(out, results, filename);
 
         } catch (IOException e) {
@@ -133,5 +129,20 @@ public abstract class AbstractExportService {
 
     protected void setContentDisposition(ResponseEntity.BodyBuilder responseEntity, String filename) {
 
+    }
+
+    private List<OpenTestExportDto> getOpenTestExportDtos(Integer year, Integer month, Integer hour, boolean hoursExport, boolean dateExport) {
+        List<OpenTestExportResult> exportResults;
+        if (hoursExport) {
+            exportResults = openTestExportRepository.getOpenTestExportHour(hour);
+        } else if (dateExport) {
+            exportResults = openTestExportRepository.getOpenTestExportMonth(year, month);
+        } else {
+            exportResults = openTestExportRepository.getOpenTestExportLast31Days();
+        }
+
+        return exportResults.stream()
+                .map(openTestMapper::openTestExportResultToOpenTestExportDto)
+                .collect(Collectors.toList());
     }
 }

@@ -3,6 +3,7 @@ package at.rtr.rmbt.service.export.opendata;
 import at.rtr.rmbt.mapper.OpenTestMapper;
 import at.rtr.rmbt.repository.OpenTestExportRepository;
 import at.rtr.rmbt.response.OpenTestExportDto;
+import at.rtr.rmbt.service.FileService;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SequenceWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
@@ -22,8 +23,12 @@ public class XlsxExportService extends AbstractExportService {
     private static final String FILENAME_XLSX = "netztest-opendata-%YEAR%-%MONTH%.xlsx";
     private static final String FILENAME_XLSX_CURRENT = "netztest-opendata.xlsx";
 
-    public XlsxExportService(OpenTestExportRepository openTestExportRepository, OpenTestMapper openTestMapper) {
-        super(openTestExportRepository, openTestMapper);
+    public XlsxExportService(OpenTestExportRepository openTestExportRepository,
+                             OpenTestMapper openTestMapper,
+                             FileService fileService) {
+        super(openTestExportRepository,
+                openTestMapper,
+                fileService);
     }
 
     protected void writeCustomLogic(List<OpenTestExportDto> results, OutputStream outf, String fileName) throws IOException {

@@ -85,8 +85,8 @@ public class RadioSignalRepositoryImpl implements RadioSignalRepository {
                         break;
 
 
-                    int lteRsrp = rsSignal.getObject("lte_rsrp", Integer.class);
-                    int lteRsrq = rsSignal.getObject("lte_rsrq", Integer.class);
+                    Integer lteRsrp = rsSignal.getObject("lte_rsrp", Integer.class);
+                    Integer lteRsrq = rsSignal.getObject("lte_rsrq", Integer.class);
 
                     Integer signalStrength = rsSignal.getObject("signal_strength", Integer.class);
                     if (Objects.isNull(signalStrength)) {
