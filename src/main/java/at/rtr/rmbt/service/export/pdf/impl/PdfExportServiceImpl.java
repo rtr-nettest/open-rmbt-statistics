@@ -203,7 +203,7 @@ public class PdfExportServiceImpl implements PdfExportService {
         //add further parameters, i.e. ,logos
         InputStream resourceAsStream = null;
         try {
-            resourceAsStream = resourceLoader.getResource("classpath:export/logo.png").getInputStream();
+            resourceAsStream = resourceLoader.getResource("classpath:png/logo.png").getInputStream();
         } catch (IOException e) {
             e.printStackTrace();
         }
