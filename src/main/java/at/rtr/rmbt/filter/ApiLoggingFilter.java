@@ -44,11 +44,11 @@ public class ApiLoggingFilter implements Filter {
                 chain.doFilter(bufferedRequest, bufferedResponse);
             } catch (Throwable a) {
                 LOGGER.error(a.getMessage(), a);
-            }
-            finally {
+            } finally {
                 final StringBuilder logResponse = new StringBuilder("HTTP RESPONSE ")
                         .append(bufferedResponse.getContent());
-                LOGGER.info(logResponse.toString());
+                String responseString = logResponse.toString();
+                LOGGER.info(responseString.substring(0, Math.min(responseString.length(), 1000)));
                 MDC.clear();
             }
         } catch (Throwable a) {

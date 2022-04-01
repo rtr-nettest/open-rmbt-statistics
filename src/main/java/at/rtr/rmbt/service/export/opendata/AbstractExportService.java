@@ -7,6 +7,7 @@ import at.rtr.rmbt.repository.OpenTestExportRepository;
 import at.rtr.rmbt.response.OpenTestExportDto;
 import at.rtr.rmbt.service.FileService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.util.IOUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 public abstract class AbstractExportService {
 
@@ -69,10 +71,11 @@ public abstract class AbstractExportService {
             final File cachedFile = fileService.openFile(property + File.separator + filename);
             final File generatingFile = fileService.openFile(property + File.separator + filename + "_tmp");
             if (cachedFile.exists()) {
+                log.info("Cache file " + cachedFile + " exists");
                 //check if file has been recently created OR a file is currently being created
                 if (((cachedFile.lastModified() + cacheThresholdMs) > (new Date()).getTime()) ||
                         (generatingFile.exists() && (generatingFile.lastModified() + cacheThresholdMs) > (new Date()).getTime())) {
-
+                    log.info("Read file from cache " + cachedFile);
                     //if so, return the cached file instead of a cost-intensive new one
                     InputStream is = fileService.getFileInputStream(cachedFile);
                     IOUtils.copy(is, out);
@@ -95,6 +98,7 @@ public abstract class AbstractExportService {
     }
 
     protected void writeNewFile(OutputStream out, List<OpenTestExportDto> results, String fileName) throws IOException {
+        log.info("Creating new file " + fileName);
         //cache in file => create temporary temporary file (to
         // handle errors while fulfilling a request)
         String property = System.getProperty("java.io.tmpdir");
@@ -140,7 +144,7 @@ public abstract class AbstractExportService {
         } else {
             exportResults = openTestExportRepository.getOpenTestExportLast31Days();
         }
-
+        log.info("Sent request to database");
         return exportResults.stream()
                 .map(openTestMapper::openTestExportResultToOpenTestExportDto)
                 .collect(Collectors.toList());
