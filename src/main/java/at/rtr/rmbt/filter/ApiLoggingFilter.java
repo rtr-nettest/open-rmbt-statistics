@@ -193,7 +193,10 @@ public class ApiLoggingFilter implements Filter {
             original = response;
         }
 
-        public String getContent() {
+        public String getContent() throws IOException {
+            if (Objects.isNull(bos)) {
+                this.getOutputStream();
+            }
             return bos.toString();
         }
 
