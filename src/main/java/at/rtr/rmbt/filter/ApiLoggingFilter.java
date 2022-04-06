@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ApiLoggingFilter implements Filter {
 
@@ -38,7 +39,10 @@ public class ApiLoggingFilter implements Filter {
             final StringBuilder logRequest = new StringBuilder("HTTP ").append(httpServletRequest.getMethod())
                     .append(" \"").append(httpServletRequest.getServletPath()).append("\" ").append(", parameters=")
                     .append(requestMap).append(", body=").append(bufferedRequest.getRequestBody())
-                    .append(", remote_address=").append(httpServletRequest.getRemoteAddr());
+                    .append(", headers={").append(Collections.list(((HttpServletRequest) request)
+                                    .getHeaderNames()).stream()
+                            .map(r -> String.format("\"%s\": \"%s\"", r, ((HttpServletRequest) request).getHeader(r)))
+                            .collect(Collectors.joining(", ")) + "}");
             LOGGER.info(logRequest.toString());
             try {
                 chain.doFilter(bufferedRequest, bufferedResponse);

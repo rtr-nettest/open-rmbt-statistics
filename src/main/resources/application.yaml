@@ -106,3 +106,5 @@ application-version:
 redis:
   host: ${STATISTIC_REDIS_HOST}
   port: ${STATISTIC_REDIS_PORT}
+logging:
+  config: ${LOGGING_CONFIG_FILE_STATISTIC:classpath:logback.xml}
