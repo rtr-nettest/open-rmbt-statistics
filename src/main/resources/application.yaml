@@ -40,10 +40,6 @@ RMBT_SECRETKEY: RMBT_SECRETKEY
 application-version:
   host: rtr-api-dev
 
-logback:
-  port: 5000
-  host: http://127.0.0.1
-
 redis:
   host: localhost
   port: 6379
@@ -64,10 +60,6 @@ spring:
 
 application-version:
   host: rtr-api-dev
-
-logback:
-  port: ${LOG_PORT}
-  host: ${LOG_HOST}
 
 redis:
   host: redis
@@ -90,10 +82,6 @@ spring:
 application-version:
   host: rtr-api-test
 
-logback:
-  port: ${LOG_PORT}
-  host: ${LOG_HOST}
-
 redis:
   host: ${REDIS_HOST}
   port: ${REDIS_PORT}
@@ -114,10 +102,6 @@ spring:
 
 application-version:
   host: ${HOST_ID}
-
-logback:
-  port: ${LOG_PORT}
-  host: ${LOG_HOST}
 
 redis:
   host: ${STATISTIC_REDIS_HOST}
