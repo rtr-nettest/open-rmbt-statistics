@@ -20,7 +20,6 @@
         <apache.commons.version>3.8.1</apache.commons.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <org.projectlombok.version>1.18.20</org.projectlombok.version>
-        <auth0-spring-security-api.version>1.4.0</auth0-spring-security-api.version>
         <start-class>at.rtr.rmbt.StatisticServerApplication</start-class>
     </properties>
     <repositories>
@@ -34,6 +33,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.data</groupId>
