@@ -8,9 +8,6 @@ spring:
   http:
     multipart:
       enabled: false
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
   application:
     name: statistic-backend
   datasource:
