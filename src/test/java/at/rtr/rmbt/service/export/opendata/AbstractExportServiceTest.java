@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.*;
 import java.util.Date;
@@ -63,14 +64,14 @@ class AbstractExportServiceTest {
                 return null;
             }
         };
+        ReflectionTestUtils.setField(exportService, "fileCachePath", TestConstants.DEFAULT_FILE_CACHE_PATH);
     }
 
     @Test
     void exportOpenData_correctInvocation_fileExists() throws FileNotFoundException {
-        String property = System.getProperty("java.io.tmpdir");
-        when(fileService.openFile(property + File.separator + TestConstants.DEFAULT_FILE_NAME))
+        when(fileService.openFile(TestConstants.DEFAULT_FILE_CACHE_PATH + File.separator + TestConstants.DEFAULT_FILE_NAME))
                 .thenReturn(cachedFile);
-        when(fileService.openFile(property + File.separator + TestConstants.DEFAULT_FILE_NAME + "_tmp"))
+        when(fileService.openFile(TestConstants.DEFAULT_FILE_CACHE_PATH + File.separator + TestConstants.DEFAULT_FILE_NAME + "_tmp"))
                 .thenReturn(generatingFile);
         when(cachedFile.lastModified()).thenReturn(new Date().getTime());
         when(cachedFile.exists()).thenReturn(true);
