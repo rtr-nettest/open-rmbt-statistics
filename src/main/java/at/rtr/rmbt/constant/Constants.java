@@ -16,4 +16,5 @@ public interface Constants {
     String STATISTICS_STALE_CACHE_NAME = "statisticStaleCache";
     Long CACHE_STALE_HOURS = 1L;
     Long CACHE_EXPIRE_HOURS = 6L;
+    String PROVIDER_GPS = "gps";
 }
