@@ -1,9 +1,9 @@
 app:
   defaultLanguage: en
   fileCache:
-    cleaningJobRate: PT1H
+    cleaningJobRate: PT24H
     path: /tmp/export
-    expirationTerm: 1
+    expirationTerm: 23
 server:
   port: 8080
   servlet:
