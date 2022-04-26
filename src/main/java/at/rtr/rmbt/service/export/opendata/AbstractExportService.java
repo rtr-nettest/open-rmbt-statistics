@@ -9,6 +9,7 @@ import at.rtr.rmbt.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.util.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
@@ -27,6 +28,10 @@ public abstract class AbstractExportService {
     private final OpenTestExportRepository openTestExportRepository;
     private final OpenTestMapper openTestMapper;
     private final FileService fileService;
+
+    @Value("${app.fileCache.path}")
+    private String fileCachePath;
+
     private static long cacheThresholdMs;
 
     public ResponseEntity<Object> exportOpenData(Integer year, Integer month, Integer hour) {
@@ -45,7 +50,6 @@ public abstract class AbstractExportService {
             }
         }
 
-        String property = System.getProperty("java.io.tmpdir");
         final String filename;
 
         if (hoursExport) {
@@ -68,8 +72,8 @@ public abstract class AbstractExportService {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         try {
-            final File cachedFile = fileService.openFile(property + File.separator + filename);
-            final File generatingFile = fileService.openFile(property + File.separator + filename + "_tmp");
+            final File cachedFile = fileService.openFile(fileCachePath + File.separator + filename);
+            final File generatingFile = fileService.openFile(fileCachePath + File.separator + filename + "_tmp");
             if (cachedFile.exists()) {
                 log.info("Cache file " + cachedFile + " exists");
                 //check if file has been recently created OR a file is currently being created
@@ -101,8 +105,8 @@ public abstract class AbstractExportService {
         log.info("Creating new file " + fileName);
         //cache in file => create temporary temporary file (to
         // handle errors while fulfilling a request)
-        String property = System.getProperty("java.io.tmpdir");
-        final File cachedFile = new File(property + File.separator + fileName + "_tmp");
+
+        final File cachedFile = new File(fileCachePath + File.separator + fileName + "_tmp");
         OutputStream outf = new FileOutputStream(cachedFile);
 
         //custom logic
@@ -112,7 +116,7 @@ public abstract class AbstractExportService {
         //if we reach this code, the data is now cached in a temporary tmp-file
         //so, rename the file for "production use2
         //concurrency issues should be solved by the operating system
-        File newCacheFile = new File(property + File.separator + fileName);
+        File newCacheFile = new File(fileCachePath + File.separator + fileName);
         Files.move(cachedFile.toPath(), newCacheFile.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
 
         FileInputStream fis = new FileInputStream(newCacheFile);

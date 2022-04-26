@@ -23,6 +23,7 @@ import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -55,6 +56,9 @@ public class PdfExportServiceImpl implements PdfExportService {
     private final UuidGenerator uuidGenerator;
     private final Clock clock;
     private final FileService fileService;
+
+    @Value("${app.fileCache.pdfPath}")
+    private String pdfPath;
 
     @Override
     public ResponseEntity<Object> generatePdf(String acceptHeader, MultiValueMap<String, String> parameters, String lang) {
@@ -160,7 +164,7 @@ public class PdfExportServiceImpl implements PdfExportService {
             filenameDatePart = "-" + filenameParts[filenameParts.length - 1];
         }
 
-        File retFile = fileService.openFile(Constants.PDF_TEMP_PATH + fileName + ".pdf");
+        File retFile = fileService.openFile(pdfPath + File.separator + fileName + ".pdf");
 
         if (!retFile.exists()) {
             throw new RuntimeException("File not found");

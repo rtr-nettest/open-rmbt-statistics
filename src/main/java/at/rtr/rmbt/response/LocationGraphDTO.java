@@ -1,12 +1,13 @@
 package at.rtr.rmbt.response;
 
+import at.rtr.rmbt.constant.Constants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Strings;
 import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.sql.Date;
 import java.util.List;
 
 @Getter
@@ -53,14 +54,14 @@ public class LocationGraphDTO {
         private final String provider;
 
         public Double getBearing() {
-            if (getProvider().equals("gps")) {
+            if (Strings.nullToEmpty(getProvider()).equals(Constants.PROVIDER_GPS)) {
                 return bearing;
             }
             return null;
         }
 
         public Double getSpeed() {
-            if (getProvider().equals("gps")) {
+            if (Strings.nullToEmpty(getProvider()).equals(Constants.PROVIDER_GPS)) {
                 return speed;
             }
             return null;

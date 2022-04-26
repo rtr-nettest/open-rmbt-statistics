@@ -1,5 +1,10 @@
 app:
   defaultLanguage: en
+  fileCache:
+    cleaningJobRate: PT24H
+    path: /tmp/export
+    pdfPath: /tmp/pdf
+    expirationTerm: 23
 server:
   port: 8080
   servlet:
@@ -8,9 +13,6 @@ spring:
   http:
     multipart:
       enabled: false
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
   application:
     name: statistic-backend
   datasource:

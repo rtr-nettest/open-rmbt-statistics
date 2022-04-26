@@ -16,9 +16,7 @@
  ******************************************************************************/
 package at.rtr.rmbt.utils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
-import lombok.EqualsAndHashCode;
+import com.google.common.base.Strings;
 import org.json.JSONObject;
 
 import java.sql.PreparedStatement;
@@ -255,7 +253,9 @@ public class QueryParser {
 
                         try {
                             for (String uuid : uuids) {
-                                uuid = uuid.substring(1); //cut prefix
+                                if (Strings.nullToEmpty(uuid).length() == 37) {
+                                    uuid = uuid.substring(1); //cut prefix
+                                }
                                 UUID.fromString(uuid);
                             }
                         } catch (IllegalArgumentException e) {
