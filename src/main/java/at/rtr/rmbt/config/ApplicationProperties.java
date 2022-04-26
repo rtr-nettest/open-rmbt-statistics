@@ -17,6 +17,7 @@ public class ApplicationProperties {
     @Setter
     public static class FileCache {
         private String path;
+        private String pdfPath;
         private String cleaningJobRate;
         private Integer expirationTerm;
     }

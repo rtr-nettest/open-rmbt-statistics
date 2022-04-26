@@ -9,6 +9,7 @@ import at.rtr.rmbt.utils.export.WeasyprintPdfConverter;
 import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Template;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -21,9 +22,12 @@ import java.util.Map;
 @Service
 public class PdfGeneratorImpl implements PdfGenerator {
 
+    @Value("${app.fileCache.pdfPath}")
+    private String pdfPath;
+
     @Override
     public Path generatePdf(Template template, Map<String, Object> data, String uuid) throws IOException {
-        Path pdfTarget = new File(Constants.PDF_TEMP_PATH + uuid + ".pdf").toPath();
+        Path pdfTarget = new File(pdfPath + File.separator + uuid + ".pdf").toPath();
 
         Context context = Context
                 .newBuilder(data)

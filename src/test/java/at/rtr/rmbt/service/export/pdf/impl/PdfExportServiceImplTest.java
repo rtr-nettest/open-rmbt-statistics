@@ -22,6 +22,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -69,6 +70,7 @@ class PdfExportServiceImplTest {
         when(openTestDto.getOpenTestUuid()).thenReturn(TestConstants.DEFAULT_OPEN_TEST_UUID_STRING);
         when(uuidGenerator.generateNewUuid()).thenReturn(TestConstants.DEFAULT_UUID);
         when(clock.instant()).thenReturn(TestConstants.DEFAULT_INSTANT);
+        ReflectionTestUtils.setField(pdfExportService, "pdfPath", TestConstants.DEFAULT_PDF_PATH);
     }
 
     @Test
@@ -103,7 +105,7 @@ class PdfExportServiceImplTest {
     @Test
     void loadPdf_correctInvocation_ResponseEntity() throws IOException {
         File mockFile = new File("src/test/resources/export/pdf/L7f2dfa9a-0755-4def-97a0-213f443793d5-20220116173631.pdf");
-        when(fileService.openFile(Constants.PDF_TEMP_PATH + TestConstants.DEFAULT_UUID + ".pdf")).thenReturn(mockFile);
+        when(fileService.openFile(TestConstants.DEFAULT_PDF_PATH + File.separator + TestConstants.DEFAULT_UUID + ".pdf")).thenReturn(mockFile);
         byte[] expectedBody = Files.readAllBytes(Paths.get("src/test/resources/export/pdf/L7f2dfa9a-0755-4def-97a0-213f443793d5-20220116173631.pdf"));
 
         var actualResult = pdfExportService.loadPdf(TestConstants.DEFAULT_FILE_NAME, TestConstants.DEFAULT_LANGUAGE);

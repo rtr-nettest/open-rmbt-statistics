@@ -152,5 +152,6 @@ public interface TestConstants {
     String DEFAULT_PDF_RESPONSE_HEADERS = "[Content-Disposition:\"attachment; filename=Measurement_result-20220116173631.pdf\", Content-Type:\"application/pdf\"]";
     MediaType DEFAULT_MEDIA_TYPE = new MediaType("text", "csv");
     String DEFAULT_FILE_CACHE_PATH = "DEFAULT_FILE_CACHE_PATH";
+    String DEFAULT_PDF_PATH = "DEFAULT_PDF_PATH";
     Integer DEFAULT_FILE_CACHE_EXPIRATION_TERM = 23;
 }
