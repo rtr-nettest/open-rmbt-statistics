@@ -105,8 +105,8 @@ public abstract class AbstractExportService {
         log.info("Creating new file " + fileName);
         //cache in file => create temporary temporary file (to
         // handle errors while fulfilling a request)
-        String property = System.getProperty("java.io.tmpdir");
-        final File cachedFile = new File(property + File.separator + fileName + "_tmp");
+
+        final File cachedFile = new File(fileCachePath + File.separator + fileName + "_tmp");
         OutputStream outf = new FileOutputStream(cachedFile);
 
         //custom logic
@@ -116,7 +116,7 @@ public abstract class AbstractExportService {
         //if we reach this code, the data is now cached in a temporary tmp-file
         //so, rename the file for "production use2
         //concurrency issues should be solved by the operating system
-        File newCacheFile = new File(property + File.separator + fileName);
+        File newCacheFile = new File(fileCachePath + File.separator + fileName);
         Files.move(cachedFile.toPath(), newCacheFile.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
 
         FileInputStream fis = new FileInputStream(newCacheFile);
