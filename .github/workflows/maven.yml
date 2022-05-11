@@ -24,6 +24,6 @@ jobs:
       - name: Archive war
         uses: actions/upload-artifact@v2
         with:
-          name: controlserver-war
+          name: statisticserver-war
           path: target/statistic-server-0.0.1-SNAPSHOT.war
           retention-days: 60
