@@ -23,6 +23,9 @@ public class OnStartUpRunner implements ApplicationRunner {
     @Value("${app.fileCache.path}")
     private String fileCachePath;
 
+    @Value("${app.fileCache.pdfPath")
+    private String pdfCachePath;
+
     @Value("${app.fileCache.expirationTerm}")
     private Integer fileCacheExpirationTerm;
 
@@ -59,6 +62,14 @@ public class OnStartUpRunner implements ApplicationRunner {
             boolean isTempDirectoryCreatedSuccessfully = tempDir.mkdirs();
             if (isTempDirectoryCreatedSuccessfully) {
                 log.info("Temp directory {} is created successfully", tempDir.getAbsolutePath());
+            }
+        }
+
+        File tempPdfDir = fileService.openFile(pdfCachePath);
+        if (!tempPdfDir.exists()) {
+            boolean isTempDirectoryCreatedSuccessfully = tempPdfDir.mkdirs();
+            if (isTempDirectoryCreatedSuccessfully) {
+                log.info("Temp directory {} is created successfully", tempPdfDir.getAbsolutePath());
             }
         }
     }
