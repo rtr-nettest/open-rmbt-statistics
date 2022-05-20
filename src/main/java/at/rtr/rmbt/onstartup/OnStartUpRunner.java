@@ -65,11 +65,13 @@ public class OnStartUpRunner implements ApplicationRunner {
             }
         }
 
-        File tempPdfDir = fileService.openFile(pdfCachePath);
-        if (!tempPdfDir.exists()) {
-            boolean isTempDirectoryCreatedSuccessfully = tempPdfDir.mkdirs();
-            if (isTempDirectoryCreatedSuccessfully) {
-                log.info("Temp directory {} is created successfully", tempPdfDir.getAbsolutePath());
+        if (pdfCachePath != null) {
+            File tempPdfDir = fileService.openFile(pdfCachePath);
+            if (!tempPdfDir.exists()) {
+                boolean isTempDirectoryCreatedSuccessfully = tempPdfDir.mkdirs();
+                if (isTempDirectoryCreatedSuccessfully) {
+                    log.info("Temp directory {} is created successfully", tempPdfDir.getAbsolutePath());
+                }
             }
         }
     }
