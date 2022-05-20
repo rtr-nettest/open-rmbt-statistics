@@ -1,10 +1,12 @@
 app:
   defaultLanguage: en
   fileCache:
-    cleaningJobRate: PT24H
-    path: /tmp/export
-    pdfPath: /tmp/pdf
-    expirationTerm: 23
+    # period for deletion of cache
+    cleaningJobRate: PT24H # 24 hours period, ISO_8601
+    path: /tmp/cache
+    pdfPath: /tmp/pdfcache
+    # delete files older than X hours
+    expirationTerm: 23 # hours
 server:
   port: 8080
   servlet:
