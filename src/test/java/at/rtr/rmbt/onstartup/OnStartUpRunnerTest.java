@@ -31,11 +31,14 @@ class OnStartUpRunnerTest {
     private File cachedFile;
     @Mock
     private File staleCachedFile;
+    @Mock
+    private File filePdf;
 
     @BeforeEach
     void setUp() {
         onStartUpRunner = new OnStartUpRunner(fileService, clock);
         ReflectionTestUtils.setField(onStartUpRunner, "fileCachePath", TestConstants.DEFAULT_FILE_CACHE_PATH);
+        ReflectionTestUtils.setField(onStartUpRunner, "fileCachePdfPath", TestConstants.DEFAULT_PDF_PATH);
         ReflectionTestUtils.setField(onStartUpRunner, "fileCacheExpirationTerm", TestConstants.DEFAULT_FILE_CACHE_EXPIRATION_TERM);
     }
 
@@ -58,19 +61,25 @@ class OnStartUpRunnerTest {
     void run_dirNotExists_dirCreated() throws Exception {
         when(fileService.openFile(TestConstants.DEFAULT_FILE_CACHE_PATH)).thenReturn(file);
         when(file.exists()).thenReturn(false);
+        when(fileService.openFile(TestConstants.DEFAULT_PDF_PATH)).thenReturn(filePdf);
+        when(filePdf.exists()).thenReturn(false);
 
         onStartUpRunner.run(null);
 
         verify(file).mkdirs();
+        verify(filePdf).mkdirs();
     }
 
     @Test
     void run_dirExists_noMkdirs() throws Exception {
         when(fileService.openFile(TestConstants.DEFAULT_FILE_CACHE_PATH)).thenReturn(file);
         when(file.exists()).thenReturn(true);
+        when(fileService.openFile(TestConstants.DEFAULT_PDF_PATH)).thenReturn(filePdf);
+        when(filePdf.exists()).thenReturn(true);
 
         onStartUpRunner.run(null);
 
+        verify(file, times(0)).mkdirs();
         verify(file, times(0)).mkdirs();
     }
 }

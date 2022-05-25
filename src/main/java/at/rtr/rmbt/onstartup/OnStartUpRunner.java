@@ -20,6 +20,9 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class OnStartUpRunner implements ApplicationRunner {
 
+    @Value("${app.fileCache.pdfPath}")
+    private String fileCachePdfPath;
+
     @Value("${app.fileCache.path}")
     private String fileCachePath;
 
@@ -50,11 +53,13 @@ public class OnStartUpRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        createTempExportDirIfNotExist();
+        createTempExportDirIfNotExist(fileCachePath);
+        createTempExportDirIfNotExist(fileCachePdfPath);
+
     }
 
-    private void createTempExportDirIfNotExist() {
-        File tempDir = fileService.openFile(fileCachePath);
+    private void createTempExportDirIfNotExist(String path) {
+        File tempDir = fileService.openFile(path);
         if (!tempDir.exists()) {
             boolean isTempDirectoryCreatedSuccessfully = tempDir.mkdirs();
             if (isTempDirectoryCreatedSuccessfully) {

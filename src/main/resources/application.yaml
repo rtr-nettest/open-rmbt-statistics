@@ -3,7 +3,7 @@ app:
   fileCache:
     cleaningJobRate: PT24H
     path: /tmp/export
-    pdfPath: /tmp/pdf
+    pdfPath: /var/cache/tomcat9/Catalina/RMBTStatisticServer_new
     expirationTerm: 23
 server:
   port: 8080
