@@ -3,7 +3,7 @@ app:
   fileCache:
     cleaningJobRate: PT24H
     path: /tmp/export
-    pdfPath: /var/cache/tomcat9/Catalina/RMBTStatisticServer_new
+    pdfPath: /tmp/pdf
     expirationTerm: 23
 server:
   port: 8080
@@ -19,14 +19,14 @@ spring:
     poolSize: 20
     minIdle: 1
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://127.0.0.1:5431/rtr
-    username: rtr
-    password: password
+    url: jdbc:postgresql://127.0.0.1:5436/rmbt
+    username: rmbt
+    password: veeziFosuu2ieghe
 
-#    tomcat:
-#      test-while-idle: true
-#      test-on-borrow: true
-#      validation-query: SELECT 1
+  #    tomcat:
+  #      test-while-idle: true
+  #      test-on-borrow: true
+  #      validation-query: SELECT 1
   jpa:
     hibernate:
       ddl-auto: none
