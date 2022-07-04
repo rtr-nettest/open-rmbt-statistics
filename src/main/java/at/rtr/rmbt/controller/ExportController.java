@@ -34,4 +34,29 @@ public class ExportController {
     public ResponseEntity<Object> exportOpenData(@PathVariable int year, @PathVariable int month, @PathVariable String format) {
         return exportService.exportOpenData(year, month, format, null);
     }
+
+    @Operation(summary = "Export open data as CSV or XLSX",
+            description = "Bulk export open data entries",
+            responses = @ApiResponse(content = @Content(mediaType = "text/csv")),
+            operationId = "export",
+            parameters = {
+                    @Parameter(name = "hours", description = "Mandatory. The year that should be exported.", example = "2017", in = ParameterIn.PATH, required = true),
+                    @Parameter(name = "format", description = "Mandatory. Either ZIP (CSV) or XLSX.", example = "xlsx", in = ParameterIn.PATH, required = true)
+            })
+    @GetMapping(URIConstants.EXPORT_OPEN_DATA_HOURS)
+    public ResponseEntity<Object> exportOpenDataHours(@PathVariable int hours, @PathVariable String format) {
+        return exportService.exportOpenData(null, null, format, hours);
+    }
+
+    @Operation(summary = "Export open data as CSV or XLSX",
+            description = "Bulk export open data entries",
+            responses = @ApiResponse(content = @Content(mediaType = "text/csv")),
+            operationId = "export",
+            parameters = {
+                    @Parameter(name = "format", description = "Mandatory. Either ZIP (CSV) or XLSX.", example = "xlsx", in = ParameterIn.PATH, required = true)
+            })
+    @GetMapping(URIConstants.EXPORT_OPEN_DATA_RECENT)
+    public ResponseEntity<Object> exportOpenDataRecent(@PathVariable String format) {
+        return exportService.exportOpenData(null, null, format, null);
+    }
 }

@@ -12,4 +12,6 @@ public interface URIConstants {
     String EXPORT_PDF_LANG = "/export/pdf/{lang}";
     String EXPORT_PDF_FILENAME = "/export/pdf/{fileName}.pdf";
     String EXPORT_PDF_LANG_FILENAME = "/export/pdf/{lang}/{fileName}.pdf";
+    String EXPORT_OPEN_DATA_HOURS = "/export/netztest-opendata_hours-{hours}.{format}";
+    String EXPORT_OPEN_DATA_RECENT = "/export/netztest-opendata.{format}";
 }
