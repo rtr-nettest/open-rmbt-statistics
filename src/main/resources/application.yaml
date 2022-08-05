@@ -1,16 +1,14 @@
 app:
   defaultLanguage: en
   fileCache:
-    # period for deletion of cache
-    cleaningJobRate: PT24H # 24 hours period, ISO_8601
-    path: /tmp/cache
-    pdfPath: /tmp/pdfcache
-    # delete files older than X hours
-    expirationTerm: 23 # hours
+    cleaningJobRate: PT24H
+    path: /tmp/export
+    pdfPath: /tmp/pdf
+    expirationTerm: 23
 server:
   port: 8080
   servlet:
-    context-path: /RMBTStatisticServer_new
+    context-path: /RMBTStatisticServer
 spring:
   http:
     multipart:
@@ -21,14 +19,14 @@ spring:
     poolSize: 20
     minIdle: 1
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://${STATISTIC_DB_HOST}:${STATISTIC_DB_PORT}/${STATISTIC_DB_NAME}
-    username: ${STATISTIC_DB_USER}
-    password: ${STATISTIC_DB_PASSWORD}
+    url: jdbc:postgresql://127.0.0.1:5436/rmbt
+    username: rmbt
+    password: veeziFosuu2ieghe
 
-#    tomcat:
-#      test-while-idle: true
-#      test-on-borrow: true
-#      validation-query: SELECT 1
+  #    tomcat:
+  #      test-while-idle: true
+  #      test-on-borrow: true
+  #      validation-query: SELECT 1
   jpa:
     hibernate:
       ddl-auto: none
@@ -91,24 +89,22 @@ redis:
   port: ${REDIS_PORT}
 ---
 spring:
-  profiles: prod
+  profiles: staging
   datasource:
     poolSize: 20
     minIdle: 1
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://${STATISTIC_DB_HOST}:${STATISTIC_DB_PORT}/${STATISTIC_DB_NAME}
-    username: ${STATISTIC_DB_USER}
-    password: ${STATISTIC_DB_PASSWORD}
+    url: jdbc:postgresql://${DB_URI}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     tomcat:
       test-while-idle: true
       test-on-borrow: true
       validation-query: SELECT 1
 
 application-version:
-  host: ${HOST_ID}
+  host: rtr-api-staging
 
 redis:
-  host: ${STATISTIC_REDIS_HOST}
-  port: ${STATISTIC_REDIS_PORT}
-logging:
-  config: ${LOGGING_CONFIG_FILE_STATISTIC:classpath:logback.xml}
+  host: ${REDIS_HOST}
+  port: ${REDIS_PORT}
