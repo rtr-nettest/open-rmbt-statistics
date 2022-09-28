@@ -169,4 +169,6 @@ public interface TestConstants {
             "[14.756379303,46.880418161]," +
             "[14.756298183,46.879519931]," +
             "[14.754989611,46.879577613]]]]}";
+    String DEFAULT_COUNTRY_MOBILE = "DEFAULT_COUNTRY_MOBILE";
+    String DEFAULT_PROVIDER_MOBILE = "DEFAULT_PROVIDER_MOBILE";
 }

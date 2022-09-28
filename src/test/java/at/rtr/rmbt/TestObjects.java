@@ -1,12 +1,17 @@
 package at.rtr.rmbt;
 
+import at.rtr.rmbt.response.ChoicesResponse;
 import at.rtr.rmbt.response.coverage.CoverageDTO;
 import at.rtr.rmbt.response.coverage.CoveragesDTO;
+import at.rtr.rmbt.utils.QueryParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.geojson.GeoJsonObject;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TestObjects {
 
@@ -36,5 +41,24 @@ public interface TestObjects {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    static ChoicesResponse choicesResponse() {
+        return new ChoicesResponse(Set.of(TestConstants.DEFAULT_COUNTRY_MOBILE),
+                Set.of(TestConstants.DEFAULT_PROVIDER_MOBILE),
+                Set.of(TestConstants.DEFAULT_PROVIDER));
+    }
+
+    static QueryParser queryParser() {
+        QueryParser queryParser = new QueryParser();
+        queryParser.parseQuery(TestObjects.parametersMap());
+        return queryParser;
+    }
+
+    static MultiValueMap<String, String> parametersMap() {
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.put("country_location", List.of(TestConstants.DEFAULT_COUNTRY_LOCATION));
+        map.put("download_kbit", List.of(TestConstants.DEFAULT_DOWNLOAD_KBIT.toString()));
+        return map;
     }
 }

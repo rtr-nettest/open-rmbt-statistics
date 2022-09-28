@@ -51,7 +51,6 @@ public class CoverageRepositoryImpl implements CoverageRepository {
         PreparedStatementSetter preparedStatementSetter = getPreparedStatementSetter(latitude, longitude);
         ResultSetExtractor<List<CoverageDTO>> resultSetExtractor = getResultSetExtractor();
         return jdbcTemplate.query(preparedStatementCreator, preparedStatementSetter, resultSetExtractor);
-
     }
 
     private PreparedStatementSetter getPreparedStatementSetter(Double latitude, Double longitude) {

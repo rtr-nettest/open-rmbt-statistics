@@ -15,4 +15,5 @@ public interface URIConstants {
     String EXPORT_OPEN_DATA_HOURS = "/export/netztest-opendata_hours-{hours}.{format}";
     String EXPORT_OPEN_DATA_RECENT = "/export/netztest-opendata.{format}";
     String COVERAGE = "/coverage";
+    String OPEN_TEST_CHOICES = "/opentests/choices";
 }
