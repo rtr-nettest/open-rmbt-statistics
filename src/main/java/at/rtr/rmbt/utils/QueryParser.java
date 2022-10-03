@@ -801,4 +801,12 @@ public class QueryParser {
         }
         return completeQuery.toString().hashCode();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QueryParser that = (QueryParser) o;
+        return this.hashCode() == that.hashCode();
+    }
 }
