@@ -11,6 +11,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface TestObjects {
@@ -60,5 +61,14 @@ public interface TestObjects {
         map.put("country_location", List.of(TestConstants.DEFAULT_COUNTRY_LOCATION));
         map.put("download_kbit", List.of(TestConstants.DEFAULT_DOWNLOAD_KBIT.toString()));
         return map;
+    }
+
+    static Map<String, Long> statisticsResponse() {
+        return Map.of("5min", TestConstants.DEFAULT_STATISTICS_5MIN,
+                "30min", TestConstants.DEFAULT_STATISTICS_30MIN,
+                "60min", TestConstants.DEFAULT_STATISTICS_60MIN,
+                "12h", TestConstants.DEFAULT_STATISTICS_12H,
+                "24h", TestConstants.DEFAULT_STATISTICS_24H,
+                "7d", TestConstants.DEFAULT_STATISTICS_7D);
     }
 }

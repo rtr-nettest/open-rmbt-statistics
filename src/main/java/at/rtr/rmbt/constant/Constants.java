@@ -12,8 +12,10 @@ public interface Constants {
     String PRINCE_PATH = "/usr/bin/prince";
     String PDF_CONVERTER = "weasyprint";
     String STATISTIC_CACHE_NAME = "statisticCache";
+    String OPENTESTS_STATISTIC_CACHE_NAME = "opentestsStatisticCache";
     String STATISTICS_STALE_CACHE_NAME = "statisticStaleCache";
     Long CACHE_STALE_HOURS = 1L;
     Long CACHE_EXPIRE_HOURS = 6L;
+    Long OPENTESTS_STATISTICS_CACHE_EXPIRE_SECONDS = 300L;
     String PROVIDER_GPS = "gps";
 }
