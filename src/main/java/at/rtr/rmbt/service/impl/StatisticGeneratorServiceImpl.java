@@ -1,5 +1,6 @@
 package at.rtr.rmbt.service.impl;
 
+import at.rtr.rmbt.constant.Constants;
 import at.rtr.rmbt.dto.StatisticParameters;
 import at.rtr.rmbt.repository.StatisticRepository;
 import at.rtr.rmbt.service.StatisticGeneratorService;
@@ -17,7 +18,7 @@ public class StatisticGeneratorServiceImpl implements StatisticGeneratorService 
 
     private final StatisticRepository statisticRepository;
 
-    @Cacheable(value = "statisticCache")
+    @Cacheable(value = Constants.STATISTIC_CACHE_NAME)
     @Override
     public String generateStatistics(StatisticParameters params, boolean ultraGreen) {
         String result;
