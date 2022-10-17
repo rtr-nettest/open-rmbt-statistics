@@ -17,4 +17,5 @@ public interface URIConstants {
     String COVERAGE = "/coverage";
     String OPEN_TEST_CHOICES = "/opentests/choices";
     String OPEN_TEST_STATISTICS = "/opentests/statistics";
+    String ADMIN_USAGE_JSON = "/admin/usageJSON";
 }
