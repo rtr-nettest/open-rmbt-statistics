@@ -48,6 +48,8 @@ public class RedisConfig {
     @Bean
     public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer() {
         return (builder) -> builder
+                .withCacheConfiguration(Constants.OPENTESTS_INTRADAY_CACHE_NAME,
+                        RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(Constants.OPENTESTS_INTRADAY_CACHE_EXPIRE_SECONDS)))
                 .withCacheConfiguration(Constants.OPENTESTS_STATISTIC_CACHE_NAME,
                         RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(Constants.OPENTESTS_STATISTICS_CACHE_EXPIRE_SECONDS)))
                 .withCacheConfiguration(Constants.STATISTIC_CACHE_NAME,

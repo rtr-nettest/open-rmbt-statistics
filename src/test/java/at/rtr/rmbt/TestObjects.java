@@ -1,7 +1,8 @@
 package at.rtr.rmbt;
 
-import at.rtr.rmbt.response.adminUsage.*;
 import at.rtr.rmbt.response.ChoicesResponse;
+import at.rtr.rmbt.response.HourlyStatisticResponse;
+import at.rtr.rmbt.response.adminUsage.*;
 import at.rtr.rmbt.response.coverage.CoverageDTO;
 import at.rtr.rmbt.response.coverage.CoveragesDTO;
 import at.rtr.rmbt.utils.QueryParser;
@@ -172,5 +173,13 @@ public interface TestObjects {
 
     static SumsResponse sumsResponse(String value, Long sum) {
         return new SumsResponse(value, sum);
+    }
+
+    static HourlyStatisticResponse hourlyStatisticResponse() {
+        return new HourlyStatisticResponse(TestConstants.DEFAULT_QUANTILE_DOWN,
+                TestConstants.DEFAULT_QUANTILE_UP,
+                TestConstants.DEFAULT_QUANTILE_PING,
+                TestConstants.DEFAULT_HOUR,
+                TestConstants.DEFAULT_COUNT);
     }
 }
