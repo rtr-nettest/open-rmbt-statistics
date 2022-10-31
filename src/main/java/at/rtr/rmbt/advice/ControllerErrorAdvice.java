@@ -48,6 +48,12 @@ public class ControllerErrorAdvice {
         return new ErrorResponse(ex.getMessage());
     }
 
+    @ExceptionHandler(InvalidParameterException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public String handleInvalidParameterException(InvalidParameterException ex) {
+        return ex.getMessage();
+    }
+
     @ExceptionHandler(value = {InvalidLanguageException.class,
             InvalidImageTypeException.class,
             InvalidRequestParameterException.class})
