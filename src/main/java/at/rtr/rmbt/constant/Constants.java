@@ -14,10 +14,12 @@ public interface Constants {
     String STATISTIC_CACHE_NAME = "statisticCache";
     String OPENTESTS_STATISTIC_CACHE_NAME = "opentestsStatisticCache";
     String OPENTESTS_INTRADAY_CACHE_NAME = "opentestHourly";
+    String OPENTESTS_HISTOGRAM_CACHE_NAME = "opentestHistogram";
     String STATISTICS_STALE_CACHE_NAME = "statisticStaleCache";
     Long CACHE_STALE_HOURS = 1L;
     Long CACHE_EXPIRE_HOURS = 6L;
     Long OPENTESTS_STATISTICS_CACHE_EXPIRE_SECONDS = 300L;
     Long OPENTESTS_INTRADAY_CACHE_EXPIRE_SECONDS = 3600L;
+    Long OPENTESTS_HISTOGRAM_CACHE_EXPIRE_SECONDS = 3600L;
     String PROVIDER_GPS = "gps";
 }
