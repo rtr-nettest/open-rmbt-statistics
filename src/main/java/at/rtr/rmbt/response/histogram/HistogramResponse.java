@@ -3,13 +3,14 @@ package at.rtr.rmbt.response.histogram;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Builder
 @Getter
 @ToString
 @EqualsAndHashCode
-public class HistogramResponse {
+public class HistogramResponse implements Serializable {
 
     @JsonProperty(value = "download_kbit")
     private final List<BucketResponse> downloadKbit;

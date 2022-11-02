@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 @ToString
 @EqualsAndHashCode
-public class BucketResponse {
+public class BucketResponse implements Serializable {
 
     @JsonProperty(value = "lower_bound")
     public Double lowerBound;

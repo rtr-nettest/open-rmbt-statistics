@@ -6,11 +6,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 @Getter
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class HourlyStatisticResponse {
+public class HourlyStatisticResponse implements Serializable {
 
     @JsonProperty(value = "quantile_down")
     private final double quantileDown;
