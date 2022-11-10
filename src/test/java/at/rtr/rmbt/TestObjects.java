@@ -1,9 +1,12 @@
 package at.rtr.rmbt;
 
-import at.rtr.rmbt.response.adminUsage.*;
 import at.rtr.rmbt.response.ChoicesResponse;
+import at.rtr.rmbt.response.HourlyStatisticResponse;
+import at.rtr.rmbt.response.adminUsage.*;
 import at.rtr.rmbt.response.coverage.CoverageDTO;
 import at.rtr.rmbt.response.coverage.CoveragesDTO;
+import at.rtr.rmbt.response.histogram.BucketResponse;
+import at.rtr.rmbt.response.histogram.HistogramResponse;
 import at.rtr.rmbt.utils.QueryParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -172,5 +175,60 @@ public interface TestObjects {
 
     static SumsResponse sumsResponse(String value, Long sum) {
         return new SumsResponse(value, sum);
+    }
+
+    static HourlyStatisticResponse hourlyStatisticResponse() {
+        return new HourlyStatisticResponse(TestConstants.DEFAULT_QUANTILE_DOWN,
+                TestConstants.DEFAULT_QUANTILE_UP,
+                TestConstants.DEFAULT_QUANTILE_PING,
+                TestConstants.DEFAULT_HOUR,
+                TestConstants.DEFAULT_COUNT);
+    }
+
+    static HistogramResponse histogramResponse() {
+        return HistogramResponse.builder()
+                .downloadKbit(List.of(TestObjects.downloadKbitBucketResponse()))
+                .downloadKbitFine(List.of(TestObjects.downloadKbitFineBucketResponse()))
+                .uploadKbit(List.of(TestObjects.uploadKbitBucketResponse()))
+                .uploadKbitFine(List.of(TestObjects.uploadKbitFineBucketResponse()))
+                .pingMs(List.of(TestObjects.pingMsBucketResponse()))
+                .pingMsFine(List.of(TestObjects.pingMsFineBucketResponse()))
+                .build();
+    }
+
+    static BucketResponse downloadKbitFineBucketResponse() {
+        return TestObjects.downloadKbitBucketResponse();
+    }
+
+    static BucketResponse downloadKbitBucketResponse() {
+        var bucketResponse = new BucketResponse();
+        bucketResponse.lowerBound = TestConstants.DEFAULT_LOWER_BOUND_DOWNLOAD_KBIT;
+        bucketResponse.upperBound = TestConstants.DEFAULT_UPPER_BOUND_DOWNLOAD_KBIT;
+        bucketResponse.results = TestConstants.DEFAULT_RESULTS_DOWNLOAD_KBIT;
+        return bucketResponse;
+    }
+
+    static BucketResponse uploadKbitBucketResponse() {
+        var bucketResponse = new BucketResponse();
+        bucketResponse.lowerBound = TestConstants.DEFAULT_LOWER_BOUND_UPLOAD_KBIT;
+        bucketResponse.upperBound = TestConstants.DEFAULT_UPPER_BOUND_UPLOAD_KBIT;
+        bucketResponse.results = TestConstants.DEFAULT_RESULTS_UPLOAD_KBIT;
+        return bucketResponse;
+    }
+
+    static BucketResponse uploadKbitFineBucketResponse() {
+        return TestObjects.uploadKbitBucketResponse();
+    }
+
+    static BucketResponse pingMsBucketResponse() {
+        var bucketResponse = new BucketResponse();
+        bucketResponse.lowerBound = TestConstants.DEFAULT_LOWER_BOUND_PING_MS;
+        bucketResponse.upperBound = TestConstants.DEFAULT_UPPER_BOUND_PING_MS;
+        bucketResponse.results = TestConstants.DEFAULT_RESULTS_PING_MS;
+        return bucketResponse;
+    }
+
+    static BucketResponse pingMsFineBucketResponse() {
+        return TestObjects.pingMsBucketResponse();
     }
 }

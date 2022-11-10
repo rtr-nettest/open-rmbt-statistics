@@ -18,4 +18,6 @@ public interface URIConstants {
     String OPEN_TEST_CHOICES = "/opentests/choices";
     String OPEN_TEST_STATISTICS = "/opentests/statistics";
     String ADMIN_USAGE_JSON = "/admin/usageJSON";
+    String OPEN_TEST_INTRADAY = "/opentests/intraday";
+    String OPEN_TEST_HISTOGRAM = "/opentests/histogram";
 }
