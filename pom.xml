@@ -139,6 +139,11 @@
             <artifactId>geojson-jackson</artifactId>
             <version>1.14</version>
         </dependency>
+        <dependency>
+            <groupId>net.bull.javamelody</groupId>
+            <artifactId>javamelody-spring-boot-starter</artifactId>
+            <version>1.91.0</version>
+        </dependency>
     </dependencies>
 
     <build>
