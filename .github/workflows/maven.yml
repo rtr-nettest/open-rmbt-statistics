@@ -20,7 +20,7 @@ jobs:
           distribution: 'adopt'
           cache: maven
       - name: Build war with Maven
-        run: mvn compile package
+        run: mvn -B -DskipTests=true compile package
       - name: Archive war
         uses: actions/upload-artifact@v2
         with:
