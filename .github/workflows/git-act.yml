@@ -9,6 +9,7 @@ jobs:
       - name: Test
         run: >-
           mvn
+          pl.project13.maven:git-commit-id-plugin:4.9.10:revision
           org.jacoco:jacoco-maven-plugin:0.8.5:prepare-agent
           test -B
           org.jacoco:jacoco-maven-plugin:0.8.5:report
