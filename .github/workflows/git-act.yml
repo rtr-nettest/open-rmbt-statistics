@@ -3,16 +3,21 @@ on: [workflow_dispatch, push]
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: maven:3.6-jdk-13-alpine
     steps:
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          cache: maven
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Get git info
+        run: mvn -B pl.project13.maven:git-commit-id-plugin:4.9.10:revision
       - name: Test
         run: >-
-          mvn pl.project13.maven:git-commit-id-plugin:4.9.10:revision &&
           mvn
-          pl.project13.maven:git-commit-id-plugin:4.9.10:revision
           org.jacoco:jacoco-maven-plugin:0.8.5:prepare-agent
           test -B
           org.jacoco:jacoco-maven-plugin:0.8.5:report
