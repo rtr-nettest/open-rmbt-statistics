@@ -6,8 +6,11 @@ jobs:
     container: maven:3.6-jdk-13-alpine
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Test
         run: >-
+          mvn pl.project13.maven:git-commit-id-plugin:4.9.10:revision &&
           mvn
           pl.project13.maven:git-commit-id-plugin:4.9.10:revision
           org.jacoco:jacoco-maven-plugin:0.8.5:prepare-agent
