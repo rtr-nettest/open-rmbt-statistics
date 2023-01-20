@@ -2,6 +2,8 @@ package at.rtr.rmbt.dto;
 
 import at.rtr.rmbt.utils.smoothing.Smoothable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.PeekingIterator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -83,6 +85,26 @@ public class SpeedItems {
             Collections.sort(list);
     }
 
+    private static void reduceToUniqueTimestamps(Map<Integer, List<SpeedItem>> items) {
+        if (items == null) {
+            return;
+        }
+        for (List<SpeedItem> list : items.values()) {
+            ListIterator<SpeedItem> iterator = list.listIterator();
+
+            while (iterator.hasNext()) {
+                SpeedItem item = iterator.next();
+                //if the same items has same time stamp, remove from list, use only max
+                if (iterator.hasNext()) {
+                    SpeedItem nextItem = list.get(iterator.nextIndex());
+                    if (nextItem.getTime() == item.getTime()) {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+    }
+
     public void sortItems() {
         sortItems(download);
         sortItems(upload);
@@ -111,17 +133,18 @@ public class SpeedItems {
 
 
     protected static List<SpeedItem> getAccumulatedSpeedItems(Map<Integer, List<SpeedItem>> items) {
-        sortItems(items);//сортировка списков по тредам внутри мап
+        sortItems(items);//sort items by timestamp
+        reduceToUniqueTimestamps(items);
 
         if (items == null) {
             return new ArrayList<>();
         }
 
         int numItems = 0;
-        for (List<SpeedItem> speedItems : items.values())//подсчитали количество всех скоростей в мапе
+        for (List<SpeedItem> speedItems : items.values()) //total number of values
             numItems += speedItems.size();
 
-        final long times[] = new long[numItems];//запишем сюда все время по скоростям отсортировынх
+        final long times[] = new long[numItems];//all timestamps, in each thread, sorted by time ascending
 
         int i = 0;
         for (List<SpeedItem> speedItems : items.values()) {
@@ -132,16 +155,16 @@ public class SpeedItems {
         }
 
         numItems = i;
-        Arrays.sort(times);//отсортировали массив времени
+        Arrays.sort(times); //sort timestamps in total
 
         final long bytes[] = new long[times.length];
-        for (Map.Entry<Integer, List<SpeedItem>> entry : items.entrySet())//итерируем по треду
+        for (Map.Entry<Integer, List<SpeedItem>> entry : items.entrySet())//iterate over each thread
         {
             i = 0;
             long lastTime = 0;
             long lastBytes = 0;
             for (SpeedItem si : entry.getValue()) {
-                while (si.time > times[i]) // average times we don't have
+                while (si.time > times[i]) // average times we don't have in a specific thread --> avg bytes transferred
                 {
                     bytes[i] += Math.round((double) ((times[i] - lastTime) * si.bytes + (si.time - times[i]) * lastBytes) / (si.time - lastTime));
                     i++;
