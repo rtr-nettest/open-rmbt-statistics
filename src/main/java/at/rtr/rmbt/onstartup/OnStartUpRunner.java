@@ -13,6 +13,8 @@ import java.io.File;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -36,18 +38,22 @@ public class OnStartUpRunner implements ApplicationRunner {
     @Scheduled(fixedRateString = "${app.fileCache.cleaningJobRate}")
     public void clearFileCache() {
         log.info("Clear file cache job started");
-        File dir = fileService.openFile(fileCachePath);
-        if (dir.exists() && Objects.nonNull(dir.listFiles())) {
-            Instant staleInstant = clock.instant().minus(fileCacheExpirationTerm, ChronoUnit.HOURS);
-            for (File file : dir.listFiles()) {
-                Instant lastModifiedInstant = Instant.ofEpochMilli(file.lastModified());
-                if (lastModifiedInstant.isBefore(staleInstant)) {
-                    file.delete();
-                    log.info("File {} is deleted from directory {}", file.getAbsolutePath(), dir.getAbsolutePath());
+        List<String> dirs = Arrays.asList(fileCachePath, fileCachePdfPath);
+
+        for (String dirAsString : dirs) {
+            File dir = fileService.openFile(dirAsString);
+            if (dir.exists() && Objects.nonNull(dir.listFiles())) {
+                Instant staleInstant = clock.instant().minus(fileCacheExpirationTerm, ChronoUnit.HOURS);
+                for (File file : dir.listFiles()) {
+                    Instant lastModifiedInstant = Instant.ofEpochMilli(file.lastModified());
+                    if (lastModifiedInstant.isBefore(staleInstant)) {
+                        file.delete();
+                        log.info("File {} is deleted from directory {}", file.getAbsolutePath(), dir.getAbsolutePath());
+                    }
                 }
+            } else {
+                log.error("Temp directory {} does not exists", dir.getAbsolutePath());
             }
-        } else {
-            log.error("Temp directory {} does not exists", dir.getAbsolutePath());
         }
     }
 

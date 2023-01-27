@@ -45,6 +45,7 @@ class OnStartUpRunnerTest {
     @Test
     void clearFileCache_correctInvocation_fileDeleted() {
         when(fileService.openFile(TestConstants.DEFAULT_FILE_CACHE_PATH)).thenReturn(file);
+        when(fileService.openFile(TestConstants.DEFAULT_PDF_PATH)).thenReturn(file);
         when(file.exists()).thenReturn(true);
         when(file.listFiles()).thenReturn(new File[]{cachedFile, staleCachedFile});
         when(clock.instant()).thenReturn(TestConstants.DEFAULT_INSTANT);
@@ -53,7 +54,7 @@ class OnStartUpRunnerTest {
 
         onStartUpRunner.clearFileCache();
 
-        verify(staleCachedFile).delete();
+        verify(staleCachedFile, times(2)).delete();
         verify(cachedFile, times(0)).delete();
     }
 
