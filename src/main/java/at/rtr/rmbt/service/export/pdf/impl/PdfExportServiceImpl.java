@@ -242,7 +242,7 @@ public class PdfExportServiceImpl implements PdfExportService {
 
     private ResponseEntity<Object> getObjectResponseEntity(String acceptHeader, boolean certifiedMeasurement, String pdfFilename, String filenameDatePart, String uuid, Path pdfTarget) throws IOException {
         //depending on Accepts-Header, return file or json with link to file
-        if (acceptHeader.equals("application/json")) {
+        if (acceptHeader.contains("application/json")) {
             JSONObject retJson = new JSONObject();
             retJson.put("file", (certifiedMeasurement ? "C" : "L") + uuid + "-" + filenameDatePart + ".pdf");
 
