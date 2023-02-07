@@ -113,8 +113,7 @@ Make sure the file `context.xml` is owned by`tomcat`.
 
 ##### Configure Logstash
 
-Logstash is configured in `etc/tomcat9/logback-statistic.xml`.
-The basic logging configuration is `console`. The in newer Debian installations systemd is 
+The basic logging configuration is to send log to `console`. In newer Debian installations systemd is
 configured to redirect that output to systemd log. Older systems send log to `/var/log/tomcat9/catalina.out`.
 
 The following configuration sends log to `console`:
@@ -158,3 +157,14 @@ Alternatively, log can be sent to Logstash on a remote ELK instance
 </configuration>
 ```
 Again, make sure the file `etc/tomcat9/logback-statistic.xml` is owned by`tomcat`.
+
+### Install and configure PDF export
+
+[Weasyprint](https://weasyprint.org/) is required for PDF export.
+
+Install:
+* python3
+* python3-pip
+* libpango1.0-0
+and then as user `tomcat`(not as `root`) run `pip3 install weasyprint`
+
