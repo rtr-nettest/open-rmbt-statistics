@@ -107,6 +107,7 @@
 </head>
 <body>
 <script type="text/x-handlebars" id="template">
+    {{#if items.[1]}}
     <div class="title-page">
         <img class="rtr-logo-title" src="data:image/png;base64,{{logo}}" />
         <h1>{{ Lang.results_test }}
@@ -160,11 +161,11 @@
         </p>
         {{/if }}
     </div>
-
+    {{/if}}
     <div class="test-details" id="test-details">
         {{#each tests}}
         <div class="single-test">
-            <h2 id="{{open_test_uuid}}" >{{ Lang.measurement }} {{add @index 1}}</h2>
+            <h2 id="{{open_test_uuid}}" >{{ Lang.measurement }} {{#if items.[1]}}{{add @index 1}}{{else}}{{/if}}</h2>
             <h3>{{ Lang.result }}</h3>
             <table class="table table-striped">
                 <colgroup>
