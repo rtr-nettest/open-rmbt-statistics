@@ -4,10 +4,8 @@ import at.rtr.rmbt.utils.BandCalculationUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.*;
 
 @Getter
 @Setter
@@ -46,9 +44,12 @@ public class SignalGraphItemDTO {
     @JsonProperty("cell_info_4G")
     private CellInfo4G cellInfo4G;
 
+    @JsonProperty("cell_info_5G")
+    private CellInfo5G cellInfo5G;
+
 
     public SignalGraphItemDTO(long timeElapsed, String networkType, Integer signalStrength, Integer lteRsrp, Integer lteRsrq, String catTechnology,
-                              Integer locationId, Integer areaCode, Integer primaryScramblingCode, Integer channelNumber, Integer timingAdvance) {
+                              Long locationId, Integer areaCode, Integer primaryScramblingCode, Integer channelNumber, Integer timingAdvance) {
         this.timeElapsed = timeElapsed;
         this.networkType = networkType;
         this.signalStrength = signalStrength;
@@ -59,14 +60,16 @@ public class SignalGraphItemDTO {
 
         switch (catTechnology) {
             case "2G":
-                cellInfo2G = new CellInfo2G(locationId, areaCode, primaryScramblingCode, channelNumber);
+                cellInfo2G = new CellInfo2G(locationId == null ? null: locationId.intValue(), areaCode, primaryScramblingCode, channelNumber);
                 break;
             case "3G":
-                cellInfo3G = new CellInfo3G(locationId, areaCode, primaryScramblingCode, channelNumber);
+                cellInfo3G = new CellInfo3G(locationId == null ? null: locationId.intValue(), areaCode, primaryScramblingCode, channelNumber);
                 break;
             case "4G":
-                cellInfo4G = new CellInfo4G(locationId, areaCode, primaryScramblingCode, channelNumber);
+                cellInfo4G = new CellInfo4G(locationId == null ? null: locationId.intValue(), areaCode, primaryScramblingCode, channelNumber);
                 break;
+            case "5G":
+                cellInfo5G = new CellInfo5G(locationId, areaCode, primaryScramblingCode, channelNumber);
             default:
                 break;
         }
@@ -197,6 +200,42 @@ public class SignalGraphItemDTO {
                 setFi(BandCalculationUtil.getBandFromEarfcn(earfcn));
             }
             this.earfcn = earfcn;
+        }
+    }
+
+    @Getter
+    @Setter
+    @EqualsAndHashCode
+    @ToString
+    public static class CellInfo5G extends CellInfo {
+        @JsonProperty("nci")
+        @Schema(description = "New Radio Cell Identity, 36 bit")
+        private Long nci;
+
+        @JsonProperty("pci")
+        @Schema(description = "physical cell id, [0, 1007]")
+        private Integer pci;
+
+        @JsonProperty("tac")
+        @Schema(description = "tracking area code. 24 bit")
+        private Integer tac;
+
+        @JsonProperty("nrarfcn")
+        @Schema(description = "New Radio Absolute Radio Frequency Channel Number")
+        private Integer nrarfcn;
+
+        public CellInfo5G(Long locationId, Integer areaCode, Integer primaryScramblingCode, Integer channelNumber) {
+            setNci(locationId);
+            setPci(areaCode);
+            setTac(primaryScramblingCode);
+            setNrArfcn(channelNumber);
+        }
+
+        public void setNrArfcn(Integer nrarfcn) {
+            if (nrarfcn != null) {
+                setFi(BandCalculationUtil.getBandFromNrarfcn(nrarfcn));
+            }
+            this.nrarfcn = nrarfcn;
         }
     }
 }

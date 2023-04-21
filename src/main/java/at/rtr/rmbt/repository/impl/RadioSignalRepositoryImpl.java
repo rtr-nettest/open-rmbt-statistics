@@ -159,7 +159,7 @@ public class RadioSignalRepositoryImpl implements RadioSignalRepository {
                                 lteRsrp,
                                 lteRsrq,
                                 rsSignal.getString("cat_technology"),
-                                (rsSignal.getObject("location_id", Long.class) == null ? null : rsSignal.getObject("location_id", Long.class).intValue()),
+                                (rsSignal.getObject("location_id", Long.class) == null ? null : rsSignal.getObject("location_id", Long.class)),
                                 rsSignal.getObject("area_code", Integer.class),
                                 rsSignal.getObject("primary_scrambling_code", Integer.class),
                                 rsSignal.getObject("channel_number", Integer.class),

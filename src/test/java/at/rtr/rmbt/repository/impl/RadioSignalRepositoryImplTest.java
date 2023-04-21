@@ -130,7 +130,7 @@ class RadioSignalRepositoryImplTest {
                 TestConstants.DEFAULT_LTE_RSRP,
                 TestConstants.DEFAULT_LTE_RSRQ,
                 TestConstants.DEFAULT_CAT_TECHNOLOGY,
-                TestConstants.DEFAULT_LOCATION_ID.intValue(),
+                TestConstants.DEFAULT_LOCATION_ID,
                 TestConstants.DEFAULT_AREA_CODE,
                 TestConstants.DEFAULT_PRIMARY_SCRAMBLING_CODE,
                 TestConstants.DEFAULT_CHANNEL_NUMBER,
