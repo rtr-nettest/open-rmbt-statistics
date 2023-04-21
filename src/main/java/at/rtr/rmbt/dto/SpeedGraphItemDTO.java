@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SpeedGraphItemDTO {
     protected long timeElapsedNs;
-    protected double bytesTotal;
+    protected long bytesTotal;
 
 
     @JsonProperty("time_elapsed")
@@ -17,11 +17,11 @@ public class SpeedGraphItemDTO {
     }
 
     @JsonProperty("bytes_total")
-    public double getBytesTotal() {
+    public long getBytesTotal() {
         return bytesTotal;
     }
 
-    public void setBytesTotal(double bytesTotal) {
+    public void setBytesTotal(long bytesTotal) {
         this.bytesTotal = bytesTotal;
     }
 
