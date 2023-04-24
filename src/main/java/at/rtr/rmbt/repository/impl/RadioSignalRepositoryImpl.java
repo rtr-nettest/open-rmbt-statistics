@@ -27,7 +27,7 @@ public class RadioSignalRepositoryImpl implements RadioSignalRepository {
 
     private static final String SQL_SIGNALS = "SELECT radio_cell.open_test_uuid, radio_cell.mnc, radio_cell.mcc, radio_cell.location_id, radio_cell.area_code, " +
             "radio_cell.primary_scrambling_code, radio_cell.channel_number, " +
-            "nt.name network_type, technology cat_technology, signal_strength, lte_rsrp, lte_rsrq, signal_strength wifi_rssi, timing_advance, time " +
+            "nt.name network_type, technology cat_technology, signal_strength, lte_rsrp, lte_rsrq, lte_rssnr, signal_strength wifi_rssi, timing_advance, time " +
             "FROM radio_cell " +
             "JOIN radio_signal ON radio_signal.cell_uuid = radio_cell.uuid " +
             "JOIN network_type nt ON nt.uid = network_type_id " +
@@ -140,14 +140,15 @@ public class RadioSignalRepositoryImpl implements RadioSignalRepository {
                         break;
 
                     Integer signalStrength = rsSignal.getObject("signal_strength", Integer.class);
-                    Integer lteRsrp = rsSignal.getObject("lte_rsrp", Integer.class);
-                    Integer lteRsrq = rsSignal.getObject("lte_rsrq", Integer.class);
+                    Integer rsrp = rsSignal.getObject("lte_rsrp", Integer.class);
+                    Integer rsrq = rsSignal.getObject("lte_rsrq", Integer.class);
+                    Integer rssnr = rsSignal.getObject("lte_rssnr", Integer.class);
                     if (Objects.isNull(signalStrength)) {
                         signalStrength = rsSignal.getObject("wifi_rssi", Integer.class);
                     }
                     if ((Objects.nonNull(signalStrength) && signalStrength > LOWER_BOUND)
-                            || (Objects.nonNull(lteRsrp) && lteRsrp > LOWER_BOUND)
-                            || (Objects.nonNull(lteRsrq) && lteRsrq > LOWER_BOUND)) {
+                            || (Objects.nonNull(rsrp) && rsrp > LOWER_BOUND)
+                            || (Objects.nonNull(rsrq) && rsrq > LOWER_BOUND)) {
 
                         item = new SignalGraphItemDTO();
                         item.setTimeElapsed(Math.max(timeElapsed, 0));
@@ -156,8 +157,9 @@ public class RadioSignalRepositoryImpl implements RadioSignalRepository {
                                 Math.max(timeElapsed, 0),
                                 rsSignal.getString("network_type"),
                                 signalStrength,
-                                lteRsrp,
-                                lteRsrq,
+                                rsrp,
+                                rsrq,
+                                rssnr,
                                 rsSignal.getString("cat_technology"),
                                 (rsSignal.getObject("location_id", Long.class) == null ? null : rsSignal.getObject("location_id", Long.class)),
                                 rsSignal.getObject("area_code", Integer.class),

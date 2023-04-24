@@ -29,6 +29,15 @@ public class SignalGraphItemDTO {
     @JsonProperty("lte_rsrq")
     private Integer lteRsrq;
 
+    @JsonProperty("nr_rsrp")
+    private Integer nrRsrp;
+
+    @JsonProperty("nr_rsrq")
+    private Integer nrRsrq;
+
+    @JsonProperty("rssnr")
+    private Integer rssnr;
+
     @JsonProperty("cat_technology")
     private String catTechnology;
 
@@ -48,7 +57,7 @@ public class SignalGraphItemDTO {
     private CellInfo5G cellInfo5G;
 
 
-    public SignalGraphItemDTO(long timeElapsed, String networkType, Integer signalStrength, Integer lteRsrp, Integer lteRsrq, String catTechnology,
+    public SignalGraphItemDTO(long timeElapsed, String networkType, Integer signalStrength, Integer lteRsrp, Integer lteRsrq, Integer rssnr, String catTechnology,
                               Long locationId, Integer areaCode, Integer primaryScramblingCode, Integer channelNumber, Integer timingAdvance) {
         this.timeElapsed = timeElapsed;
         this.networkType = networkType;
@@ -57,6 +66,7 @@ public class SignalGraphItemDTO {
         this.lteRsrq = lteRsrq;
         this.catTechnology = catTechnology;
         this.timingAdvance = timingAdvance;
+        this.rssnr = rssnr;
 
         switch (catTechnology) {
             case "2G":
@@ -70,6 +80,11 @@ public class SignalGraphItemDTO {
                 break;
             case "5G":
                 cellInfo5G = new CellInfo5G(locationId, areaCode, primaryScramblingCode, channelNumber);
+                //in case of 5G, signal strength is nr signal strength
+                this.lteRsrp = null;
+                this.lteRsrq = null;
+                this.nrRsrp = lteRsrp;
+                this.nrRsrq = lteRsrq;
             default:
                 break;
         }
