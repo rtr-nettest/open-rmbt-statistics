@@ -29,7 +29,7 @@ class RadioSignalRepositoryImplTest {
 
     private static final String SQL_SIGNALS = "SELECT radio_cell.open_test_uuid, radio_cell.mnc, radio_cell.mcc, radio_cell.location_id, radio_cell.area_code, " +
             "radio_cell.primary_scrambling_code, radio_cell.channel_number, " +
-            "nt.name network_type, technology cat_technology, signal_strength, lte_rsrp, lte_rsrq, signal_strength wifi_rssi, timing_advance, time " +
+            "nt.name network_type, technology cat_technology, signal_strength, lte_rsrp, lte_rsrq, lte_rssnr, signal_strength wifi_rssi, timing_advance, time " +
             "FROM radio_cell " +
             "JOIN radio_signal ON radio_signal.cell_uuid = radio_cell.uuid " +
             "JOIN network_type nt ON nt.uid = network_type_id " +
@@ -81,6 +81,7 @@ class RadioSignalRepositoryImplTest {
         when(resultSet.getString("network_type")).thenReturn(TestConstants.DEFAULT_NETWORK_TYPE);
         when(resultSet.getObject("lte_rsrp", Integer.class)).thenReturn(TestConstants.DEFAULT_LTE_RSRP);
         when(resultSet.getObject("lte_rsrq", Integer.class)).thenReturn(TestConstants.DEFAULT_LTE_RSRQ);
+        when(resultSet.getObject("lte_rssnr", Integer.class)).thenReturn(TestConstants.DEFAULT_LTE_RSSNR);
         when(resultSet.getObject("signal_strength", Integer.class)).thenReturn(TestConstants.DEFAULT_SIGNAL_STRENGTH);
         when(resultSet.getString("cat_technology")).thenReturn(TestConstants.DEFAULT_CAT_TECHNOLOGY);
         when(resultSet.getObject("location_id", Long.class)).thenReturn(TestConstants.DEFAULT_LOCATION_ID);
@@ -129,6 +130,7 @@ class RadioSignalRepositoryImplTest {
                 TestConstants.DEFAULT_SIGNAL_STRENGTH,
                 TestConstants.DEFAULT_LTE_RSRP,
                 TestConstants.DEFAULT_LTE_RSRQ,
+                TestConstants.DEFAULT_LTE_RSSNR,
                 TestConstants.DEFAULT_CAT_TECHNOLOGY,
                 TestConstants.DEFAULT_LOCATION_ID,
                 TestConstants.DEFAULT_AREA_CODE,

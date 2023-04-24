@@ -66,6 +66,7 @@ public interface TestConstants {
     Double DEFAULT_PING_MS = 35.3;
     Integer DEFAULT_LTE_RSRP = -34;
     Integer DEFAULT_LTE_RSRQ = 223;
+    Integer DEFAULT_LTE_RSSNR = 3;
     String DEFAULT_SERVER_NAME = "DEFAULT_SERVER_NAME";
     Integer DEFAULT_TEST_DURATION = 2222;
     Integer DEFAULT_NUM_THREADS = 3;
