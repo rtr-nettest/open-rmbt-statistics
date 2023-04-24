@@ -34,7 +34,7 @@ class RadioSignalRepositoryImplTest {
             "JOIN radio_signal ON radio_signal.cell_uuid = radio_cell.uuid " +
             "JOIN network_type nt ON nt.uid = network_type_id " +
             "WHERE radio_signal.open_test_uuid = ? " +
-            "AND radio_cell.active = TRUE AND (radio_cell.primary_data_subscription = 'true' OR radio_cell.primary_data_subscription IS NULL) " +
+            "AND (radio_cell.active = TRUE or radio_cell.cell_state = 'secondary') AND (radio_cell.primary_data_subscription = 'true' OR radio_cell.primary_data_subscription IS NULL) " +
             "  ORDER BY radio_signal.time;";
 
     private static final String SQL_SIGNALS_LEGACY = "SELECT test_id, nt.name network_type, nt.group_name cat_technology, signal_strength, lte_rsrp, lte_rsrq, wifi_rssi, time "
