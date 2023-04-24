@@ -22,4 +22,6 @@ public interface Constants {
     Long OPENTESTS_INTRADAY_CACHE_EXPIRE_SECONDS = 3600L;
     Long OPENTESTS_HISTOGRAM_CACHE_EXPIRE_SECONDS = 3600L;
     String PROVIDER_GPS = "gps";
+
+    String NR_NSA = "NR NSA";
 }
