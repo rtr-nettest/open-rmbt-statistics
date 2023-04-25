@@ -194,6 +194,7 @@ public class RadioSignalRepositoryImpl implements RadioSignalRepository {
                                     listItem.setCellInfo4G(currentNSA.getCellInfo4G());
                                     listItem.setLteRsrp(currentNSA.getLteRsrp());
                                     listItem.setLteRsrq(currentNSA.getLteRsrq());
+                                    listItem.setLteSnr(currentNSA.getLteSnr());
 
                                 } else if (listItem.getCatTechnology().equals("4G")) {
                                     //update with existing NR info, add to list
