@@ -187,9 +187,13 @@ public class ExtendedHandlebars extends Handlebars {
                 if (number == null) {
                     return null;
                 }
-                NumberFormat nf = new SignificantFormat(2);
-                String f = nf.format(Double.parseDouble(number.toString()) / 1000d);
-                return f;
+                NumberFormat nf2 = new SignificantFormat(2);
+                NumberFormat nf3 = new SignificantFormat(3);
+                Double dNumber = Double.parseDouble(number.toString());
+                if (dNumber >= (100 * 1000d)) {
+                    return nf3.format(dNumber / 1000d);
+                }
+                return nf2.format(dNumber / 1000d);
             }
         });
 
