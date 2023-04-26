@@ -200,8 +200,8 @@
             <h3>{{ Lang.detailed_result }}</h3>
             <table class="table table-striped table-condensed">
                 <colgroup>
-                    <col class="col-xs-3"/>
-                    <col class="col-xs-9"/>
+                    <col class="col-xs-4"/>
+                    <col class="col-xs-8"/>
                 </colgroup>
                 <tr>
                     <td>{{ Lang.network_type }}</td>
@@ -215,6 +215,18 @@
                 <tr>
                     <td>{{ Lang.location }}</td>
                     <td>{{position}}</td>
+                </tr>
+                {{/if}}
+                {{#if atraster100}}
+                <tr>
+                    <td>{{ Lang.atraster100 }}</td>
+                    <td>{{atraster100}}</td>
+                </tr>
+                {{/if}}
+                {{#if atraster250}}
+                <tr>
+                    <td>{{ Lang.atraster250 }}</td>
+                    <td>{{atraster250}}</td>
                 </tr>
                 {{/if}}
                 {{#if provider_name}}
