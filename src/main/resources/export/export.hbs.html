@@ -188,10 +188,6 @@
                     <td>{{ Lang.time_utc }}</td>
                     <td>{{time}}</td>
                 </tr>
-                <tr>
-                    <td>{{ Lang.open_test_uuid }}</td>
-                    <td>{{open_test_uuid}}</td>
-                </tr>
             </table>
             <p>
                 {{ Lang.result_detail_link }}: <br/><a href="https://www.netztest.at/{{ Lang.lang }}/Opentest?O{{open_test_uuid}}">https://www.netztest.at/{{ Lang.lang }}/Opentest?O{{open_test_uuid}}</a>
@@ -229,6 +225,42 @@
                     <td>{{atraster250}}</td>
                 </tr>
                 {{/if}}
+                {{#if dtm_level}}
+                <tr>
+                    <td>{{ Lang.dtm_level }}</td>
+                    <td>{{dtm_level}}</td>
+                </tr>
+                {{/if}}
+                {{#if gkz}}
+                <tr>
+                    <td>{{ Lang.gkz }}</td>
+                    <td>{{gkz}}</td>
+                </tr>
+                {{/if}}
+                {{#if locality}}
+                <tr>
+                    <td>{{ Lang.locality }}</td>
+                    <td>{{locality}}</td>
+                </tr>
+                {{/if}}
+                {{#if community}}
+                <tr>
+                    <td>{{ Lang.community }}</td>
+                    <td>{{community}}</td>
+                </tr>
+                {{/if}}
+                {{#if district}}
+                <tr>
+                    <td>{{ Lang.district }}</td>
+                    <td>{{district}}</td>
+                </tr>
+                {{/if}}
+                {{#if province}}
+                <tr>
+                    <td>{{ Lang.province }}</td>
+                    <td>{{province}}</td>
+                </tr>
+                {{/if}}
                 {{#if provider_name}}
                 <tr>
                     <td>{{ Lang.provider_name }}</td>
@@ -261,6 +293,18 @@
                     <td>{{country_asn}}</td>
                 </tr>
                 {{/if}}
+                {{#if network_mcc_mnc}}
+                <tr>
+                    <td>{{ Lang.network_mcc_mnc }}</td>
+                    <td>{{network_mcc_mnc}}</td>
+                </tr>
+                {{/if}}
+                {{#if sim_mcc_mnc}}
+                <tr>
+                    <td>{{ Lang.sim_mcc_mnc }}</td>
+                    <td>{{sim_mcc_mnc}}</td>
+                </tr>
+                {{/if}}
                 <tr>
                     <td>{{ Lang.platform }}</td>
                     <td>{{platform}}</td>
@@ -275,6 +319,12 @@
                 <tr>
                     <td>{{ Lang.model_native }}</td>
                     <td>{{model_native}}</td>
+                </tr>
+                {{/if}}
+                {{#if temperature}}
+                <tr>
+                    <td>{{ Lang.temperature }}</td>
+                    <td>{{temperature}} &deg;C</td>
                 </tr>
                 {{/if}}
                 {{#if time_dl_ms}}
