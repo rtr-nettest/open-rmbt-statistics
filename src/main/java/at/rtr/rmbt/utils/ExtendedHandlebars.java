@@ -197,6 +197,17 @@ public class ExtendedHandlebars extends Handlebars {
             }
         });
 
+        this.registerHelper("toMbitRaw", new Helper<Object>() {
+            @Override
+            public Object apply(Object number, Options block) throws IOException {
+                if (number == null) {
+                    return null;
+                }
+                Double dNumber = Double.parseDouble(number.toString());
+                return (dNumber / 1000d);
+            }
+        });
+
         this.registerHelper("toMB", new Helper<Object>() {
             @Override
             public Object apply(Object number, Options block) throws IOException {
