@@ -327,6 +327,10 @@
                     <td>{{temperature}} &deg;C</td>
                 </tr>
                 {{/if}}
+                <tr>
+                    <td>{{ Lang.ping }} ({{ Lang.raw }})</td>
+                    <td>{{ ping_ms }} ms</td>
+                </tr>
                 {{#if time_dl_ms}}
                 <tr>
                     <td>{{ Lang.time_dl_ms }}</td>
@@ -345,6 +349,10 @@
                     <td>{{toMB bytes_download}} MB</td>
                 </tr>
                 {{/if}}
+                <tr>
+                    <td>{{ Lang.download }} ({{ Lang.raw }})</td>
+                    <td>{{toMbitRaw download_kbit}} {{ Lang.mbps }}</td>
+                </tr>
                 {{#if time_ul_ms}}
                 <tr>
                     <td>{{ Lang.time_ul_ms }}</td>
@@ -363,6 +371,10 @@
                     <td>{{toMB bytes_upload}} MB</td>
                 </tr>
                 {{/if}}
+                <tr>
+                    <td>{{ Lang.upload }} ({{ Lang.raw }})</td>
+                    <td>{{toMbitRaw upload_kbit}} {{ Lang.mbps }}</td>
+                </tr>
                 {{#if server_name}}
                 <tr>
                     <td>{{ Lang.server_name }}</td>
