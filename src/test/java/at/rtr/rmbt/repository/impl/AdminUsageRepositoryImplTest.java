@@ -26,12 +26,15 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 class AdminUsageRepositoryImplTest {
 
-    private static final String SQL_PLATFORMS = "SELECT date_trunc('day', time) _day, " +
-            "platform, count(platform) count_platform " +
-            "FROM (SELECT time, COALESCE(plattform, client_name, 'null') AS platform " +
-            "FROM test  WHERE status='FINISHED' AND deleted=false AND time >= ? AND time < ? ) t " +
-            "GROUP BY _day, platform " +
-            "HAVING count(platform) > 0 ORDER BY _day ASC";
+    private static final String SQL_PLATFORMS = "SELECT date_trunc('day', time) _day, concat(platform, ' (',status,')') as platform, count(platform) count_platform\n" +
+            " FROM (SELECT time, COALESCE(plattform, client_name, 'null') AS platform,\n" +
+            "             (case when status = 'FINISHED' then 'finished' else 'started/error' end) AS status\n" +
+            "      FROM test\n" +
+            "      WHERE status IN ('FINISHED','STARTED','ERROR','RUNNING','UPDATE_ERROR')\n" +
+            "        AND deleted = false\n" +
+            "  AND time >= ? AND time < ? ) t  GROUP BY _day, platform, status\n" +
+            " HAVING count(platform) > 0\n" +
+            " ORDER BY _day ASC;";
     private static final String SQL_PLATFORMS_LOOP_MODE = "SELECT date_trunc('day', time) _day, " +
             "platform, " +
             "count(platform) count_platform " +
