@@ -191,6 +191,19 @@
                 <artifactId>git-commit-id-plugin</artifactId>
                 <configuration>
                     <failOnNoGitDirectory>false</failOnNoGitDirectory>
+                    <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>me.ccampo</groupId>
+                <artifactId>git-version-maven-plugin</artifactId>
+                <version>0.1.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <strategy hint="git">
+                        <dirtyQualifier>dirty</dirtyQualifier>
+                    </strategy>
+                    <generateTemporaryFile>false</generateTemporaryFile>
                 </configuration>
             </plugin>
         </plugins>
