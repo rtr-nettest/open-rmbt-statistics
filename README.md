@@ -166,5 +166,5 @@ Install:
 * python3
 * python3-pip
 * libpango1.0-0
-and then as user `tomcat`(not as `root`) run `pip3 install weasyprint`
+and then run `pip3 install weasyprint`
 
