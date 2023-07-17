@@ -1,23 +1,25 @@
 package at.rtr.rmbt.config;
 
+import jakarta.servlet.Filter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import jakarta.servlet.Filter;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Configuration
 @EnableWebMvc
+@Slf4j
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private static final Boolean ALLOW_CREDENTIALS = false;
     private static final Long MAX_AGENT = 60L;
-    private static final List<String> ALLOW_METHODS = List.of("GET", "POST", "OPTIONS");
+    private static final List<String> ALLOW_METHODS = List.of("GET", "POST", "OPTIONS", "HEAD");
     private static final List<String> ALLOW_HEADERS = List.of("Content-Type");
     private static final List<String> ALLOW_ORIGIN = List.of("*");
 
