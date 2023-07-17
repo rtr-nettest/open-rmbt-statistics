@@ -9,18 +9,22 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+
+import java.io.IOException;
 
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@MultipartConfig
 public class PdfExportController {
 
     private final PdfExportService pdfExportService;
@@ -77,9 +81,9 @@ public class PdfExportController {
     @PostMapping(URIConstants.EXPORT_PDF)
     public ResponseEntity<Object> postExportPdf(@RequestHeader("accept") String acceptHeader,
                                                 @Parameter(hidden = true) @RequestParam MultiValueMap<String, String> parameters,
-                                                HttpServletRequest request) {
+                                                HttpServletRequest request) throws ServletException, IOException {
         //handle multipart forms
-        if (ServletFileUpload.isMultipartContent(request)) {
+        if (request.getParts().size() > 1) {
             ControllerUtils.addParametersFromMultipartRequest(parameters, request);
         }
         return pdfExportService.generatePdf(acceptHeader, parameters, null);
@@ -102,9 +106,9 @@ public class PdfExportController {
     public ResponseEntity<Object> postExportPdfLang(@PathVariable String lang,
                                                     @RequestHeader("accept") String acceptHeader,
                                                     @Parameter(hidden = true) @RequestParam MultiValueMap<String, String> parameters,
-                                                    HttpServletRequest request) {
+                                                    HttpServletRequest request) throws ServletException, IOException {
         //handle multipart forms
-        if (ServletFileUpload.isMultipartContent(request)) {
+        if (request.getParts().size() > 1) {
             ControllerUtils.addParametersFromMultipartRequest(parameters, request);
         }
         return pdfExportService.generatePdf(acceptHeader, parameters, lang);

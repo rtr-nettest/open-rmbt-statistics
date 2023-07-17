@@ -87,13 +87,13 @@ public class TestUtils {
                     Cell c2 = s2.getRow(j).getCell(k);
                     // Since cell have types and need o use different methods
                     if (c1.getCellType() == c2.getCellType()) {
-                        if (c1.getCellType() == Cell.CELL_TYPE_STRING) {
+                        if (c1.getCellType() == CellType.STRING) {
                             String v1 = c1.getStringCellValue();
                             String v2 = c2.getStringCellValue();
                             assertEquals(v1, v2, "Cell values are different.....");
                             System.out.println("Its matched : " + v1 + " === " + v2);
                         }
-                        if (c1.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+                        if (c1.getCellType() == CellType.NUMERIC) {
                             // If cell type is numeric, we need to check if data is of Date type
                             if (DateUtil.isCellDateFormatted(c1) | DateUtil.isCellDateFormatted(c2)) {
                                 // Need to use DataFormatter to get data in given style otherwise it will come as time stamp
@@ -109,7 +109,7 @@ public class TestUtils {
                                 System.out.println("Its matched : " + v1 + " === " + v2);
                             }
                         }
-                        if (c1.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
+                        if (c1.getCellType() == CellType.BOOLEAN) {
                             boolean v1 = c1.getBooleanCellValue();
                             boolean v2 = c2.getBooleanCellValue();
                             assertEquals(v1, v2, "Cell values are different.....");

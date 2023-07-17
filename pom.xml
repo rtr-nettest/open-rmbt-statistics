@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.6</version>
+        <version>3.1.1</version>
         <relativePath/>
     </parent>
     <groupId>at.rtr.rmbt</groupId>
@@ -15,11 +15,12 @@
     <packaging>war</packaging>
     <description>RTR statistic server</description>
     <properties>
-        <java.version>11</java.version>
-        <apache.commons.version>3.8.1</apache.commons.version>
+        <java.version>17</java.version>
+        <org.projectlombok.version>1.18.28</org.projectlombok.version>
+        <apache.commons.version>3.12.0</apache.commons.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
-        <org.projectlombok.version>1.18.20</org.projectlombok.version>
         <start-class>at.rtr.rmbt.StatisticServerApplication</start-class>
+        <jackson-version>2.15.2</jackson-version>
     </properties>
     <repositories>
         <repository>
@@ -92,7 +93,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-spatial</artifactId>
-            <version>5.4.10.Final</version>
+            <version>6.2.6.Final</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -112,12 +113,12 @@
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-csv</artifactId>
-            <version>2.11.2</version>
+            <version>${jackson-version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.sett4</groupId>
             <artifactId>jackson-dataformat-xlsx-lite</artifactId>
-            <version>2.9.9-1</version>
+            <version>${jackson-version}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -143,6 +144,16 @@
             <groupId>net.bull.javamelody</groupId>
             <artifactId>javamelody-spring-boot-starter</artifactId>
             <version>1.91.0</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
         </dependency>
     </dependencies>
 
@@ -187,17 +198,17 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>pl.project13.maven</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
+                <groupId>io.github.git-commit-id</groupId>
+                <artifactId>git-commit-id-maven-plugin</artifactId>
+                <version>6.0.0</version>
                 <configuration>
-                    <failOnNoGitDirectory>false</failOnNoGitDirectory>
                     <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>me.ccampo</groupId>
                 <artifactId>git-version-maven-plugin</artifactId>
-                <version>0.1.0</version>
+                <version>0.1.0</version> <!-- Use the latest stable version if possible -->
                 <extensions>true</extensions>
                 <configuration>
                     <strategy hint="git">

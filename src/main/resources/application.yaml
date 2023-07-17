@@ -49,7 +49,9 @@ redis:
   port: 6379
 ---
 spring:
-  profiles: dev
+  config:
+    activate:
+      on-profile: dev
   datasource:
     poolSize: 20
     minIdle: 1
@@ -70,7 +72,9 @@ redis:
   port: 6379
 ---
 spring:
-  profiles: test
+  config:
+    activate:
+      on-profile: test
   datasource:
     poolSize: 20
     minIdle: 1
@@ -91,7 +95,9 @@ redis:
   port: ${REDIS_PORT}
 ---
 spring:
-  profiles: prod
+  config:
+    activate:
+      on-profile: prod
   datasource:
     poolSize: 20
     minIdle: 1

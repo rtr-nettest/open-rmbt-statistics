@@ -1,17 +1,18 @@
 package at.rtr.rmbt.utils;
 
 import com.google.common.base.Strings;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Part;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.poi.util.IOUtils;
 import org.apache.tomcat.util.http.fileupload.FileItem;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.util.MultiValueMap;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @UtilityClass
@@ -23,30 +24,38 @@ public class ControllerUtils {
         factory.setSizeThreshold(10 * 1024 * 1024);
 
         // 2. Create a new file upload handler
-        ServletFileUpload upload = new ServletFileUpload(factory);
         List<FileItem> items;
         try {
-            items = upload.parseRequest(new ServletRequestContext(request));
-            for (FileItem item : items) {
-                if (item.isFormField() && item.getFieldName() != null && !Strings.isNullOrEmpty(item.getString("utf-8"))) {
-                    parameters.add(item.getFieldName(), item.getString("utf-8"));
-                } else if (!item.isFormField() && item.getFieldName() != null && item.getInputStream() != null && item.getSize() > 0) {
-                    //it is really a file - parse it, add it as base64 input
-                    String contentType = item.getContentType();
-                    byte[] bytes = IOUtils.toByteArray(item.getInputStream());
+            for (Part part : request.getParts()) {
+                String disposition = part.getHeader("Content-Disposition");
+                String[] tokens = disposition.split(";");
+
+                for (int i = 1; i < tokens.length; i++) {
+                    String t = tokens[i].trim();
+                    if (t.startsWith("name")) {
+                        parameters.add(t.substring(5, t.length() - 1), part.getName());
+                    }
+                }
+
+                if (part.getSubmittedFileName() == null && !Strings.isNullOrEmpty(part.getName())) {
+                    parameters.add(part.getName(), new String(part.getInputStream().readAllBytes(), StandardCharsets.UTF_8));
+                } else if (part.getSubmittedFileName() != null && part.getInputStream() != null && part.getSize() > 0) {
+                    String contentType = part.getContentType();
+                    byte[] bytes = IOUtils.toByteArray(part.getInputStream());
                     String base64Str = Base64.encodeBase64String(bytes);
                     String dataUri = "data:" + contentType + ";base64," + base64Str;
 
-                    if (item.getFieldName().endsWith("[]")) {
-                        String fieldName = item.getFieldName().replaceAll("\\[\\]", "");
+                    if (part.getName().endsWith("[]")) {
+                        String fieldName = part.getName().replaceAll("\\[\\]", "");
                         parameters.add(fieldName, dataUri);
                     } else {
-                        parameters.add(item.getFieldName(), dataUri);
+                        parameters.add(part.getName(), dataUri);
                     }
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | ServletException e) {
             e.printStackTrace();
         }
     }
+
 }
