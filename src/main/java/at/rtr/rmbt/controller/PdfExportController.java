@@ -107,9 +107,12 @@ public class PdfExportController {
                                                     @RequestHeader("accept") String acceptHeader,
                                                     @Parameter(hidden = true) @RequestParam MultiValueMap<String, String> parameters,
                                                     HttpServletRequest request) throws ServletException, IOException {
-        //handle multipart forms
-        if (request.getParts().size() > 1) {
-            ControllerUtils.addParametersFromMultipartRequest(parameters, request);
+        //handle non-multipart form
+        if (request.getContentType().toLowerCase().startsWith("multipart")) {
+            //handle multipart forms
+            if (request.getParts().size() > 1) {
+                ControllerUtils.addParametersFromMultipartRequest(parameters, request);
+            }
         }
         return pdfExportService.generatePdf(acceptHeader, parameters, lang);
     }

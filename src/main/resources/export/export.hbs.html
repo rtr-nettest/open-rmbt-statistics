@@ -107,7 +107,7 @@
 </head>
 <body>
 <script type="text/x-handlebars" id="template">
-    {{#if items.[1]}}
+    {{#with tests.[1]}}
     <div class="title-page">
         <img class="rtr-logo-title" src="data:image/png;base64,{{logo}}" />
         <h1>{{ Lang.results_test }}
@@ -161,7 +161,7 @@
         </p>
         {{/if }}
     </div>
-    {{/if}}
+    {{/with}}
     <div class="test-details" id="test-details">
         {{#each tests}}
         <div class="single-test">
@@ -563,6 +563,16 @@
         }
     });
 
+    Handlebars.registerHelper('roundNumber', function(number, options) {
+        var num = parseFloat(number);
+        return Math.round(num);
+    });
+
+    Handlebars.registerHelper('toMB', function(number, options) {
+        var num = parseFloat(number);
+        return (Math.round(num * 1000)) / 1000;
+    });
+
     //https://stackoverflow.com/questions/8853396/logical-operator-in-a-handlebars-js-if-conditional
     Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
         if (v1 instanceof Array) {
@@ -614,8 +624,12 @@
         return sum;
     });
 
-    Handlebars.registerHelper("toMbit",(number) => {
-        return (number/1000).toLocaleString('de-DE',{maximumSignificantDigits:2});;
+    Handlebars.registerHelper("toMbit", (number) => {
+        return (number / 1000).toLocaleString('de-DE', {maximumSignificantDigits: 2});
+    });
+
+    Handlebars.registerHelper("toMbitRaw",(number) => {
+        return number / 1000;
     });
 
     Handlebars.registerHelper("twoSignificantDigits",(number) => {
