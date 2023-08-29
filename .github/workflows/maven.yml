@@ -5,7 +5,7 @@ name: WAR build
 
 on:
   push:
-    branches: [ feature/war, master ]
+    branches: [ feature/war, master, feature/jakarta-upgrade ]
 jobs:
   build:
 
@@ -28,4 +28,4 @@ jobs:
         with:
           name: statisticserver-war
           path: target/statistic-server-*.war
-          retention-days: 60
+          retention-days: 365
