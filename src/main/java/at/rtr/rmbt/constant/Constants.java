@@ -8,7 +8,7 @@ public interface Constants {
     Double RMBT_GEO_DISTANCE_DETAIL_LIMIT = 3000D;
     String RMBT_DEFAULT_LANGUAGE = "en";
     List<String> RMBT_SUPPORTED_LANGUAGES = List.of("de", "en", "hr", "sv", "pl", "es", "is", "fr", "nb", "cs");
-    String WEASYPRINT_PATH = "/usr/local/bin/weasyprint";
+    String WEASYPRINT_PATH = "/usr/bin/weasyprint";
     String PRINCE_PATH = "/usr/bin/prince";
     String PDF_CONVERTER = "weasyprint";
     String STATISTIC_CACHE_NAME = "statisticCache";
