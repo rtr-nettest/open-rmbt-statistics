@@ -27,17 +27,8 @@ public class ControllerUtils {
         List<FileItem> items;
         try {
             for (Part part : request.getParts()) {
-                String disposition = part.getHeader("Content-Disposition");
-                String[] tokens = disposition.split(";");
-
-                for (int i = 1; i < tokens.length; i++) {
-                    String t = tokens[i].trim();
-                    if (t.startsWith("name")) {
-                        parameters.add(t.substring(5, t.length() - 1), part.getName());
-                    }
-                }
-
-                if (part.getSubmittedFileName() == null && !Strings.isNullOrEmpty(part.getName())) {
+                if (part.getSubmittedFileName() == null && !Strings.isNullOrEmpty(part.getName()) && !parameters.containsKey(part.getName())) {
+                    //if not already added
                     parameters.add(part.getName(), new String(part.getInputStream().readAllBytes(), StandardCharsets.UTF_8));
                 } else if (part.getSubmittedFileName() != null && part.getInputStream() != null && part.getSize() > 0) {
                     String contentType = part.getContentType();
@@ -45,12 +36,8 @@ public class ControllerUtils {
                     String base64Str = Base64.encodeBase64String(bytes);
                     String dataUri = "data:" + contentType + ";base64," + base64Str;
 
-                    if (part.getName().endsWith("[]")) {
-                        String fieldName = part.getName().replaceAll("\\[\\]", "");
-                        parameters.add(fieldName, dataUri);
-                    } else {
-                        parameters.add(part.getName(), dataUri);
-                    }
+                    String fieldName = part.getName().replaceAll("\\[\\]", "");
+                    parameters.add(fieldName, dataUri);
                 }
             }
         } catch (IOException | ServletException e) {
