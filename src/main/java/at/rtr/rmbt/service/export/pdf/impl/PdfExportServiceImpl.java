@@ -13,11 +13,8 @@ import at.rtr.rmbt.service.export.pdf.PdfGenerator;
 import at.rtr.rmbt.utils.ConvertUtils;
 import at.rtr.rmbt.utils.ExtendedHandlebars;
 import at.rtr.rmbt.utils.QueryParser;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
-import com.github.jknack.handlebars.context.JavaBeanValueResolver;
-import com.google.common.base.CaseFormat;
 import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
@@ -118,7 +115,15 @@ public class PdfExportServiceImpl implements PdfExportService {
         data.put("tests", testResults);
 
         //add all params to the model
-        data.putAll(parameters);
+        //if not an array, don't make it one
+        parameters.keySet().stream().forEach(k -> {
+            if (parameters.get(k).size() > 1) {
+                data.put(k, parameters.get(k));
+            }
+            else {
+                data.put(k, parameters.getFirst(k));
+            }
+        });
 
         //if no measurements - don't generate the application
         if (searchResult.getResults() == null || searchResult.getResults().isEmpty()) {
