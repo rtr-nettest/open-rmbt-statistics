@@ -14,6 +14,7 @@ import org.springframework.util.MultiValueMap;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @UtilityClass
 public class ControllerUtils {
@@ -22,6 +23,8 @@ public class ControllerUtils {
         // 1. Create a factory for disk-based file items
         DiskFileItemFactory factory = new DiskFileItemFactory();
         factory.setSizeThreshold(10 * 1024 * 1024);
+
+
 
         // 2. Create a new file upload handler
         List<FileItem> items;
@@ -43,6 +46,9 @@ public class ControllerUtils {
         } catch (IOException | ServletException e) {
             e.printStackTrace();
         }
+
+        System.out.println("keyset " + parameters.keySet().stream().collect(Collectors.joining(", ")));
+        System.out.println("sizes" + parameters.keySet().stream().map(k -> k + ":" + parameters.get(k).stream().collect(Collectors.joining(","))).collect(Collectors.joining(";")));
     }
 
 }
