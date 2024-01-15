@@ -280,9 +280,9 @@
 
         </div>
 
-        {{#if test_pictures}}
+        {{#if test_picturesArr}}
         <div class="">
-        {{#each test_pictures}}
+        {{#each test_picturesArr}}
         <div class="row detail">
              <p class="col-xs-2 text-right">
                 <strong>{{ Lang.photo_upload }}</strong>
@@ -292,6 +292,18 @@
             </p>
         </div>
         {{/each}}
+        </div>
+        {{/if}}
+        {{#if test_pictures}}
+        <div class="">
+        <div class="row detail">
+             <p class="col-xs-2 text-right">
+                <strong>{{ Lang.photo_upload }}</strong>
+            </p>
+            <p class="col-xs-9">
+                <img src="{{test_pictures}}" class="img-responsive" style="max-height:20cm" />
+            </p>
+        </div>
         </div>
         {{/if}}
     </div>

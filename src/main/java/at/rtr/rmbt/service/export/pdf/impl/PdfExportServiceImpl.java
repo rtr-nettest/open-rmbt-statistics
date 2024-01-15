@@ -118,7 +118,8 @@ public class PdfExportServiceImpl implements PdfExportService {
         //if not an array, don't make it one
         parameters.keySet().stream().forEach(k -> {
             if (parameters.get(k).size() > 1) {
-                data.put(k, parameters.get(k));
+                String arrayName = k.replace("[]","") + "Arr"; //handlebars does not support square bracket
+                data.put(arrayName, parameters.get(k));
             }
             else {
                 data.put(k, parameters.getFirst(k));
