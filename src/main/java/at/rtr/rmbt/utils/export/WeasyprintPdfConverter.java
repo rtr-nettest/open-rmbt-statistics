@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class WeasyprintPdfConverter implements PdfConverter {
@@ -23,9 +24,11 @@ public class WeasyprintPdfConverter implements PdfConverter {
                 pdfTarget.toAbsolutePath().toString());
         Process weasyProcess = weasyProcessBuilder.start();
         try {
-            weasyProcess.waitFor();
+            weasyProcess.waitFor(10, TimeUnit.MINUTES);
             log.info("PDF generation with weasyprint finished");
         } catch (InterruptedException e) {
+            weasyProcess.destroy();
+            log.info("PDF generation with weasyprint terminated by timeout");
             throw new IOException(e);
         }
     }
