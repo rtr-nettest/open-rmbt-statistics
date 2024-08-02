@@ -8,15 +8,25 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SequenceWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.github.sett4.dataformat.xlsx.XlsxMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.util.DefaultTempFileCreationStrategy;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 @Service
+@Slf4j
 public class XlsxExportService extends AbstractExportService {
 
     private static final String FILENAME_XLSX_HOURS = "netztest-opendata_hours-%HOURS%.xlsx";
@@ -39,6 +49,34 @@ public class XlsxExportService extends AbstractExportService {
         sequenceWriter.writeAll(results);
         sequenceWriter.flush();
         sequenceWriter.close();
+
+        File poiFilesTmpDir = new File(System.getProperty("java.io.tmpdir"), "poifiles");
+        if (poiFilesTmpDir.exists() &&  poiFilesTmpDir.isDirectory()) {
+            deleteOldFiles(poiFilesTmpDir.toPath());
+        }
+
+    }
+
+    private static void deleteOldFiles(Path directory) {
+        Instant cutoffTimestamp = Instant.now().minus(1, ChronoUnit.HOURS);
+        try (Stream<Path> files = Files.list(directory)) {
+            files.filter(Files::isRegularFile)
+                    .filter(path -> {
+                        try {
+                            return Files.getLastModifiedTime(path).toInstant().compareTo(cutoffTimestamp) < 0;
+                        } catch (IOException e) {
+                            return false;
+                        }
+                    })
+                    .forEach(path -> {
+                        try {
+                            log.info("deleting old poi file " + path);
+                            Files.delete(path);
+                        } catch (IOException e) {
+                            log.error("error deleting poi file " + path);
+                        }
+                    });
+        } catch (IOException e) {}
     }
 
     protected MediaType getMediaType() {
