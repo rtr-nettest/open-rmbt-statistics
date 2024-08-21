@@ -87,7 +87,7 @@ public interface TestConstants {
     Integer DEFAULT_KG_NR = 33;
     Integer DEFAULT_GKZ_SA = 88;
     Integer DEFAULT_LAND_COVER = 18;
-    Integer DEFAULT_CELL_AREA_CODE = 19;
+    Long DEFAULT_CELL_AREA_CODE = 19L;
     Integer DEFAULT_CELL_LOCATION_ID = 20;
     Integer DEFAULT_CHANNEL_NUMBER = 21;
     Integer DEFAULT_RADIO_BAND = 22;
@@ -104,7 +104,7 @@ public interface TestConstants {
     Timestamp DEFAULT_CLIENT_TIME_TIMESTAMP = new Timestamp(164174122517L);
     String DEFAULT_NETWORK_TYPE = "WLAN";
     Long DEFAULT_LOCATION_ID = 33L;
-    Integer DEFAULT_AREA_CODE = 34;
+    Long DEFAULT_AREA_CODE = 34L;
     Integer DEFAULT_PRIMARY_SCRAMBLING_CODE = 35;
     Integer DEFAULT_TIMING_ADVANCE = 36;
     String DEFAULT_TEXT = "DEFAULT_TEXT";

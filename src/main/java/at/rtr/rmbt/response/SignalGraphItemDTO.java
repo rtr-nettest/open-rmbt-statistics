@@ -61,7 +61,7 @@ public class SignalGraphItemDTO {
 
 
     public SignalGraphItemDTO(long timeElapsed, String networkType, Integer signalStrength, Integer lteRsrp, Integer lteRsrq, Integer lteSnr, String catTechnology,
-                              Long locationId, Integer areaCode, Integer primaryScramblingCode, Integer channelNumber, Integer timingAdvance) {
+                              Long locationId, Long areaCode, Integer primaryScramblingCode, Integer channelNumber, Integer timingAdvance) {
         this.timeElapsed = timeElapsed;
         this.networkType = networkType;
         this.signalStrength = signalStrength;
@@ -73,16 +73,16 @@ public class SignalGraphItemDTO {
 
         switch (catTechnology) {
             case "2G":
-                cellInfo2G = new CellInfo2G(locationId == null ? null: locationId.intValue(), areaCode, primaryScramblingCode, channelNumber);
+                cellInfo2G = new CellInfo2G(locationId == null ? null: locationId.intValue(), (areaCode == null ? null : areaCode.intValue()), primaryScramblingCode, channelNumber);
                 break;
             case "3G":
-                cellInfo3G = new CellInfo3G(locationId == null ? null: locationId.intValue(), areaCode, primaryScramblingCode, channelNumber);
+                cellInfo3G = new CellInfo3G(locationId == null ? null: locationId.intValue(), (areaCode == null ? null : areaCode.intValue()), primaryScramblingCode, channelNumber);
                 break;
             case "4G":
-                cellInfo4G = new CellInfo4G(locationId == null ? null: locationId.intValue(), areaCode, primaryScramblingCode, channelNumber);
+                cellInfo4G = new CellInfo4G(locationId == null ? null: locationId.intValue(), (areaCode == null ? null : areaCode.intValue()), primaryScramblingCode, channelNumber);
                 break;
             case "5G":
-                cellInfo5G = new CellInfo5G(locationId, areaCode, primaryScramblingCode, channelNumber);
+                cellInfo5G = new CellInfo5G(locationId, (areaCode == null ? null : areaCode.intValue()), primaryScramblingCode, channelNumber);
                 //in case of 5G, signal strength is nr signal strength
                 this.lteRsrp = null;
                 this.lteRsrq = null;
