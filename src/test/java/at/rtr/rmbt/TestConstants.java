@@ -88,7 +88,7 @@ public interface TestConstants {
     Integer DEFAULT_GKZ_SA = 88;
     Integer DEFAULT_LAND_COVER = 18;
     Long DEFAULT_CELL_AREA_CODE = 19L;
-    Integer DEFAULT_CELL_LOCATION_ID = 20;
+    Long DEFAULT_CELL_LOCATION_ID = 20L;
     Integer DEFAULT_CHANNEL_NUMBER = 21;
     Integer DEFAULT_RADIO_BAND = 22;
     Integer DEFAULT_SETTLEMENT_TYPE = 23;
