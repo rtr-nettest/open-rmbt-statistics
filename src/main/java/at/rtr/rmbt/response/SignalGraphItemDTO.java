@@ -209,8 +209,8 @@ public class SignalGraphItemDTO {
         private Integer earfcn;
 
         public CellInfo4G(Integer locationId, Integer areaCode, Integer primaryScramblingCode, Integer channelNumber) {
-            setTac(locationId);
-            setCi(areaCode);
+            setCi(locationId);
+            setTac(areaCode);
             setPci(primaryScramblingCode);
             setEarfcn(channelNumber);
         }
@@ -246,8 +246,8 @@ public class SignalGraphItemDTO {
 
         public CellInfo5G(Long locationId, Integer areaCode, Integer primaryScramblingCode, Integer channelNumber) {
             setNci(locationId);
-            setPci(areaCode);
-            setTac(primaryScramblingCode);
+            setTac(areaCode);
+            setPci(primaryScramblingCode);
             setNrArfcn(channelNumber);
         }
 
