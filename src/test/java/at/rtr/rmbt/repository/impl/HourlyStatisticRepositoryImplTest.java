@@ -29,10 +29,10 @@ import static org.mockito.Mockito.when;
 class HourlyStatisticRepositoryImplTest {
 
     private static final String SQL_QUERY = "SELECT  count(t.open_test_uuid),  " +
-            "extract(hour from t.time AT TIME ZONE t.timezone) AS hour,  " +
-            "quantile(t.speed_download :: bigint, ?)          quantile_down,  " +
-            "quantile(t.speed_upload :: bigint, ?)            quantile_up,  " +
-            "quantile(t.ping_median :: bigint, ?)             quantile_ping " +
+            "extract(hour from t.time AT TIME ZONE t.timezone) AS hour," +
+            "       percentile_disc(?) WITHIN GROUP (ORDER BY t.speed_download :: bigint) AS quantile_down," +
+            "       percentile_disc(?) WITHIN GROUP (ORDER BY t.speed_upload :: bigint) AS quantile_up," +
+            "       percentile_disc(?) WITHIN GROUP (ORDER BY t.ping_median :: bigint) AS quantile_ping " +
             "FROM test t  LEFT JOIN network_type nt ON nt.uid=t.network_type " +
             "LEFT JOIN test_loopmode l ON (l.test_uuid = t.uuid) " +
             "LEFT JOIN device_map adm ON adm.codename=t.model " +

@@ -199,10 +199,10 @@ public class StatisticRepositoryImpl implements StatisticRepository {
                 .format("SELECT" +
                                 (group ? " p.name, p.shortname, " : "") +
                                 " count(t.uid) count," +
-                                " quantile(speed_download::bigint, ?::double precision) quantile_down," +
-                                " quantile(speed_upload::bigint, ?::double precision) quantile_up," +
-                                " quantile(%1$s::bigint, ?::double precision) quantile_signal," +
-                                " quantile(ping_median::bigint, ?::double precision) quantile_ping," +
+                                "       percentile_disc(?) WITHIN GROUP (ORDER BY speed_download :: bigint) AS quantile_down," +
+                                "       percentile_disc(?) WITHIN GROUP (ORDER BY speed_upload :: bigint) AS quantile_up," +
+                                "       percentile_disc(?) WITHIN GROUP (ORDER BY %1$s :: bigint) AS quantile_signal," +
+                                "       percentile_disc(?) WITHIN GROUP (ORDER BY ping_median :: bigint) AS quantile_ping," +
 
                                 getClausesFor("speed_download", "down", ultraGreen, false) + "," +
                                 getClausesFor("speed_upload", "up", ultraGreen, false) + "," +
@@ -236,10 +236,10 @@ public class StatisticRepositoryImpl implements StatisticRepository {
                                     ((group && useMobileProvider) ? " p.name AS name, p.shortname AS shortname,  p.mccmnc AS sim_mcc_mnc, " : "") +
                                     ((group && !useMobileProvider) ? " public_ip_as_name AS name, public_ip_as_name AS shortname, t.public_ip_asn AS asn,  " : "") +
                                     " count(t.uid) count," +
-                                    " quantile(speed_download::bigint, ?::double precision) quantile_down," +
-                                    " quantile(speed_upload::bigint, ?::double precision) quantile_up," +
-                                    " quantile(%1$s::bigint, ?::double precision) quantile_signal," +
-                                    " quantile(ping_median::bigint, ?::double precision) quantile_ping," +
+                                    "       percentile_disc(?) WITHIN GROUP (ORDER BY speed_download :: bigint) AS quantile_down," +
+                                    "       percentile_disc(?) WITHIN GROUP (ORDER BY speed_upload :: bigint) AS quantile_up," +
+                                    "       percentile_disc(?) WITHIN GROUP (ORDER BY %1$s :: bigint) AS quantile_signal," +
+                                    "       percentile_disc(?) WITHIN GROUP (ORDER BY ping_median :: bigint) AS quantile_ping," +
 
                                     getClausesFor("speed_download", "down", ultraGreen, false) + "," +
                                     getClausesFor("speed_upload", "up", ultraGreen, false) + "," +
@@ -370,9 +370,10 @@ public class StatisticRepositoryImpl implements StatisticRepository {
     private static PreparedStatement getPreparedStatementSelectDevices(Connection conn, boolean group, double accuracy, String country, boolean useMobileProvider, String where, int maxDevices, Timestamp endDate, int province) throws SQLException {
         String sql = String.format("SELECT" +
                 (group ? " COALESCE(adm.fullname, t.model) model," : "") +
-                " count(t.uid) count," + " quantile(speed_download::bigint, ?::double precision) quantile_down," +
-                " quantile(speed_upload::bigint, ?::double precision) quantile_up," +
-                " quantile(ping_median::bigint, ?::double precision) quantile_ping" +
+                " count(t.uid) count," +
+                "       percentile_disc(?) WITHIN GROUP (ORDER BY speed_download :: bigint) AS quantile_down," +
+                "       percentile_disc(?) WITHIN GROUP (ORDER BY speed_upload :: bigint) AS quantile_up," +
+                "       percentile_disc(?) WITHIN GROUP (ORDER BY ping_median :: bigint) AS quantile_ping" +
                 " FROM test t" +
                 " LEFT JOIN device_map adm ON adm.codename=t.model" +
                 " LEFT JOIN network_type nt ON nt.uid=t.network_type" +
@@ -394,9 +395,10 @@ public class StatisticRepositoryImpl implements StatisticRepository {
         if (country != null) {
             sql = String.format("SELECT" +
                     (group ? " COALESCE(adm.fullname, t.model) model," : "") +
-                    " count(t.uid) count," + " quantile(speed_download::bigint, ?::double precision) quantile_down," +
-                    " quantile(speed_upload::bigint, ?::double precision) quantile_up," +
-                    " quantile(ping_median::bigint, ?::double precision) quantile_ping" +
+                    " count(t.uid) count," +
+                    "       percentile_disc(?) WITHIN GROUP (ORDER BY speed_download :: bigint) AS quantile_down," +
+                    "       percentile_disc(?) WITHIN GROUP (ORDER BY speed_upload :: bigint) AS quantile_up," +
+                    "       percentile_disc(?) WITHIN GROUP (ORDER BY ping_median :: bigint) AS quantile_ping" +
                     " FROM test t" +
                     " LEFT JOIN device_map adm ON adm.codename=t.model" +
                     " LEFT JOIN network_type nt ON nt.uid=t.network_type" +
