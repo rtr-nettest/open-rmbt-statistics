@@ -163,8 +163,5 @@ Again, make sure the file `etc/tomcat9/logback-statistic.xml` is owned by`tomcat
 [Weasyprint](https://weasyprint.org/) is required for PDF export.
 
 Install:
-* python3
-* python3-pip
-* libpango1.0-0
-and then run `pip3 install weasyprint`
+* weasyprint
 
