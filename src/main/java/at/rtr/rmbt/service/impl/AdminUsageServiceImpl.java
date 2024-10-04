@@ -21,7 +21,7 @@ public class AdminUsageServiceImpl implements AdminUsageService {
     public AdminUsageJsonResponse getAdminUsageJson(Integer month, Integer year, Set<String> statistics) {
         Calendar now = new GregorianCalendar();
         Calendar monthBegin = new GregorianCalendar(Objects.nonNull(year) ? year : now.get(Calendar.YEAR), Objects.nonNull(month) ? month : now.get(Calendar.MONTH), 1);
-        Calendar monthEnd = new GregorianCalendar(Objects.nonNull(year) ? year : now.get(Calendar.YEAR), Objects.nonNull(month) ? month : now.get(Calendar.MONTH), monthBegin.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Calendar monthEnd = new GregorianCalendar(Objects.nonNull(year) ? year : now.get(Calendar.YEAR), Objects.nonNull(month) ? month : now.get(Calendar.MONTH), monthBegin.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59);
         //if now -> do not use the last day
         if (Objects.equals(month, now.get(Calendar.MONTH)) && Objects.equals(year, now.get(Calendar.YEAR))) {
             monthEnd = now;

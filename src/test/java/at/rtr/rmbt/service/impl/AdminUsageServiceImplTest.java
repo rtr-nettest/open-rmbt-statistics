@@ -31,7 +31,7 @@ class AdminUsageServiceImplTest {
     @Test
     void getAdminUsageJson_correctInvocation_expectedAdminUsageJsonResponse() {
         Calendar calendarBegin = new GregorianCalendar(TestConstants.DEFAULT_YEAR, TestConstants.DEFAULT_MONTH, 1);
-        Calendar calendarEnd = new GregorianCalendar(TestConstants.DEFAULT_YEAR, TestConstants.DEFAULT_MONTH, calendarBegin.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Calendar calendarEnd = new GregorianCalendar(TestConstants.DEFAULT_YEAR, TestConstants.DEFAULT_MONTH, calendarBegin.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59);
         Timestamp begin = new Timestamp(calendarBegin.getTimeInMillis());
         Timestamp end = new Timestamp(calendarEnd.getTimeInMillis());
         when(adminUsageRepository.getPlatforms(begin, end)).thenReturn(TestObjects.sumsAndValuesResponsePlatformsResponse());
