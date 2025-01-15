@@ -8,6 +8,7 @@ It consists of the following components:
 * JavaScript client
 * Android client 
 * iOS client
+* Desktop client
 * Measurement server
 * QoS measurement server
 * Control server
@@ -35,7 +36,7 @@ System requirements for the Statistics-Server
 -------------------
 
 * single (virtual) server with sufficient RAM and CPU performance
-* Base system Debian 11 or newer (or similar)
+* Base system Debian 12 or newer
 * At least a single static public IPv4 address (IPv6 support recommended)
 
   *NOTE: other Linux distributions can also be used, but commands and package names may be different*
@@ -75,12 +76,12 @@ for basic setup instructions.
 
 ### Alternative: Get WAR using Github action
 
-The `WAR build` action produces a WAR file that can be used on a server. This only applies to the `feature/war` branch.
+The `WAR build` action produces a WAR file that can be used on a server. This only applies to the `master` branch.
 
 ### Configure Tomcat
 
 ##### Configure catalina.properties
-Edit `/etc/tomcat9/catalina.properties`, add the end add:
+Edit `/etc/tomcat9/catalina.properties`, at the end of the file add:
 
 ```properties
 spring.profiles.active=prod
@@ -162,6 +163,5 @@ Again, make sure the file `etc/tomcat9/logback-statistic.xml` is owned by`tomcat
 
 [Weasyprint](https://weasyprint.org/) is required for PDF export.
 
-Install:
-* weasyprint
+ apt -y install weasyprint
 
