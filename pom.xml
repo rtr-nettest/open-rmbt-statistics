@@ -9,11 +9,11 @@
         <relativePath/>
     </parent>
     <groupId>at.rtr.rmbt</groupId>
-    <artifactId>statistic-server</artifactId>
+    <artifactId>RMBTStatisticServer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>statistic-server</name>
+    <name>RMBTStatisticServer</name>
     <packaging>war</packaging>
-    <description>RTR statistic server</description>
+    <description>RMBTStatisticServer</description>
     <properties>
         <java.version>17</java.version>
         <org.projectlombok.version>1.18.28</org.projectlombok.version>
