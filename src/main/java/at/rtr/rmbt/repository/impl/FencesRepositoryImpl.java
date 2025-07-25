@@ -24,7 +24,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FencesRepositoryImpl implements FencesRepository {
 
-    private static final String SQL = "SELECT fence_id,technology_id,technology,offset_ms,duration_ms,radius FROM fences WHERE open_test_uuid = ?";
+    private static final String SQL = "SELECT fence_id,technology_id,technology,offset_ms,duration_ms,radius, " +
+            "ST_X(geom4326) AS longitude,ST_Y(geom4326) AS latitude FROM fences WHERE open_test_uuid = ?";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -48,10 +49,9 @@ public class FencesRepositoryImpl implements FencesRepository {
                             rs.getString("technology"),
                             rs.getLong("offset_ms"),
                             rs.getLong("duration_ms"),
-                            rs.getInt("radius")
-                            // TODO implement geometry
-                            //,
-                            //rs.getString("geom4326")
+                            rs.getInt("radius"),
+                            rs.getDouble("longitude"),
+                            rs.getDouble("latitude")
                     );
                     list.add(FencesItemDTO);
                 }

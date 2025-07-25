@@ -33,9 +33,9 @@ public class FencesItemDTO {
     @JsonProperty("radius") // int4
     private final Integer radius;
 
-    // TODO - implement geometry (or extract lat/long from geom)
-    // point geometry with 4326 projection
-    // @JsonProperty("geom4326") // name in PostgreSQL
-    // private final Geometry geom4326; // name in Java
+    @JsonProperty("longitude") // int4
+    private final Double longitude;
 
+    @JsonProperty("latitude") // int4
+    private final Double latitude;
 }
