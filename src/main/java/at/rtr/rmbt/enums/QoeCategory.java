@@ -1,6 +1,8 @@
 package at.rtr.rmbt.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -23,7 +25,7 @@ public enum QoeCategory {
     MESSAGING("messaging"),
     WEB("web"),
     CLOUD("cloud");
-
+    @Enumerated(EnumType.STRING)
     private final String value;
 
     @JsonCreator
@@ -31,6 +33,11 @@ public enum QoeCategory {
         if (Objects.isNull(value)) {
             return null;
         }
-        return QoeCategory.valueOf(value.toUpperCase());
+        for (QoeCategory category : QoeCategory.values()) {
+            if (category.getValue().equalsIgnoreCase(value)) {
+                return category;
+            }
+        }
+        throw new IllegalArgumentException("Unknown QoeCategory: " + value);
     }
 }
