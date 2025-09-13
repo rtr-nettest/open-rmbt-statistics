@@ -7,8 +7,9 @@ import at.rtr.rmbt.service.QoeClassificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import jakarta.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,10 +18,23 @@ public class QoeClassificationServiceImpl implements QoeClassificationService {
     private final QoeClassificationRepository qoeClassificationRepository;
     private final QoeClassificationMapper qoeClassificationMapper;
 
+    // Holds the cached results
+    private final List<QoeClassificationThresholds> cachedThresholds = new ArrayList<>();
+
+    @PostConstruct
+    public void initCache() {
+        // Load the table data once at startup
+        cachedThresholds.addAll(
+                qoeClassificationRepository.findAll().stream()
+                        .map(qoeClassificationMapper::qoeClassificationToQoeClassificationThresholds)
+                        .toList()
+        );
+    }
+
     @Override
     public List<QoeClassificationThresholds> getQoeClassificationThreshold() {
-        return qoeClassificationRepository.findAll().stream()
-                .map(qoeClassificationMapper::qoeClassificationToQoeClassificationThresholds)
-                .collect(Collectors.toList());
+        // Return the cached list without querying the database again
+        return cachedThresholds;
     }
 }
+
