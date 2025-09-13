@@ -20,9 +20,7 @@ public class QoeClassification {
     private Long uid;
 
     @Column(name = "category")
-    @Enumerated(EnumType.STRING)
     private QoeCategory category;
-
 
     @Column(name = "dl_4")
     private Long download4;
