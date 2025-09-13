@@ -21,6 +21,9 @@ public class FencesItemDTO {
     @JsonProperty("technology_id") // int4
     private final Long technologyId;
 
+    @JsonProperty("avg_ping_ms") // float8
+    private final Double avgPingMs;
+
     @JsonProperty("technology") // varchar
     private final String technology;
 
