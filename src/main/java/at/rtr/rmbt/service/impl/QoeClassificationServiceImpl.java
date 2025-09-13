@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,23 +20,30 @@ public class QoeClassificationServiceImpl implements QoeClassificationService {
     private final QoeClassificationRepository qoeClassificationRepository;
     private final QoeClassificationMapper qoeClassificationMapper;
 
-    // Holds the cached results
     private final List<QoeClassificationThresholds> cachedThresholds = new ArrayList<>();
+    private Instant lastCacheLoadTime;
 
     @PostConstruct
     public void initCache() {
-        // Load the table data once at startup
+        reloadCache();
+    }
+
+    @Override
+    public List<QoeClassificationThresholds> getQoeClassificationThreshold() {
+        // If more than 30 minutes have passed since last load, refresh
+        if (Instant.now().minus(30, ChronoUnit.MINUTES).isAfter(lastCacheLoadTime)) {
+            reloadCache();
+        }
+        return cachedThresholds;
+    }
+
+    private void reloadCache() {
+        cachedThresholds.clear();
         cachedThresholds.addAll(
                 qoeClassificationRepository.findAll().stream()
                         .map(qoeClassificationMapper::qoeClassificationToQoeClassificationThresholds)
                         .toList()
         );
-    }
-
-    @Override
-    public List<QoeClassificationThresholds> getQoeClassificationThreshold() {
-        // Return the cached list without querying the database again
-        return cachedThresholds;
+        lastCacheLoadTime = Instant.now();
     }
 }
-
