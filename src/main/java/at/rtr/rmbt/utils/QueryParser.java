@@ -503,7 +503,7 @@ public class QueryParser {
             if (whereParams.containsKey("lat") && whereParams.containsKey("long") &&
                     whereParams.get("lat").get(0).getComperator().equals("=") &&
                     whereParams.get("long").get(0).getComperator().equals("=")) {
-                attr = "ST_DWithin(t.location, ST_Transform(ST_SetSRID(ST_MakePoint(?, ?), 4326), 900913), ?)";
+                attr = "ST_DWithin(t.geom4326::geography, ST_SetSRID(ST_MakePoint(?, ?), 4326)::geography, ?, true)";
                 queue.add(new AbstractMap.SimpleEntry<>(whereParams.get("long").get(0).getValue(), whereParams.get("long").get(0).getType()));
                 queue.add(new AbstractMap.SimpleEntry<>(whereParams.get("lat").get(0).getValue(), whereParams.get("lat").get(0).getType()));
                 queue.add(new AbstractMap.SimpleEntry<>(value, FieldType.LONG));
