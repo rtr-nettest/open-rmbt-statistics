@@ -53,6 +53,6 @@ public class FencesItemDTO {
     private final Double latitude;
 
     @Schema(description = "Timestamp of fence, Unixtime in ms", example = "1768141769894")
-    @JsonProperty("fenceTime") // timestamptz (converted)
-    private final Long fence_time;
+    @JsonProperty("fence_time") // timestamptz (converted)
+    private final Long fenceTime;
 }
