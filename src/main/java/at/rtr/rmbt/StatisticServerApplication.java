@@ -17,6 +17,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableCaching
 @EnableScheduling
 @ConfigurationPropertiesScan
+// Run/Debug this class for debugging (e.g. in IntelliG)
+// A dummy git.properties file might be required, use devops/create-dummy-git-properties.sh to create
 public class StatisticServerApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
