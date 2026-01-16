@@ -25,7 +25,8 @@ import java.util.UUID;
 public class FencesRepositoryImpl implements FencesRepository {
 
     private static final String SQL = "SELECT fence_id,technology_id,technology,avg_ping_ms,offset_ms,duration_ms,radius, " +
-            "ST_X(geom4326) AS longitude,ST_Y(geom4326) AS latitude FROM fences WHERE open_test_uuid = ?";
+            "ST_X(geom4326) AS longitude,ST_Y(geom4326) AS latitude, " +
+            "CAST(EXTRACT(EPOCH FROM fence_time) * 1000 AS BIGINT) AS fence_time FROM fences WHERE open_test_uuid = ?";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -50,9 +51,10 @@ public class FencesRepositoryImpl implements FencesRepository {
                             rs.getString("technology"),
                             rs.getLong("offset_ms"),
                             rs.getLong("duration_ms"),
-                            rs.getInt("radius"),
+                            rs.getDouble("radius"),
                             rs.getDouble("longitude"),
-                            rs.getDouble("latitude")
+                            rs.getDouble("latitude"),
+                            rs.getLong("fence_time")
                     );
                     list.add(FencesItemDTO);
                 }
