@@ -267,11 +267,17 @@ public class QueryParser {
                         break;
                     case BOOLEAN:
                         if (value.isEmpty() ||
-                                (!value.toLowerCase().equals("false") && !value.toLowerCase().equals("true"))) {
+                                (!value.equalsIgnoreCase("false") && !value.equalsIgnoreCase("true") &&
+                                        !value.equalsIgnoreCase("*"))) {
                             invalidElements.add(attr);
                             continue;
                         }
-                        this.addToWhereParams(attr, value, "=", negate, type);
+                        if (value.equalsIgnoreCase("*")) {
+                            this.addToWhereParams(attr, "true, false, NULL", "IN", negate, type);
+                        }
+                        else {
+                            this.addToWhereParams(attr, value, "=", negate, type);
+                        }
                         break;
                     case DOUBLE:
                     case LONG:
@@ -453,6 +459,10 @@ public class QueryParser {
         String comperator = parameter.getComperator();
         boolean negate = parameter.isNegated();
         FieldType type = parameter.getType();
+
+        if (comperator.equals("IN")) {
+            return " AND " + attr + " IN (" + value + ")";
+        }
 
         //because we use aliases, some modifications have to be made
         if (attr.equals("model")) {
