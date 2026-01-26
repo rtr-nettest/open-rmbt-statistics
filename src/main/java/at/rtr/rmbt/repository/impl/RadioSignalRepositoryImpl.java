@@ -169,8 +169,9 @@ public class RadioSignalRepositoryImpl implements RadioSignalRepository {
 
                     //put 5-let in the array if it is not the first one
                     if (!first || rsSignal.isLast()) {
-                        if (timeElapsed < 0) {
-                            item.setTimeElapsed(1000);
+                        // item may be null
+                        if (timeElapsed < 0 && item != null) {
+                                item.setTimeElapsed(1000);
                         }
                         signalList.add(item);
                     }
