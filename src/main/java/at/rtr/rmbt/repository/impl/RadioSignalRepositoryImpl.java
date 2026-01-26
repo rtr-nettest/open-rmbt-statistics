@@ -176,8 +176,11 @@ public class RadioSignalRepositoryImpl implements RadioSignalRepository {
                     }
                 }
 
-                //postprocessing of NR NSA signals --> merge 4G and 5G cells, if any
-                if (signalList.stream().anyMatch(c -> Strings.nullToEmpty(c.getNetworkType()).equals(Constants.NR_NSA))) {
+                // postprocessing of NR NSA signals --> merge 4G and 5G cells, if any
+                // c might be null, thus filter before
+                if (signalList.stream()
+                        .filter(Objects::nonNull)
+                        .anyMatch(c -> Strings.nullToEmpty(c.getNetworkType()).equals(Constants.NR_NSA))) {
                     SignalGraphItemDTO currentNSA = null;
                     ArrayList<SignalGraphItemDTO> combinedSignalList = new ArrayList<>();
 
