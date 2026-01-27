@@ -364,28 +364,34 @@ public class QueryParser {
         if (sortBy.isEmpty()) {
             return "";
         }
+        String searchField = "";
         //convert to real field names
         if (sortBy.equals("download_kbit")) {
-            sortBy = "t.speed_download";
+            searchField = "t.speed_download";
         } else if (sortBy.equals("upload_kbit")) {
-            sortBy = "t.speed_upload";
+            searchField = "t.speed_upload";
         } else if (sortBy.equals("ping_ms")) {
-            sortBy = "t.ping_median";
+            searchField = "t.ping_median";
         } else if (sortBy.equals("time")) {
-            sortBy = "t.time";
+            searchField = "t.time";
         } else if (sortBy.equals("client_version")) {
-            sortBy = "client_software_version";
+            searchField = "client_software_version";
         } else if (sortBy.equals("sim_mcc_mnc")) {
-            sortBy = "network_sim_operator";
+            searchField = "network_sim_operator";
         } else if (sortBy.equals("sim_country")) {
-            sortBy = "network_sim_country";
+            searchField = "network_sim_country";
         } else if (sortBy.equals("signal_strength")) {
-            sortBy = "t.signal_strength";
+            searchField = "t.signal_strength";
         } else if (sortBy.equals("lte_rsrp")) {
-            sortBy = "t.lte_rsrp";
+            searchField = "t.lte_rsrp";
         }
 
-        String ret = " ORDER BY " + sortBy + " " + sortOrder;
+        String searchOrderField = "ASC";
+        if (sortOrder.equalsIgnoreCase("desc")) {
+            searchOrderField = "DESC";
+        }
+
+        String ret = " ORDER BY " + searchField + " " + searchOrderField;
         return ret;
     }
 
@@ -513,7 +519,7 @@ public class QueryParser {
             if (whereParams.containsKey("lat") && whereParams.containsKey("long") &&
                     whereParams.get("lat").get(0).getComperator().equals("=") &&
                     whereParams.get("long").get(0).getComperator().equals("=")) {
-                attr = "ST_DWithin(t.location, ST_Transform(ST_SetSRID(ST_MakePoint(?, ?), 4326), 900913), ?)";
+                attr = "ST_DWithin(tl.geom4326::geography, ST_SetSRID(ST_MakePoint(?, ?), 4326)::geography, ?, true)";
                 queue.add(new AbstractMap.SimpleEntry<>(whereParams.get("long").get(0).getValue(), whereParams.get("long").get(0).getType()));
                 queue.add(new AbstractMap.SimpleEntry<>(whereParams.get("lat").get(0).getValue(), whereParams.get("lat").get(0).getType()));
                 queue.add(new AbstractMap.SimpleEntry<>(value, FieldType.LONG));
