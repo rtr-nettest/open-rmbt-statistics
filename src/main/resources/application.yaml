@@ -12,17 +12,14 @@ server:
   servlet:
     context-path: /RMBTStatisticServer
 spring:
-  http:
-    multipart:
-      enabled: false
+  # Default profile - used when spring.profiles.active is not set
   application:
     name: statistic-backend
   datasource:
-    poolSize: 20
-    minIdle: 1
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://${STATISTIC_DB_HOST}:${STATISTIC_DB_PORT}/${STATISTIC_DB_NAME}
-    username: ${STATISTIC_DB_USER}
+    url: jdbc:postgresql://${STATISTIC_DB_HOST:127.0.0.1}:${STATISTIC_DB_PORT:5432}/${STATISTIC_DB_NAME:rmbt}
+    username: ${STATISTIC_DB_USER:rmbt}
+    # intellig: set pw in environment, e.g. STATISTIC_DB_PASSWORD=pwwithoutquotes
     password: ${STATISTIC_DB_PASSWORD}
 
   #    tomcat:
@@ -39,71 +36,45 @@ spring:
   jackson:
     deserialization:
       fail-on-unknown-properties: true
-RMBT_SECRETKEY: RMBT_SECRETKEY
+
 
 application-version:
-  host: rtr-api-dev
+  host: rtr-statistic-default
 
 redis:
-  host: localhost
-  port: 6379
+  host: ${STATISTIC_REDIS_HOST:127.0.0.1}
+  port: ${STATISTIC_REDIS_PORT:6379}
 ---
 spring:
   config:
     activate:
       on-profile: dev
   datasource:
-    poolSize: 20
-    minIdle: 1
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://${DB_URI}:${DB_PORT}/${DB_NAME}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://${STATISTIC_DB_HOST:127.0.0.1}:${STATISTIC_DB_PORT:5432}/${STATISTIC_DB_NAME:rmbt}
+    username: ${STATISTIC_DB_USER:rmbt}
+    password: ${STATISTIC_DB_PASSWORD}
+
 #    tomcat:
 #      test-while-idle: true
 #      test-on-borrow: true
 #      validation-query: SELECT 1
 
 application-version:
-  host: rtr-api-dev
+  host: rtr-statistic-dev
 
 redis:
-  host: redis
-  port: 6379
+  host: ${STATISTIC_REDIS_HOST:127.0.0.1}
+  port: ${STATISTIC_REDIS_PORT:6379}
 ---
 spring:
   config:
     activate:
       on-profile: test
   datasource:
-    poolSize: 20
-    minIdle: 1
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://${DB_URI}:${DB_PORT}/${DB_NAME}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
-    tomcat:
-      test-while-idle: true
-      test-on-borrow: true
-      validation-query: SELECT 1
-
-application-version:
-  host: rtr-api-test
-
-redis:
-  host: ${REDIS_HOST}
-  port: ${REDIS_PORT}
----
-spring:
-  config:
-    activate:
-      on-profile: prod
-  datasource:
-    poolSize: 20
-    minIdle: 1
-    driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://${STATISTIC_DB_HOST}:${STATISTIC_DB_PORT}/${STATISTIC_DB_NAME}
-    username: ${STATISTIC_DB_USER}
+    url: jdbc:postgresql://${STATISTIC_DB_HOST:127.0.0.1}:${STATISTIC_DB_PORT:5432}/${STATISTIC_DB_NAME:rmbt}
+    username: ${STATISTIC_DB_USER:rmbt}
     password: ${STATISTIC_DB_PASSWORD}
     tomcat:
       test-while-idle: true
@@ -111,10 +82,32 @@ spring:
       validation-query: SELECT 1
 
 application-version:
-  host: ${HOST_ID}
+  host: rtr-statistic-test
 
 redis:
-  host: ${STATISTIC_REDIS_HOST}
-  port: ${STATISTIC_REDIS_PORT}
+  host: ${STATISTIC_REDIS_HOST:127.0.0.1}
+  port: ${STATISTIC_REDIS_PORT:6379}
+---
+spring:
+  config:
+    activate:
+      # production profile - activate by adding "spring.profiles.active=prod" to "catalina.properties"
+      on-profile: prod
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://${STATISTIC_DB_HOST:127.0.0.1}:${STATISTIC_DB_PORT:5432}/${STATISTIC_DB_NAME:rmbt}
+    username: ${STATISTIC_DB_USER:rmbt}
+    password: ${STATISTIC_DB_PASSWORD}
+    tomcat:
+      test-while-idle: true
+      test-on-borrow: true
+      validation-query: SELECT 1
+
+application-version:
+  host: ${HOST_ID:rtr-statistic-prod}
+
+redis:
+  host: ${STATISTIC_REDIS_HOST:127.0.0.1}
+  port: ${STATISTIC_REDIS_PORT:6379}
 logging:
   config: ${LOGGING_CONFIG_FILE_STATISTIC:classpath:logback.xml}
