@@ -25,6 +25,10 @@ public class ApplicationVersionServiceImpl implements ApplicationVersionService 
     @Value("${application-version.host}")
     private String applicationHost;
 
+    // get active profile or "default" if not set
+    @Value("${spring.profiles.active:default}")
+    private String activeProfile;
+
     private final SettingsRepository settingsRepository;
 
     @Override
@@ -33,6 +37,7 @@ public class ApplicationVersionServiceImpl implements ApplicationVersionService 
                 .version(String.format(Constants.VERSION_TEMPLATE, branch, describe))
                 .systemUUID(getSystemUUID())
                 .host(applicationHost)
+                .profile(activeProfile)
                 .build();
     }
 
