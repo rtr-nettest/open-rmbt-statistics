@@ -109,12 +109,15 @@ public class PdfExportServiceImpl implements PdfExportService {
         String filenameDatePart = filenameDateFormat.format(generationDate);
         data.put("date", sdf.format(generationDate));
 
+        // return HTTP error status if list is empty (thus avoid null pointer exception)
+        if (searchResult.getResults() == null || searchResult.getResults().isEmpty()) {
+            return ResponseEntity.notFound()
+                    .build();
+        }
+
         //make tests accessible to handlebars
         List<OpenTestDTO> testResults = searchResult.getResults();
-        // return HTTP error status if list is empty (thus avoid null pointer exception)
-        if (testResults == null) {
-            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
-        }
+
         Collections.reverse(testResults);
         data.put("tests", testResults);
 
@@ -129,12 +132,6 @@ public class PdfExportServiceImpl implements PdfExportService {
                 data.put(k, parameters.getFirst(k));
             }
         });
-
-        //if no measurements - don't generate the application
-        if (searchResult.getResults() == null || searchResult.getResults().isEmpty()) {
-            return ResponseEntity.notFound()
-                    .build();
-        }
 
         //get details for single results - set more detailled info
         ListIterator<OpenTestDTO> testIterator = testResults.listIterator();
