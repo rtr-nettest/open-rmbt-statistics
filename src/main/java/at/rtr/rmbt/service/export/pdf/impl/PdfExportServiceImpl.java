@@ -111,6 +111,10 @@ public class PdfExportServiceImpl implements PdfExportService {
 
         //make tests accessible to handlebars
         List<OpenTestDTO> testResults = searchResult.getResults();
+        // return HTTP error status if list is empty (thus avoid null pointer exception)
+        if (testResults == null) {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+        }
         Collections.reverse(testResults);
         data.put("tests", testResults);
 
