@@ -52,7 +52,7 @@ public class OnStartUpRunner implements ApplicationRunner {
                     }
                 }
             } else {
-                log.error("Temp directory {} does not exists", dir.getAbsolutePath());
+                log.error("Temp directory {} does not exist", dir.getAbsolutePath());
             }
         }
     }
