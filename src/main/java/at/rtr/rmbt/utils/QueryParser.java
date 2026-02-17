@@ -733,7 +733,7 @@ public class QueryParser {
                 " LEFT JOIN device_map adm ON adm.codename=t.model" +
                 " LEFT JOIN test_server ts ON ts.uid=t.server_id" +
                 " LEFT JOIN provider prov ON provider_id = prov.uid " +
-                " LEFT JOIN provider mprov ON mobile_provider_id = mprov.uid" +
+                " LEFT JOIN provider mprov ON mobile_provider_id2 = mprov.uid" +
                 " LEFT JOIN mccmnc2name msim ON mobile_sim_id = msim.uid " + //TODO: finalize migration to msim/mnwk
                 " LEFT JOIN client c ON client_id = c.uid " +
                 " LEFT JOIN test_location tl ON t.open_test_uuid = tl.open_test_uuid";

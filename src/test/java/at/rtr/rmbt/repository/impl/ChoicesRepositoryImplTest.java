@@ -35,7 +35,7 @@ class ChoicesRepositoryImplTest {
             "LEFT JOIN device_map adm ON adm.codename=t.model " +
             "LEFT JOIN test_server ts ON ts.uid=t.server_id " +
             "LEFT JOIN provider prov ON provider_id = prov.uid  " +
-            "LEFT JOIN provider mprov ON mobile_provider_id = mprov.uid " +
+            "LEFT JOIN provider mprov ON mobile_provider_id2 = mprov.uid " +
             "LEFT JOIN mccmnc2name msim ON mobile_sim_id = msim.uid  " +
             "LEFT JOIN client c ON client_id = c.uid  " +
             "LEFT JOIN test_location tl ON t.open_test_uuid = tl.open_test_uuid " +
@@ -47,7 +47,7 @@ class ChoicesRepositoryImplTest {
             "LEFT JOIN device_map adm ON adm.codename=t.model " +
             "LEFT JOIN test_server ts ON ts.uid=t.server_id " +
             "LEFT JOIN provider prov ON provider_id = prov.uid  " +
-            "LEFT JOIN provider mprov ON mobile_provider_id = mprov.uid " +
+            "LEFT JOIN provider mprov ON mobile_provider_id2 = mprov.uid " +
             "LEFT JOIN mccmnc2name msim ON mobile_sim_id = msim.uid  " +
             "LEFT JOIN client c ON client_id = c.uid  " +
             "LEFT JOIN test_location tl ON t.open_test_uuid = tl.open_test_uuid " +
@@ -61,31 +61,31 @@ class ChoicesRepositoryImplTest {
             "GROUP BY upper(msim.country);";
 
     private static final String SQL_QUERY_PROVIDER_MOBILE = "WITH RECURSIVE t1(n) AS ( " +
-            "SELECT MIN(t.mobile_provider_id) " +
+            "SELECT MIN(t.mobile_provider_id2) " +
             "FROM test t  " +
             "LEFT JOIN network_type nt ON nt.uid=t.network_type " +
             "LEFT JOIN test_loopmode l ON (l.test_uuid = t.uuid) " +
             "LEFT JOIN device_map adm ON adm.codename=t.model " +
             "LEFT JOIN test_server ts ON ts.uid=t.server_id " +
             "LEFT JOIN provider prov ON provider_id = prov.uid  " +
-            "LEFT JOIN provider mprov ON mobile_provider_id = mprov.uid " +
+            "LEFT JOIN provider mprov ON mobile_provider_id2 = mprov.uid " +
             "LEFT JOIN mccmnc2name msim ON mobile_sim_id = msim.uid  " +
             "LEFT JOIN client c ON client_id = c.uid  " +
             "LEFT JOIN test_location tl ON t.open_test_uuid = tl.open_test_uuid " +
             "WHERE country_location ILIKE ? AND t.speed_download = ? AND t.implausible = ?  " +
-            "UNION SELECT (SELECT t.mobile_provider_id " +
+            "UNION SELECT (SELECT t.mobile_provider_id2 " +
             "FROM test t  " +
             "LEFT JOIN network_type nt ON nt.uid=t.network_type " +
             "LEFT JOIN test_loopmode l ON (l.test_uuid = t.uuid) " +
             "LEFT JOIN device_map adm ON adm.codename=t.model " +
             "LEFT JOIN test_server ts ON ts.uid=t.server_id " +
             "LEFT JOIN provider prov ON provider_id = prov.uid  " +
-            "LEFT JOIN provider mprov ON mobile_provider_id = mprov.uid " +
+            "LEFT JOIN provider mprov ON mobile_provider_id2 = mprov.uid " +
             "LEFT JOIN mccmnc2name msim ON mobile_sim_id = msim.uid  " +
             "LEFT JOIN client c ON client_id = c.uid  " +
             "LEFT JOIN test_location tl ON t.open_test_uuid = tl.open_test_uuid " +
-            "WHERE t.mobile_provider_id > n AND country_location ILIKE ? AND t.speed_download = ? AND t.implausible = ?  " +
-            "ORDER BY t.mobile_provider_id LIMIT 1) FROM t1  )" +
+            "WHERE t.mobile_provider_id2 > n AND country_location ILIKE ? AND t.speed_download = ? AND t.implausible = ?  " +
+            "ORDER BY t.mobile_provider_id2 LIMIT 1) FROM t1  )" +
             "SELECT mprov.name " +
             "FROM t1 " +
             "LEFT JOIN provider mprov ON mprov.uid=n " +
@@ -100,7 +100,7 @@ class ChoicesRepositoryImplTest {
             "LEFT JOIN device_map adm ON adm.codename=t.model " +
             "LEFT JOIN test_server ts ON ts.uid=t.server_id " +
             "LEFT JOIN provider prov ON provider_id = prov.uid  " +
-            "LEFT JOIN provider mprov ON mobile_provider_id = mprov.uid " +
+            "LEFT JOIN provider mprov ON mobile_provider_id2 = mprov.uid " +
             "LEFT JOIN mccmnc2name msim ON mobile_sim_id = msim.uid  " +
             "LEFT JOIN client c ON client_id = c.uid  " +
             "LEFT JOIN test_location tl ON t.open_test_uuid = tl.open_test_uuid " +
@@ -112,7 +112,7 @@ class ChoicesRepositoryImplTest {
             "LEFT JOIN device_map adm ON adm.codename=t.model " +
             "LEFT JOIN test_server ts ON ts.uid=t.server_id " +
             "LEFT JOIN provider prov ON provider_id = prov.uid  " +
-            "LEFT JOIN provider mprov ON mobile_provider_id = mprov.uid " +
+            "LEFT JOIN provider mprov ON mobile_provider_id2 = mprov.uid " +
             "LEFT JOIN mccmnc2name msim ON mobile_sim_id = msim.uid  " +
             "LEFT JOIN client c ON client_id = c.uid  " +
             "LEFT JOIN test_location tl ON t.open_test_uuid = tl.open_test_uuid " +

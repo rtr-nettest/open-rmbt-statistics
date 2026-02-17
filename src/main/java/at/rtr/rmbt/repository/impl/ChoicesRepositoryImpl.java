@@ -41,7 +41,7 @@ public class ChoicesRepositoryImpl implements ChoicesRepository {
     @Override
     public Set<String> findProviderMobile(QueryParser queryParser) {
         Set<String> providersMobile = new HashSet<>();
-        PreparedStatementCreator preparedStatementCreator = getPreparedStatementCreator("mprov.name", "t.mobile_provider_id", "provider mprov ON mprov.uid", queryParser);
+        PreparedStatementCreator preparedStatementCreator = getPreparedStatementCreator("mprov.name", "t.mobile_provider_id2", "provider mprov ON mprov.uid", queryParser);
         PreparedStatementSetter preparedStatementSetter = getPreparedStatementSetter(queryParser);
         ResultSetExtractor<Set<String>> resultSetExtractor = getResultSetExtractor();
         try {

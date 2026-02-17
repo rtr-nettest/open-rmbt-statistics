@@ -213,7 +213,7 @@ public class StatisticRepositoryImpl implements StatisticRepository {
                                 " LEFT JOIN network_type nt ON nt.uid=t.network_type" +
                                 (((province != -1) || (accuracy > 0)) ? (" LEFT JOIN test_location tl ON t.open_test_uuid = tl.open_test_uuid") : "") +
                                 " JOIN provider p ON" +
-                                (useMobileProvider ? " t.mobile_provider_id = p.uid" : " t.provider_id = p.uid") +
+                                (useMobileProvider ? " t.mobile_provider_id2 = p.uid" : " t.provider_id = p.uid") +
                                 " WHERE %2$s" +
                                 ((country != null && useMobileProvider) ? " AND t.network_sim_country = ?" : "") +
                                 " AND t.deleted = false AND t.implausible = false AND t.status = 'FINISHED'" +
@@ -386,7 +386,7 @@ public class StatisticRepositoryImpl implements StatisticRepository {
                 ((endDate != null) ? (" AND \"time\" <=  ?::TIMESTAMP WITH TIME ZONE ") : "") +
                 //" AND user_server_selection = ? " +
                 ((province != -1) ? (" AND tl.gkz_bev/10000 = ? ") : "") +
-                (useMobileProvider ? " AND t.mobile_provider_id IS NOT NULL" : "") +
+                (useMobileProvider ? " AND t.mobile_provider_id2 IS NOT NULL" : "") +
                 ((accuracy > 0) ? " AND tl.geo_accuracy < ?" : "") +
                 ((ONLY_PINNED) ? " AND t.pinned = true" : "") +
                 (group ? " GROUP BY COALESCE(adm.fullname, t.model) HAVING count(t.uid) > 10" : "") +
