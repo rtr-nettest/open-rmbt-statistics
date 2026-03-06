@@ -55,4 +55,9 @@ public class FencesItemDTO {
     @Schema(description = "Timestamp of fence, Unixtime in ms", example = "1768141769894")
     @JsonProperty("fence_time") // timestamptz (converted)
     private final Long fenceTime;
+
+    @Schema(description = "Minimum signal (RSRP) of fence in dBm", example = "-103.5")
+    @JsonProperty(value = "signal")
+    private final Double signal;
+
 }

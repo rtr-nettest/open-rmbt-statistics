@@ -4,6 +4,7 @@ import at.rtr.rmbt.repository.FencesRepository;
 
 
 import at.rtr.rmbt.response.FencesItemDTO;
+import at.rtr.rmbt.utils.SqlUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,9 +25,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FencesRepositoryImpl implements FencesRepository {
 
-    private static final String SQL = "SELECT fence_id,technology_id,technology,avg_ping_ms,offset_ms,duration_ms,radius, " +
-            "ST_X(geom4326) AS longitude,ST_Y(geom4326) AS latitude, " +
-            "CAST(EXTRACT(EPOCH FROM fence_time) * 1000 AS BIGINT) AS fence_time FROM fences WHERE open_test_uuid = ?";
+    private static final String SQL = "SELECT fence_id," +
+            "technology_id, " +
+            "technology, " +
+            "avg_ping_ms, " +
+            "offset_ms, " +
+            "duration_ms, " +
+            "radius, " +
+            "ST_X(geom4326) AS longitude, " +
+            "ST_Y(geom4326) AS latitude, " +
+            "CAST(EXTRACT(EPOCH FROM fence_time) * 1000 AS BIGINT) AS fence_time, " +
+            "signal " +
+            "FROM fences WHERE open_test_uuid = ?";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -45,16 +55,17 @@ public class FencesRepositoryImpl implements FencesRepository {
                 List<FencesItemDTO> list = new ArrayList<FencesItemDTO>();
                 while (rs.next()) {
                     FencesItemDTO FencesItemDTO = new FencesItemDTO(
-                            rs.getLong("fence_id"),
-                            rs.getLong("technology_id"),
-                            rs.getDouble("avg_ping_ms"),
+                            SqlUtils.getLongOrNull(rs,"fence_id"),
+                            SqlUtils.getLongOrNull(rs,"technology_id"),
+                            SqlUtils.getDoubleOrNull(rs,"avg_ping_ms"),
                             rs.getString("technology"),
-                            rs.getLong("offset_ms"),
-                            rs.getLong("duration_ms"),
-                            rs.getDouble("radius"),
-                            rs.getDouble("longitude"),
-                            rs.getDouble("latitude"),
-                            rs.getLong("fence_time")
+                            SqlUtils.getLongOrNull(rs,"offset_ms"),
+                            SqlUtils.getLongOrNull(rs,"duration_ms"),
+                            SqlUtils.getDoubleOrNull(rs,"radius"),
+                            SqlUtils.getDoubleOrNull(rs,"longitude"),
+                            SqlUtils.getDoubleOrNull(rs,"latitude"),
+                            SqlUtils.getLongOrNull(rs,"fence_time"),
+                            SqlUtils.getDoubleOrNull(rs, "signal")
                     );
                     list.add(FencesItemDTO);
                 }
