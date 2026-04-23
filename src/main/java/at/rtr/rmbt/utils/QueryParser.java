@@ -82,6 +82,7 @@ public class QueryParser {
     private final Map<String, FieldType> allowedFields = new HashMap<>();
     private String whereClause;
     private String orderClause;
+    private String includeFencesMode = "false"; // modes are: "false", "true", "only"
 
     //Values for the database
     private final Queue<Map.Entry<String, FieldType>> searchValues = new LinkedList<>();
@@ -166,6 +167,8 @@ public class QueryParser {
         //allowedFields.put("ip_anonym[]", FieldType.STRING);
         allowedFields.put("implausible", FieldType.BOOLEAN);
         allowedFields.put("pinned", FieldType.BOOLEAN);
+        allowedFields.put("include_fences", FieldType.STRING);
+
 
         allowedFields.put("sort_by", FieldType.SORTBY);
         allowedFields.put("sort_order", FieldType.SORTORDER);
@@ -274,8 +277,7 @@ public class QueryParser {
                         }
                         if (value.equalsIgnoreCase("*")) {
                             this.addToWhereParams(attr, "true, false, NULL", "IN", negate, type);
-                        }
-                        else {
+                        } else {
                             this.addToWhereParams(attr, value, "=", negate, type);
                         }
                         break;
@@ -341,11 +343,35 @@ public class QueryParser {
         }
 
         //add defaults
-        whereClause += formatWhereClauseDefaults();
+        whereClause += formatWhereClauseDefaults(); // this adds implausible
 
+        //resolve include_fences from parsed parameter
+        if (whereParams.containsKey("include_fences")) {
+            List<SingleParameter> fenceParams = whereParams.get("include_fences");
+            if (!fenceParams.isEmpty()) {
+                String val = fenceParams.get(0).getValue().toLowerCase();
+                if (val.equals("true") || val.equals("only")) {
+                    includeFencesMode = val;
+                }
+            }
+        }
         orderClause = formatOrderClause(sortBy, sortOrder);
         return invalidElements;
     }
+
+    /**
+     * Returns the appropriate SQL status clause based on the include_fences parameter.
+     * If include_fences=true, allows both FINISHED and COVERAGE statuses.
+     * Otherwise, only FINISHED is allowed.
+     */
+    public String getStatusClause() {
+        return switch (includeFencesMode) {
+            case "true" -> " AND (status = 'FINISHED' OR status = 'COVERAGE') ";
+            case "only" -> " AND status = 'COVERAGE' ";
+            default -> " AND status = 'FINISHED' ";
+        };
+    }
+
 
     private Set<String> getValidAttributes(Map<String, List<String>> getParameters) {
         return getParameters.keySet().stream()
@@ -483,7 +509,7 @@ public class QueryParser {
             } else {
                 return " AND NOT " + attr;
             }
-        } else if (attr.equals("cursor") || attr.equals("max_results")) {
+        } else if (attr.equals("cursor") || attr.equals("max_results") || attr.equals("include_fences")) {
             return "";
         } else if (attr.equals("platform")) {
             attr = "(t.plattform ILIKE ? OR (t.plattform IS NULL AND t.client_name ILIKE ?))";
