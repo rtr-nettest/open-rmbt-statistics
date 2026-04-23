@@ -129,7 +129,7 @@ public class SignalGraphItemDTO {
 
     @Setter
     @Getter
-    @EqualsAndHashCode
+    @EqualsAndHashCode(callSuper = true)  // if superclass fields SHOULD be included
     @ToString
     public static class CellInfo2G extends CellInfo {
         @JsonProperty("lac")
@@ -161,7 +161,7 @@ public class SignalGraphItemDTO {
 
     @Setter
     @Getter
-    @EqualsAndHashCode
+    @EqualsAndHashCode(callSuper = true)  // if superclass fields SHOULD be included
     @ToString
     public static class CellInfo3G extends CellInfo {
         @JsonProperty("lac")
@@ -193,7 +193,7 @@ public class SignalGraphItemDTO {
 
     @Getter
     @Setter
-    @EqualsAndHashCode
+    @EqualsAndHashCode(callSuper = true)  // if superclass fields SHOULD be included
     @ToString
     public static class CellInfo4G extends CellInfo {
         @JsonProperty("tac")
@@ -225,7 +225,7 @@ public class SignalGraphItemDTO {
 
     @Getter
     @Setter
-    @EqualsAndHashCode
+    @EqualsAndHashCode(callSuper = true)  // if superclass fields SHOULD be included
     @ToString
     public static class CellInfo5G extends CellInfo {
         @JsonProperty("nci")
