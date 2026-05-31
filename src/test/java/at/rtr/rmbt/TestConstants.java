@@ -118,30 +118,6 @@ public interface TestConstants {
     Integer DEFAULT_DOWNLOAD_CLASSIFICATION = 1;
     Integer DEFAULT_PING_CLASSIFICATION = 2;
     Integer DEFAULT_SIGNAL_CLASSIFICATION = 88;
-    String DEFAULT_EXPECTED_CSV_RESPONSE_ENTITY = "<200 OK OK,open_uuid,open_test_uuid,time,lat,long,download_kbit,upload_kbit,ping_ms,signal_strength,lte_rsrp,platform,provider_name,model,loc_accuracy,download_classification,upload_classification,ping_classification,signal_classification9a837fab-2d65-4256-8fbf-0fd373207d37,fa39d023-6b54-4008-a67e-24f5bdb579bc,DEFAULT_TIME_STRING,31.3,18.0,900,36000,35.3,-94,-34,Android,DEFAULT_PROVIDER,DEFAULT_MODEL,13.7,1,3,2,88,[Content-Disposition:\"attachment;filename=opentests.csv\", Content-Type:\"text/csv;charset=UTF-8\"]>";
-    String DEFAULT_EXPECTED_JSON_RESPONSE_ENTITY = "<200 OK OK," +
-            "{\"next_cursor\":3," +
-            "\"duration_ms\":2222," +
-            "\"results\":[" +
-            "{\"open_uuid\":\"9a837fab-2d65-4256-8fbf-0fd373207d37\"," +
-            "\"open_test_uuid\":\"fa39d023-6b54-4008-a67e-24f5bdb579bc\"," +
-            "\"time\":\"DEFAULT_TIME_STRING\"," +
-            "\"lat\":31.3," +
-            "\"long\":18.0," +
-            "\"download_kbit\":900," +
-            "\"upload_kbit\":36000," +
-            "\"ping_ms\":35.3," +
-            "\"signal_strength\":-94," +
-            "\"lte_rsrp\":-34," +
-            "\"platform\":\"Android\"," +
-            "\"provider_name\":\"DEFAULT_PROVIDER\"," +
-            "\"model\":\"DEFAULT_MODEL\"," +
-            "\"loc_accuracy\":13.7," +
-            "\"download_classification\":1," +
-            "\"upload_classification\":3," +
-            "\"ping_classification\":2," +
-            "\"signal_classification\":88}]" +
-            "},[Content-Type:\"application/json;charset=UTF-8\"]>";
     String DEFAULT_PNG_SIZE = "forumlarge";
     byte[] DEFAULT_BYTE_ARRAY = "DEFAULT_BYTE_ARRAY".getBytes();
     String DEFAULT_VERBOSE = "1";
@@ -238,4 +214,6 @@ public interface TestConstants {
     boolean DEFAULT_HISTOGRAM_LOGARITHMIC = true;
     Integer DEFAULT_HISTOGRAM_BUCKET = 1;
     Long DEFAULT_HISTOGRAM_COUNT = 2L;
+    Long DEFAULT_FENCES_COUNT = 0L;
+
 }

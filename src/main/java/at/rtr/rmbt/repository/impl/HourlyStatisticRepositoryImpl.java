@@ -44,7 +44,7 @@ public class HourlyStatisticRepositoryImpl implements HourlyStatisticRepository 
                         " FROM test t " +
                         queryParser.getJoins() +
                         " WHERE t.deleted = false" +
-                        " AND status = 'FINISHED' " + queryParser.getWhereClause("AND") +
+                        queryParser.getStatusClause() + queryParser.getWhereClause("AND") +
                         " GROUP BY hour;";
                 return con.prepareStatement(sql);
             }

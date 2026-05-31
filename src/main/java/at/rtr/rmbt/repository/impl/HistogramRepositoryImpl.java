@@ -62,7 +62,7 @@ public class HistogramRepositoryImpl implements HistogramRepository {
                         + queryParser.getJoins()
                         + " where " + field + " > 0 "
                         + " AND t.deleted = false"
-                        + " AND status = 'FINISHED' " + queryParser.getWhereClause("AND")
+                        + queryParser.getStatusClause() + queryParser.getWhereClause("AND")
                         + " group by bucket " + "order by bucket asc;";
                 return con.prepareStatement(sql);
             }
