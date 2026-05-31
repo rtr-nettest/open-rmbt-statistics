@@ -4,7 +4,7 @@ import at.rtr.rmbt.mapper.OpenTestMapper;
 import at.rtr.rmbt.repository.OpenTestExportRepository;
 import at.rtr.rmbt.response.OpenTestExportDto;
 import at.rtr.rmbt.service.FileService;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.dataformat.csv.CsvGenerator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
@@ -33,7 +33,7 @@ public class CsvExportService extends AbstractExportService {
     protected void writeCustomLogic(List<OpenTestExportDto> results, OutputStream out, String fileName) throws IOException {
         final CsvMapper cm = new CsvMapper();
         final CsvSchema schema;
-        cm.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+        cm.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
         cm.enable(CsvGenerator.Feature.STRICT_CHECK_FOR_QUOTING);
         schema = CsvSchema.builder().setLineSeparator("\r\n").setUseHeader(true)
                 .addColumnsFrom(cm.schemaFor(OpenTestExportDto.class)).build();

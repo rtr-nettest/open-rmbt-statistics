@@ -4,7 +4,7 @@ import at.rtr.rmbt.mapper.OpenTestMapper;
 import at.rtr.rmbt.repository.OpenTestExportRepository;
 import at.rtr.rmbt.response.OpenTestExportDto;
 import at.rtr.rmbt.service.FileService;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.SequenceWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.github.sett4.dataformat.xlsx.XlsxMapper;
@@ -43,7 +43,7 @@ public class XlsxExportService extends AbstractExportService {
 
     protected void writeCustomLogic(List<OpenTestExportDto> results, OutputStream outf, String fileName) throws IOException {
         XlsxMapper mapper = new XlsxMapper();
-        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+        mapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
         CsvSchema schema = mapper.schemaFor(OpenTestExportDto.class).withHeader();
         SequenceWriter sequenceWriter = mapper.writer(schema).writeValues(outf);
         sequenceWriter.writeAll(results);
