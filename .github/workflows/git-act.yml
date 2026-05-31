@@ -7,11 +7,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Set up JDK 17
+      - name: Set up JDK 25
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'adopt'
+          java-version: '25'
+          distribution: 'corretto'
           cache: maven
       - name: Get git info
         run: mvn -B  io.github.git-commit-id:git-commit-id-maven-plugin:6.0.0:revision
