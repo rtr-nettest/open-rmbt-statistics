@@ -133,15 +133,11 @@
         <dependency>
             <groupId>com.github.jknack</groupId>
             <artifactId>handlebars</artifactId>
-            <version>4.5.1</version>
-        </dependency>
-        <!-- handlebars 4.5.1 has an invalid published POM, so Maven drops its transitive
-             dependencies. commons-text is required at runtime by Handlebars' EscapingStrategy;
-             declare it explicitly so it is packaged into the WAR. -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-text</artifactId>
-            <version>1.12.0</version>
+            <!-- 4.5.0, not 4.5.1: the 4.5.1 parent POM is published with invalid packaging,
+                 so Maven cannot build its model and silently drops all of handlebars' transitive
+                 dependencies (e.g. commons-text, required at runtime by Handlebars' EscapingStrategy).
+                 4.5.0's POM is valid, so its transitive dependencies resolve normally. -->
+            <version>4.5.0</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
