@@ -135,6 +135,14 @@
             <artifactId>handlebars</artifactId>
             <version>4.5.1</version>
         </dependency>
+        <!-- handlebars 4.5.1 has an invalid published POM, so Maven drops its transitive
+             dependencies. commons-text is required at runtime by Handlebars' EscapingStrategy;
+             declare it explicitly so it is packaged into the WAR. -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.12.0</version>
+        </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
