@@ -110,4 +110,4 @@ redis:
   host: ${STATISTIC_REDIS_HOST:127.0.0.1}
   port: ${STATISTIC_REDIS_PORT:6379}
 logging:
-  config: ${LOGGING_CONFIG_FILE_STATISTIC:classpath:logback-local.xml}
+  config: ${LOGGING_CONFIG_FILE_STATISTIC:classpath:logback.xml}
