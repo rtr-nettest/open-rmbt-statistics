@@ -1,7 +1,7 @@
 Open-RMBT-Statistics
 =========
 
-> *Open-RMBT* is an open source, multi-threaded bandwidth measurement system.
+> *Open-RMBT* is an open source, multithreaded bandwidth measurement system.
 
 It consists of the following components:
 * Web site
@@ -36,7 +36,7 @@ System requirements for the Statistics-Server
 -------------------
 
 * single (virtual) server with sufficient RAM and CPU performance
-* Base system Debian 12 or newer
+* Base system Debian 13 or newer
 * At least a single static public IPv4 address (IPv6 support recommended)
 
   *NOTE: other Linux distributions can also be used, but commands and package names may be different*
@@ -67,7 +67,7 @@ for basic setup instructions.
 * Apache Tomcat 10 or higher
 * nginx; configure nginx to forward requests to localhost:8080
 * letsencrypt; create certificate
-* openjdk-17-jre (or other jdk distribution)
+* JDK17 .. JDK25
 * redis
 
 ### Build the RMBTStatisticServer.war archive
@@ -89,7 +89,7 @@ spring.profiles.active=prod
 This activates the production spring profile.
 
 ##### Configure context.xml
-Edit `/etc/tomcat9/context.xml`, add to `<Context>`:
+Edit `/etc/tomcat10/context.xml`, add to `<Context>`:
 
 ```xml
 <!-- Control/Statistic - Identification used in /version endpoint -->
@@ -105,77 +105,60 @@ Edit `/etc/tomcat9/context.xml`, add to `<Context>`:
 <!-- Statistic redis connection -->
 <Parameter name="STATISTIC_REDIS_HOST" value="localhost" override="false"/>
 <Parameter name="STATISTIC_REDIS_PORT" value="6379" override="false"/>
-
-<!-- Statistic - logback configuration -->
-<Parameter name="LOGGING_CONFIG_FILE_STATISTIC" value="/etc/tomcat9/logback-statistic.xml" override="false"/>
 ```
-Substitute parts with `[]`. [host_id] is a short string which identifies the host, eg. "host1."
-Make sure the file `context.xml` is owned by`tomcat`.
+Substitute parts with `[]`. [host_id] is a short string which identifies the host, e.g. "host1".
+Make sure the file `context.xml` is owned by `tomcat`.
 
-##### Configure Logstash
+##### Configure Logging - Console or Logstash
 
-The basic logging configuration is to send log to `console`. In newer Debian installations systemd is
-configured to redirect that output to systemd log. Older systems send log to `/var/log/tomcat9/catalina.out`.
+The default configuration is to send log to `console`. In current Debian installations systemd 
+redirects console output to systemd's journal. 
+Older systems logged to `/var/log/tomcat9/catalina.out`.
 
-The following configuration sends log to `console`:
+The following `context.xml` configuration sends log to Logstash at `elk.example.com`:
 
 ```xml
+<!-- Logging  -->
+<Parameter name="LOG_HOST"     value="elk.example.com"       override="false"/>
+<Parameter name="LOG_PORT"     value="5000"                  override="false"/>
+<Parameter name="LOGGING_HOST" value="dev"                   override="false"/>
+```
+
+Alternatively, one might want to define a custom logging configuration.
+First, the alternative configuration file need to be specified in `context.xml`:
+```xml
+ <Parameter name="LOGGING_CONFIG_FILE_STATISTIC" value="/etc/tomcat10/logback.xml" override="false"/>
+```
+Again, make sure that the file `/etc/tomcat10/logback.xml` is owned by `tomcat`.
+
+This example logs to both Logstash and console:
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE configuration>
 <configuration>
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-    </encoder>
-  </appender>
-<!-- log levels: TRACE, DEBUG, INFO, WARN, ERROR -->
-  <root level="INFO">
-    <appender-ref ref="STDOUT" />
-  </root>
-</configuration>
-```
-Alternatively, log can be sent to Logstash on a remote ELK instance
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE configuration>
-<configuration scan="true">
-    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
-    <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <param name="Encoding" value="UTF-8"/>
-<!-- define remote logging  host here -->
-        <remoteHost>elk.example.com</remoteHost>
-        <port>5000</port>
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-<!-- add custom fields to identify server and host -->
-            <customFields>{"app_name":"statistic-service", "host":"[host_id]"}</customFields>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5p [%t] %-40.40logger{39} : %m%n</pattern>
         </encoder>
     </appender>
-<!-- log levels: TRACE, DEBUG, INFO, WARN, ERROR -->
+
+    <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>elk.example.com:5000</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"app_name":"statistic-service","host":"dev"}</customFields>
+        </encoder>
+    </appender>
+
     <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="logstash"/>
     </root>
+
 </configuration>
 ```
-Again, make sure the file `etc/tomcat9/logback-statistic.xml` is owned by`tomcat`.
 
 ### Install and configure PDF export
 
 [Weasyprint](https://weasyprint.org/) is required for PDF export.
 
  apt -y install weasyprint
-
-
-## Logging
-
-Logging is configured via `logback.xml` and is independent of the Spring profile.
-
-| Server     | app_name          |
-|------------|-------------------|
-| statistics | statistic-service |
-
-Behavior:
-
-- **No `LOG_HOST`** → console only, at `INFO`.
-- **`LOG_HOST` set** → Logstash at `INFO` + console at `ERROR` only (with `host` from `${LOGGING_HOST:-}`).
-- **Advanced** → admin points `logging.config` / `LOGGING_CONFIG_FILE*` at their own `logback.xml`.
