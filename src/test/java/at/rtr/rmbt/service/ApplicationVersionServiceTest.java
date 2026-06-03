@@ -34,6 +34,7 @@ class ApplicationVersionServiceTest {
         applicationVersionService = new ApplicationVersionServiceImpl(settingsRepository);
         ReflectionTestUtils.setField(applicationVersionService, "branch", TestConstants.DEFAULT_GIT_BRANCH);
         ReflectionTestUtils.setField(applicationVersionService, "describe", TestConstants.DEFAULT_GIT_COMMIT_ID_DESCRIBE);
+        ReflectionTestUtils.setField(applicationVersionService, "buildTime", TestConstants.DEFAULT_GIT_BUILD_TIME);
         ReflectionTestUtils.setField(applicationVersionService, "applicationHost", TestConstants.DEFAULT_APPLICATION_HOST);
     }
 
