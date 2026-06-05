@@ -48,6 +48,15 @@ application-version:
 redis:
   host: ${STATISTIC_REDIS_HOST:127.0.0.1}
   port: ${STATISTIC_REDIS_PORT:6379}
+
+# springdoc / Swagger UI. Serve the OpenAPI spec at /api-docs(.yaml) instead of the springdoc
+# default /v3/api-docs. Swagger UI then resolves the spec via swagger-config regardless of environment.
+springdoc:
+  api-docs:
+    path: /api-docs
+
+
+
 ---
 spring:
   config:
