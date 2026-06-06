@@ -23,4 +23,8 @@ public class ApplicationVersionResponse {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty(value = "profile")
     private final String profile;
+
+    /** Cache backend in use: {@code "redis"} when a reachable Redis is configured, else {@code "none"}. */
+    @JsonProperty(value = "cache")
+    private final String cache;
 }
