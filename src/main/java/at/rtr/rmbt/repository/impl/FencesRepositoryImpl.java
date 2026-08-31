@@ -35,7 +35,12 @@ public class FencesRepositoryImpl implements FencesRepository {
             "ST_X(geom4326) AS longitude, " +
             "ST_Y(geom4326) AS latitude, " +
             "CAST(EXTRACT(EPOCH FROM fence_time) * 1000 AS BIGINT) AS fence_time, " +
-            "signal " +
+            "signal, " +
+            "accuracy, " +
+            "provider, " +
+            "altitude, " +
+            "bearing, " +
+            "speed " +
             "FROM fences WHERE open_test_uuid = ?";
 
     private final JdbcTemplate jdbcTemplate;
@@ -65,7 +70,12 @@ public class FencesRepositoryImpl implements FencesRepository {
                             SqlUtils.getDoubleOrNull(rs,"longitude"),
                             SqlUtils.getDoubleOrNull(rs,"latitude"),
                             SqlUtils.getLongOrNull(rs,"fence_time"),
-                            SqlUtils.getDoubleOrNull(rs, "signal")
+                            SqlUtils.getDoubleOrNull(rs, "signal"),
+                            SqlUtils.getDoubleOrNull(rs, "accuracy"),
+                            rs.getString("provider"),
+                            SqlUtils.getDoubleOrNull(rs, "altitude"),
+                            SqlUtils.getDoubleOrNull(rs, "bearing"),
+                            SqlUtils.getDoubleOrNull(rs, "speed")
                     );
                     list.add(FencesItemDTO);
                 }

@@ -60,4 +60,24 @@ public class FencesItemDTO {
     @JsonProperty(value = "signal")
     private final Double signal;
 
+    @Schema(description = "Location accuracy of the fence center in m, as reported by the client", example = "13.014")
+    @JsonProperty("accuracy") // float8
+    private final Double accuracy;
+
+    @Schema(description = "Location provider of the fence center, as reported by the client", example = "gps")
+    @JsonProperty("provider") // varchar
+    private final String provider;
+
+    @Schema(description = "Altitude of the fence in meter, as reported by the client", example = "2183.4")
+    @JsonProperty("altitude") // float8
+    private final Double altitude;
+
+    @Schema(description = "Heading of the fence in degrees from north, as reported by the client", example = "271.5")
+    @JsonProperty("bearing") // float8
+    private final Double bearing;
+
+    @Schema(description = "Speed of the fence in meter per second, as reported by the client", example = "13.8")
+    @JsonProperty("speed") // float8
+    private final Double speed;
+
 }
