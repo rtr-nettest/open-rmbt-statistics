@@ -6,10 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import jakarta.servlet.*;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponseWrapper;
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -247,13 +247,12 @@ public class ApiLoggingFilter implements Filter {
         }
     }
 
-    public class BufferedResponseWrapper implements HttpServletResponse {
-        HttpServletResponse original;
+    public class BufferedResponseWrapper extends HttpServletResponseWrapper {
         TeeServletOutputStream tee;
         ByteArrayOutputStream bos;
 
         public BufferedResponseWrapper(HttpServletResponse response) {
-            original = response;
+            super(response);
         }
 
         public String getContent() throws IOException {
@@ -263,179 +262,22 @@ public class ApiLoggingFilter implements Filter {
             return bos.toString();
         }
 
-        public PrintWriter getWriter() throws IOException {
-            return original.getWriter();
-        }
-
+        @Override
         public ServletOutputStream getOutputStream() throws IOException {
             if (tee == null) {
                 bos = new ByteArrayOutputStream();
-                tee = new TeeServletOutputStream(original.getOutputStream(), bos);
+                tee = new TeeServletOutputStream(getResponse().getOutputStream(), bos);
             }
             return tee;
-
-        }
-
-        @Override
-        public String getCharacterEncoding() {
-            return original.getCharacterEncoding();
-        }
-
-        @Override
-        public String getContentType() {
-            return original.getContentType();
-        }
-
-        @Override
-        public void setCharacterEncoding(String charset) {
-            original.setCharacterEncoding(charset);
-        }
-
-        @Override
-        public void setContentLength(int len) {
-            original.setContentLength(len);
-        }
-
-        @Override
-        public void setContentLengthLong(long l) {
-            original.setContentLengthLong(l);
-        }
-
-        @Override
-        public void setContentType(String type) {
-            original.setContentType(type);
-        }
-
-        @Override
-        public void setBufferSize(int size) {
-            original.setBufferSize(size);
-        }
-
-        @Override
-        public int getBufferSize() {
-            return original.getBufferSize();
         }
 
         @Override
         public void flushBuffer() throws IOException {
-            tee.flush();
-        }
-
-        @Override
-        public void resetBuffer() {
-            original.resetBuffer();
-        }
-
-        @Override
-        public boolean isCommitted() {
-            return original.isCommitted();
-        }
-
-        @Override
-        public void reset() {
-            original.reset();
-        }
-
-        @Override
-        public void setLocale(Locale loc) {
-            original.setLocale(loc);
-        }
-
-        @Override
-        public Locale getLocale() {
-            return original.getLocale();
-        }
-
-        @Override
-        public void addCookie(Cookie cookie) {
-            original.addCookie(cookie);
-        }
-
-        @Override
-        public boolean containsHeader(String name) {
-            return original.containsHeader(name);
-        }
-
-        @Override
-        public String encodeURL(String url) {
-            return original.encodeURL(url);
-        }
-
-        @Override
-        public String encodeRedirectURL(String url) {
-            return original.encodeRedirectURL(url);
-        }
-
-        @SuppressWarnings("deprecation")
-        @Override
-        public void sendError(int sc, String msg) throws IOException {
-            original.sendError(sc, msg);
-        }
-
-        @Override
-        public void sendError(int sc) throws IOException {
-            original.sendError(sc);
-        }
-
-        @Override
-        public void sendRedirect(String location) throws IOException {
-            original.sendRedirect(location);
-        }
-
-        @Override
-        public void setDateHeader(String name, long date) {
-            original.setDateHeader(name, date);
-        }
-
-        @Override
-        public void addDateHeader(String name, long date) {
-            original.addDateHeader(name, date);
-        }
-
-        @Override
-        public void setHeader(String name, String value) {
-            original.setHeader(name, value);
-        }
-
-        @Override
-        public void addHeader(String name, String value) {
-            original.addHeader(name, value);
-        }
-
-        @Override
-        public void setIntHeader(String name, int value) {
-            original.setIntHeader(name, value);
-        }
-
-        @Override
-        public void addIntHeader(String name, int value) {
-            original.addIntHeader(name, value);
-        }
-
-        @Override
-        public void setStatus(int sc) {
-            original.setStatus(sc);
-        }
-
-
-        @Override
-        public String getHeader(String arg0) {
-            return original.getHeader(arg0);
-        }
-
-        @Override
-        public Collection<String> getHeaderNames() {
-            return original.getHeaderNames();
-        }
-
-        @Override
-        public Collection<String> getHeaders(String arg0) {
-            return original.getHeaders(arg0);
-        }
-
-        @Override
-        public int getStatus() {
-            return original.getStatus();
+            if (tee != null) {
+                tee.flush();
+            } else {
+                super.flushBuffer();
+            }
         }
     }
 }

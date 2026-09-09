@@ -173,6 +173,17 @@ public class PdfExportServiceImpl implements PdfExportService {
 
         File retFile = fileService.openFile(pdfPath + File.separator + fileName + ".pdf");
 
+        // Prevent path traversal: the resolved file must stay within the configured pdfPath
+        try {
+            Path basePath = new File(pdfPath).getCanonicalFile().toPath();
+            Path filePath = retFile.getCanonicalFile().toPath();
+            if (!filePath.startsWith(basePath)) {
+                throw new RuntimeException("File not found");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("File not found");
+        }
+
         if (!retFile.exists()) {
             throw new RuntimeException("File not found");
         }

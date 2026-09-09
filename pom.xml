@@ -27,6 +27,15 @@
         <jackson-version>2.15.2</jackson-version>
     </properties>
     <repositories>
+        <!-- Maven Central must be queried before jitpack: jitpack serves a broken auto-generated
+             parent POM for com.github.jknack:handlebars.java (packaging "jar" instead of "pom"),
+             which makes Maven drop handlebars' transitive dependencies (e.g. commons-text). With
+             central first, the valid parent POM is used. jitpack is still needed for the
+             com.github.sett4 jackson-dataformat-xlsx-lite artifact. -->
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
@@ -134,11 +143,11 @@
         <dependency>
             <groupId>com.github.jknack</groupId>
             <artifactId>handlebars</artifactId>
-            <!-- 4.5.0, not 4.5.1: the 4.5.1 parent POM is published with invalid packaging,
-                 so Maven cannot build its model and silently drops all of handlebars' transitive
-                 dependencies (e.g. commons-text, required at runtime by Handlebars' EscapingStrategy).
-                 4.5.0's POM is valid, so its transitive dependencies resolve normally. -->
-            <version>4.5.0</version>
+            <!-- 4.5.4 (Dependabot: >= 4.5.2). Avoid 4.5.1: its parent POM is published with invalid
+                 packaging, so Maven cannot build its model and silently drops all of handlebars'
+                 transitive dependencies (e.g. commons-text, required at runtime by Handlebars'
+                 EscapingStrategy). 4.5.2+ ship a valid parent POM, so transitive deps resolve normally. -->
+            <version>4.5.4</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>

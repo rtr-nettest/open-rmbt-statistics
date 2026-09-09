@@ -1,5 +1,9 @@
 name: Java CI
 on: [workflow_dispatch, push]
+
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest

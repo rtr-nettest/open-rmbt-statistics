@@ -5,6 +5,10 @@ name: WAR build
 
 on:
   push:
+
+permissions:
+  contents: read
+
 jobs:
   build:
 
