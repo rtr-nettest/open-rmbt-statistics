@@ -41,7 +41,7 @@ public class FencesRepositoryImpl implements FencesRepository {
             "altitude, " +
             "bearing, " +
             "speed " +
-            "FROM fences WHERE open_test_uuid = ?";
+            "FROM fences WHERE open_test_uuid = ? ORDER BY fence_id ASC";
 
     private final JdbcTemplate jdbcTemplate;
 
