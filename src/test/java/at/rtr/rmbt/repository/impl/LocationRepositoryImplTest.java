@@ -3,6 +3,8 @@ package at.rtr.rmbt.repository.impl;
 import at.rtr.rmbt.TestConstants;
 import at.rtr.rmbt.constant.Constants;
 import at.rtr.rmbt.response.LocationGraphDTO;
+import at.rtr.rmbt.service.GeoAccuracyLimitService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -19,6 +21,7 @@ import java.sql.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,8 +35,17 @@ class LocationRepositoryImplTest {
 
     @Mock
     private JdbcTemplate jdbcTemplate;
+    @Mock
+    private GeoAccuracyLimitService geoAccuracyLimitService;
     @InjectMocks
     private LocationRepositoryImpl locationRepository;
+
+    @BeforeEach
+    void setUp() {
+        when(geoAccuracyLimitService.applyGeoAccuracyDetailLimit(anyString())).thenAnswer(invocation ->
+                invocation.<String>getArgument(0).replace(Constants.GEO_ACCURACY_DETAIL_LIMIT_PLACEHOLDER,
+                        Double.toString(Constants.RMBT_GEO_ACCURACY_DETAIL_LIMIT)));
+    }
 
     @Captor
     private ArgumentCaptor<PreparedStatementCreator> preparedStatementCreator;

@@ -3,13 +3,11 @@ package at.rtr.rmbt.service.impl;
 
 import at.rtr.rmbt.constant.AdminSettingConfig;
 import at.rtr.rmbt.constant.Constants;
-import at.rtr.rmbt.model.Settings;
-import at.rtr.rmbt.repository.SettingsRepository;
 import at.rtr.rmbt.response.ApplicationVersionResponse;
 import at.rtr.rmbt.service.ApplicationVersionService;
+import at.rtr.rmbt.service.SettingsCache;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.connection.RedisConnection;
@@ -37,7 +35,7 @@ public class ApplicationVersionServiceImpl implements ApplicationVersionService 
     @Value("${spring.profiles.active:default}")
     private String activeProfile;
 
-    private final SettingsRepository settingsRepository;
+    private final SettingsCache settingsCache;
 
     /** Optional: present only when Redis is configured (it always is here, but kept optional/robust). */
     private final ObjectProvider<RedisConnectionFactory> redisConnectionFactory;
@@ -106,8 +104,6 @@ public class ApplicationVersionServiceImpl implements ApplicationVersionService 
     }
 
     private String getSystemUUID() {
-        return settingsRepository.findFirstByKeyAndLangIsNullOrKeyAndLangOrderByLang(AdminSettingConfig.SYSTEM_UUID_KEY, AdminSettingConfig.SYSTEM_UUID_KEY, StringUtils.EMPTY)
-                .map(Settings::getValue)
-                .orElse(null);
+        return settingsCache.get(AdminSettingConfig.SYSTEM_UUID_KEY).orElse(null);
     }
 }

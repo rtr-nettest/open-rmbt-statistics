@@ -4,7 +4,10 @@ import java.util.List;
 
 public interface Constants {
     String VERSION_TEMPLATE = "%s_%s";
+    /** Default for the geo_accuracy_limit_detail setting, used while the setting is missing or invalid. */
     Double RMBT_GEO_ACCURACY_DETAIL_LIMIT = 10000D;
+    /** Placeholder in SQL strings, replaced by the current geo_accuracy_limit_detail value. */
+    String GEO_ACCURACY_DETAIL_LIMIT_PLACEHOLDER = "{GEO_ACCURACY_DETAIL_LIMIT}";
     Double RMBT_GEO_DISTANCE_DETAIL_LIMIT = 3000D;
     String RMBT_DEFAULT_LANGUAGE = "en";
     List<String> RMBT_SUPPORTED_LANGUAGES = List.of("de", "en", "hr", "sv", "pl", "es", "is", "fr", "nb", "cs");

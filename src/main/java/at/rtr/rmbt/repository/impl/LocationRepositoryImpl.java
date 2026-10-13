@@ -1,5 +1,6 @@
 package at.rtr.rmbt.repository.impl;
 
+import at.rtr.rmbt.service.GeoAccuracyLimitService;
 import at.rtr.rmbt.constant.Constants;
 import at.rtr.rmbt.repository.LocationRepository;
 import at.rtr.rmbt.response.LocationGraphDTO;
@@ -23,9 +24,10 @@ import java.util.List;
 public class LocationRepositoryImpl implements LocationRepository {
     private static final String SQL = "SELECT test_id, g.geo_lat latitude, g.geo_long longitude, g.accuracy loc_accuracy, g.bearing bearing, g.speed speed, g.provider provider, altitude, time "
             + " FROM geo_location g "
-            + " WHERE g.test_id = ? and accuracy < " + Constants.RMBT_GEO_ACCURACY_DETAIL_LIMIT
+            + " WHERE g.test_id = ? and accuracy < " + Constants.GEO_ACCURACY_DETAIL_LIMIT_PLACEHOLDER
             + " ORDER BY time;";
     private final JdbcTemplate jdbcTemplate;
+    private final GeoAccuracyLimitService geoAccuracyLimitService;
 
     @Override
     public List<LocationGraphDTO.LocationGraphItem> getLocation(Long testUid, long time) {
@@ -71,7 +73,7 @@ public class LocationRepositoryImpl implements LocationRepository {
         return new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                return con.prepareStatement(sql);
+                return con.prepareStatement(geoAccuracyLimitService.applyGeoAccuracyDetailLimit(sql));
             }
         };
     }

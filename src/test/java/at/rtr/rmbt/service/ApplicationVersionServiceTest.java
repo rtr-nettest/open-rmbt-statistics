@@ -5,7 +5,6 @@ import at.rtr.rmbt.constant.AdminSettingConfig;
 import at.rtr.rmbt.model.Settings;
 import at.rtr.rmbt.repository.SettingsRepository;
 import at.rtr.rmbt.service.impl.ApplicationVersionServiceImpl;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.Optional;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -28,15 +27,15 @@ class ApplicationVersionServiceTest {
     @MockBean
     private SettingsRepository settingsRepository;
 
-    @MockBean
-    private Settings settings;
+    private SettingsCache settingsCache;
 
     @MockBean
     private ObjectProvider<RedisConnectionFactory> redisConnectionFactory;
 
     @BeforeEach
     public void setUp() {
-        applicationVersionService = new ApplicationVersionServiceImpl(settingsRepository, redisConnectionFactory);
+        settingsCache = new SettingsCache(settingsRepository);
+        applicationVersionService = new ApplicationVersionServiceImpl(settingsCache, redisConnectionFactory);
         ReflectionTestUtils.setField(applicationVersionService, "branch", TestConstants.DEFAULT_GIT_BRANCH);
         ReflectionTestUtils.setField(applicationVersionService, "describe", TestConstants.DEFAULT_GIT_COMMIT_ID_DESCRIBE);
         ReflectionTestUtils.setField(applicationVersionService, "buildTime", TestConstants.DEFAULT_GIT_BUILD_TIME);
@@ -45,8 +44,9 @@ class ApplicationVersionServiceTest {
 
     @Test
     void getApplicationVersion_whenCommonData_expectApplicationVersionResponse() {
-        when(settingsRepository.findFirstByKeyAndLangIsNullOrKeyAndLangOrderByLang(AdminSettingConfig.SYSTEM_UUID_KEY, AdminSettingConfig.SYSTEM_UUID_KEY, StringUtils.EMPTY)).thenReturn(Optional.of(settings));
-        when(settings.getValue()).thenReturn(TestConstants.DEFAULT_SYSTEM_UUID_VALUE);
+        when(settingsRepository.findAll()).thenReturn(List.of(Settings.builder()
+                .id(1L).key(AdminSettingConfig.SYSTEM_UUID_KEY).value(TestConstants.DEFAULT_SYSTEM_UUID_VALUE).build()));
+        settingsCache.refresh();
 
         var response = applicationVersionService.getApplicationVersion();
 

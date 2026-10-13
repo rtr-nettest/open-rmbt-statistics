@@ -72,7 +72,8 @@ public class QueryParser {
 
     public enum FieldType {STRING, DATE, LONG, DOUBLE, BOOLEAN, UUID, SORTBY, SORTORDER, OUTPUT_FORMAT, IGNORE}
 
-    private final Double RMBT_GEO_ACCURACY_DETAIL_LIMIT = 10000d;
+    // accuracy bound (m) of the geo_accuracy_limit_detail setting
+    private final double geoAccuracyDetailLimit;
 
     //all fields for which the user can sort the result
     private static final HashSet<String> openDataFieldsSortable = new HashSet<>(Arrays.asList(new String[]{"download_kbit", "upload_kbit", "time", "signal_strength", "lte_rsrp", "ping_ms"}));
@@ -87,7 +88,8 @@ public class QueryParser {
     //Values for the database
     private final Queue<Map.Entry<String, FieldType>> searchValues = new LinkedList<>();
 
-    public QueryParser() {
+    public QueryParser(double geoAccuracyDetailLimit) {
+        this.geoAccuracyDetailLimit = geoAccuracyDetailLimit;
         allowedFields.put("download_kbit", FieldType.LONG);
         allowedFields.put("download_kbit[]", FieldType.LONG);
         allowedFields.put("upload_kbit", FieldType.LONG);
@@ -526,7 +528,7 @@ public class QueryParser {
             //special case: if value > threshold -> ignore and find no results (?)
             if (comperator.equals(">=") || comperator.equals("=")) {
                 long val = Long.parseLong(value);
-                if (val > RMBT_GEO_ACCURACY_DETAIL_LIMIT) {
+                if (val > geoAccuracyDetailLimit) {
                     return " AND 1=0";
                 }
             }

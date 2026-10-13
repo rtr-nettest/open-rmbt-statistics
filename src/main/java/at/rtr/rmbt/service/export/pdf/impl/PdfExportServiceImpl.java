@@ -7,6 +7,7 @@ import at.rtr.rmbt.response.OpenTestDetailsDTO;
 import at.rtr.rmbt.response.opentest.OpenTestDTO;
 import at.rtr.rmbt.response.opentest.OpenTestSearchResponse;
 import at.rtr.rmbt.service.FileService;
+import at.rtr.rmbt.service.GeoAccuracyLimitService;
 import at.rtr.rmbt.service.UuidGenerator;
 import at.rtr.rmbt.service.export.pdf.PdfExportService;
 import at.rtr.rmbt.service.export.pdf.PdfGenerator;
@@ -53,6 +54,7 @@ public class PdfExportServiceImpl implements PdfExportService {
     private final UuidGenerator uuidGenerator;
     private final Clock clock;
     private final FileService fileService;
+    private final GeoAccuracyLimitService geoAccuracyLimitService;
 
     @Value("${app.fileCache.pdfPath}")
     private String pdfPath;
@@ -84,7 +86,7 @@ public class PdfExportServiceImpl implements PdfExportService {
             certifiedMeasurement = false;
         }
 
-        final QueryParser qp = new QueryParser();
+        final QueryParser qp = new QueryParser(geoAccuracyLimitService.getGeoAccuracyDetailLimit());
         //parse the input query
         final List<String> invalidElements = qp.parseQuery(parameters);
         //only accept open_test_uuid and loop_uuid as input parameters

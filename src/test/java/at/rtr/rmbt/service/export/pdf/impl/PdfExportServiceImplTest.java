@@ -8,6 +8,7 @@ import at.rtr.rmbt.response.OpenTestDetailsDTO;
 import at.rtr.rmbt.response.opentest.OpenTestDTO;
 import at.rtr.rmbt.response.opentest.OpenTestSearchResponse;
 import at.rtr.rmbt.service.FileService;
+import at.rtr.rmbt.service.GeoAccuracyLimitService;
 import at.rtr.rmbt.service.UuidGenerator;
 import at.rtr.rmbt.service.export.pdf.PdfGenerator;
 import at.rtr.rmbt.utils.QueryParser;
@@ -55,6 +56,8 @@ class PdfExportServiceImplTest {
     private Clock clock;
     @Mock
     private FileService fileService;
+    @Mock
+    private GeoAccuracyLimitService geoAccuracyLimitService;
     @InjectMocks
     private PdfExportServiceImpl pdfExportService;
 
@@ -72,6 +75,7 @@ class PdfExportServiceImplTest {
         when(openTestDto.getOpenTestUuid()).thenReturn(TestConstants.DEFAULT_OPEN_TEST_UUID_STRING);
         when(uuidGenerator.generateNewUuid()).thenReturn(TestConstants.DEFAULT_UUID);
         when(clock.instant()).thenReturn(TestConstants.DEFAULT_INSTANT);
+        when(geoAccuracyLimitService.getGeoAccuracyDetailLimit()).thenReturn(Constants.RMBT_GEO_ACCURACY_DETAIL_LIMIT);
         ReflectionTestUtils.setField(pdfExportService, "pdfPath", TestConstants.DEFAULT_PDF_PATH);
     }
 

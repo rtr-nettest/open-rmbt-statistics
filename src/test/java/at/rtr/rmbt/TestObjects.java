@@ -1,5 +1,6 @@
 package at.rtr.rmbt;
 
+import at.rtr.rmbt.constant.Constants;
 import at.rtr.rmbt.response.ChoicesResponse;
 import at.rtr.rmbt.response.HourlyStatisticResponse;
 import at.rtr.rmbt.response.adminUsage.*;
@@ -55,7 +56,7 @@ public interface TestObjects {
     }
 
     static QueryParser queryParser() {
-        QueryParser queryParser = new QueryParser();
+        QueryParser queryParser = new QueryParser(Constants.RMBT_GEO_ACCURACY_DETAIL_LIMIT);
         queryParser.parseQuery(TestObjects.parametersMap());
         return queryParser;
     }
