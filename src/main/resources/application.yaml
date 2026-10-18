@@ -28,11 +28,14 @@ spring:
     username: ${STATISTIC_DB_USER:rmbt}
     # intellig: set pw in environment, e.g. STATISTIC_DB_PASSWORD=pwwithoutquotes
     password: ${STATISTIC_DB_PASSWORD}
+    # Connection pool is HikariCP (the Spring Boot default). Set once here; applies to every
+    # profile unless overridden. The former spring.datasource.tomcat.* block configured the
+    # Tomcat JDBC pool (a Spring Boot 1.x leftover, never on the classpath here) and was a no-op.
+    hikari:
+      maximum-pool-size: 20        # per node; total across all app nodes must stay < DB max_connections
+      connection-timeout: 30000    # ms a caller waits for a free connection before failing (Hikari default)
+      max-lifetime: 1800000        # max age (ms) of a pooled connection before it is retired and replaced
 
-  #    tomcat:
-  #      test-while-idle: true
-  #      test-on-borrow: true
-  #      validation-query: SELECT 1
   jpa:
     hibernate:
       ddl-auto: none
@@ -58,8 +61,6 @@ springdoc:
   api-docs:
     path: /api-docs
 
-
-
 ---
 spring:
   config:
@@ -70,11 +71,6 @@ spring:
     url: jdbc:postgresql://${STATISTIC_DB_HOST:127.0.0.1}:${STATISTIC_DB_PORT:5432}/${STATISTIC_DB_NAME:rmbt}
     username: ${STATISTIC_DB_USER:rmbt}
     password: ${STATISTIC_DB_PASSWORD}
-
-#    tomcat:
-#      test-while-idle: true
-#      test-on-borrow: true
-#      validation-query: SELECT 1
 
 application-version:
   host: rtr-statistic-dev
@@ -92,10 +88,6 @@ spring:
     url: jdbc:postgresql://${STATISTIC_DB_HOST:127.0.0.1}:${STATISTIC_DB_PORT:5432}/${STATISTIC_DB_NAME:rmbt}
     username: ${STATISTIC_DB_USER:rmbt}
     password: ${STATISTIC_DB_PASSWORD}
-    tomcat:
-      test-while-idle: true
-      test-on-borrow: true
-      validation-query: SELECT 1
 
 application-version:
   host: rtr-statistic-test
@@ -114,10 +106,7 @@ spring:
     url: jdbc:postgresql://${STATISTIC_DB_HOST:127.0.0.1}:${STATISTIC_DB_PORT:5432}/${STATISTIC_DB_NAME:rmbt}
     username: ${STATISTIC_DB_USER:rmbt}
     password: ${STATISTIC_DB_PASSWORD}
-    tomcat:
-      test-while-idle: true
-      test-on-borrow: true
-      validation-query: SELECT 1
+
 
 application-version:
   host: ${HOST_ID:rtr-statistic-prod}
