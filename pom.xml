@@ -197,9 +197,13 @@
             <version>1.14</version>
         </dependency>
         <dependency>
+            <!-- Spring Boot 4 variant: the classic javamelody-spring-boot-starter is compiled against
+                 Boot 3 and references org.springframework.boot.autoconfigure.quartz.SchedulerFactoryBeanCustomizer,
+                 which Boot 4 moved to org.springframework.boot.quartz.autoconfigure - causing a
+                 NoClassDefFoundError at context startup. The -spring-boot4- artifact targets Boot 4. -->
             <groupId>net.bull.javamelody</groupId>
-            <artifactId>javamelody-spring-boot-starter</artifactId>
-            <version>2.8.0</version>
+            <artifactId>javamelody-spring-boot4-starter</artifactId>
+            <version>2.9.0</version>
         </dependency>
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
