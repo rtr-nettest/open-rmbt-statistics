@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.14</version>
+        <version>3.5.16</version>
         <relativePath/>
     </parent>
     <groupId>at.rtr.rmbt</groupId>
@@ -25,6 +25,11 @@
         <start-class>at.rtr.rmbt.StatisticServerApplication</start-class>
         <!-- Only used for the third-party jackson-dataformat-xlsx-lite; the core Jackson modules are BOM-managed. -->
         <jackson-version>2.15.2</jackson-version>
+        <!-- Override Apache POI, pulled transitively by jackson-dataformat-xlsx-lite (which still
+             depends on the 2021-era 5.1.0). 5.4.0+ fixes CVE-2025-31672 (OOXML duplicate zip-entry
+             handling) and drags in a fixed commons-compress (>= 1.26, fixing CVE-2024-25710 /
+             CVE-2024-26308). Stays within POI 5.x for API compatibility. -->
+        <apache.poi.version>5.4.1</apache.poi.version>
         <!-- Set outputTimestamp explicitly to the build time: newer Maven versions default it to
              1980-02-01T00:00:00Z, which git-commit-id then reports as git.build.time in /version. -->
         <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss'Z'</maven.build.timestamp.format>
@@ -45,6 +50,27 @@
             <url>https://jitpack.io</url>
         </repository>
     </repositories>
+    <dependencyManagement>
+        <dependencies>
+            <!-- Force the whole Apache POI set to ${apache.poi.version}; jackson-dataformat-xlsx-lite
+                 pins the vulnerable 5.1.0 transitively (see property comment for the CVEs). -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${apache.poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${apache.poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml-lite</artifactId>
+                <version>${apache.poi.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>org.springdoc</groupId>
