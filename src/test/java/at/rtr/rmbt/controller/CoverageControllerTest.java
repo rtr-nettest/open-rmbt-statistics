@@ -5,9 +5,11 @@ import at.rtr.rmbt.TestObjects;
 import at.rtr.rmbt.constant.URIConstants;
 import at.rtr.rmbt.service.CoverageService;
 import org.junit.jupiter.api.Test;
+import at.rtr.rmbt.TestCacheConfig;
+import org.springframework.context.annotation.Import;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -18,12 +20,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CoverageController.class)
+@Import(TestCacheConfig.class)
 class CoverageControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private CoverageService coverageService;
 
     @Test
