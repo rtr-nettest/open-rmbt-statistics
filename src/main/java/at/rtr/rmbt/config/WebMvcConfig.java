@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -42,12 +43,26 @@ public class WebMvcConfig implements WebMvcConfigurer {
      * message-converter auto-configuration, so {@code spring.http.converters.preferred-json-mapper}
      * has no effect and Spring MVC would otherwise install the Framework 7 default Jackson 3 converter.
      * Jackson 3 cannot construct this app's Lombok @Builder/final-field request DTOs (StatisticRequest,
-     * CapabilitiesRequest, ...) and rejects every request body with 400. Prepending a Jackson 2
-     * converter makes it win for JSON (converters are tried in order), restoring the pre-Boot-4 API.
+     * CapabilitiesRequest, ...) and rejects every request body with 400.
+     * <p>
+     * The Jackson 2 converter must be inserted <em>after</em> {@link StringHttpMessageConverter} and
+     * <em>before</em> the default Jackson converter. Many endpoints return an already-built JSON
+     * {@code String} (e.g. /opentests/search, /statistics); those must be written verbatim by the
+     * String converter. Placing Jackson at index 0 would make it win for {@code String} too and
+     * double-encode the body (wrapping it in quotes and escaping it), so clients receive a JSON string
+     * instead of an object. Inserting right after the String converter keeps String responses raw while
+     * still making Jackson 2 win over the later Jackson 3 converter for request DTOs and object bodies.
      */
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.add(0, new MappingJackson2HttpMessageConverter(jackson2ObjectMapper));
+        int insertAt = 0;
+        for (int i = 0; i < converters.size(); i++) {
+            if (converters.get(i) instanceof StringHttpMessageConverter) {
+                insertAt = i + 1;
+                break;
+            }
+        }
+        converters.add(insertAt, new MappingJackson2HttpMessageConverter(jackson2ObjectMapper));
     }
 
 
