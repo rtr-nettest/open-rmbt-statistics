@@ -109,6 +109,21 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <!-- Boot 4 Jackson 2 compatibility module. The REST API is built on Jackson 2
+                 (com.fasterxml.*): the request DTOs (StatisticRequest, CapabilitiesRequest, ...)
+                 are Lombok @Builder/final-field classes that Jackson 2 deserializes via implicit
+                 single-constructor detection with -parameters names. Boot 4 defaults HTTP message
+                 conversion to Jackson 3 (tools.jackson.*), which does not construct those DTOs and
+                 rejects every request body with 400. This module provides the Jackson 2 ObjectMapper
+                 auto-configuration; the Jackson 2 converter is then installed explicitly in
+                 WebMvcConfig (because @EnableWebMvc disables Boot's message-converter auto-config, so
+                 spring.http.converters.preferred-json-mapper has no effect). Its settings bind to the
+                 spring.jackson2.* prefix. Jackson 2 support is deprecated in Boot 4; migrating the DTOs
+                 to Jackson 3 is a separate, larger effort. -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-jackson2</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>

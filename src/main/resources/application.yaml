@@ -43,7 +43,11 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   flyway:
     enabled: true
-  jackson:
+  # Configuration for the Jackson 2 ObjectMapper used by the REST API (installed in WebMvcConfig).
+  # Boot 4 binds the Jackson 2 compat mapper to 'spring.jackson2.*'; 'spring.jackson.*' would configure
+  # the Jackson 3 mapper, which this app does not use for HTTP. Date (de)serialization defaults are left
+  # unchanged (ISO-8601), matching the pre-Boot-4 behaviour.
+  jackson2:
     deserialization:
       fail-on-unknown-properties: true
 
