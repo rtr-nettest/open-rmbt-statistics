@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
 class HourlyStatisticRepositoryImplTest {
 
     private static final String SQL_QUERY = "SELECT  count(t.open_test_uuid),  " +
-            "extract(hour from t.time AT TIME ZONE t.timezone) AS hour," +
+            "extract(hour from t.time AT TIME ZONE CASE WHEN t.timezone IN (SELECT name FROM pg_timezone_names) THEN t.timezone ELSE 'UTC' END) AS hour," +
             "       percentile_disc(?) WITHIN GROUP (ORDER BY t.speed_download :: bigint) AS quantile_down," +
             "       percentile_disc(?) WITHIN GROUP (ORDER BY t.speed_upload :: bigint) AS quantile_up," +
             "       percentile_disc(?) WITHIN GROUP (ORDER BY t.ping_median :: bigint) AS quantile_ping " +

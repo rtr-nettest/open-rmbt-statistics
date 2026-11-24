@@ -35,9 +35,15 @@ public class HourlyStatisticRepositoryImpl implements HourlyStatisticRepository 
         return new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                // t.timezone is a per-row stored value. Rows captured long ago can hold IANA zone
+                // names that current PostgreSQL tzdata no longer recognizes (e.g. the retired
+                // "Asia/Rangoon", renamed to "Asia/Yangon"); "AT TIME ZONE <unknown>" aborts the whole
+                // query with ERROR: time zone "..." not recognized. Guard it: only use the stored zone
+                // if the server knows it, otherwise fall back to UTC so one stale row cannot 500 the
+                // endpoint. (Run the data fix in the repo docs to bucket those rows by their true zone.)
                 final String sql = "SELECT" +
                         "  count(t.open_test_uuid)," +
-                        "  extract(hour from t.time AT TIME ZONE t.timezone) AS hour," +
+                        "  extract(hour from t.time AT TIME ZONE CASE WHEN t.timezone IN (SELECT name FROM pg_timezone_names) THEN t.timezone ELSE 'UTC' END) AS hour," +
                         "       percentile_disc(?) WITHIN GROUP (ORDER BY t.speed_download :: bigint) AS quantile_down," +
                         "       percentile_disc(?) WITHIN GROUP (ORDER BY t.speed_upload :: bigint) AS quantile_up," +
                         "       percentile_disc(?) WITHIN GROUP (ORDER BY t.ping_median :: bigint) AS quantile_ping" +
